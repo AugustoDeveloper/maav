@@ -1,0 +1,16 @@
+version: '3.6'
+
+services:
+  docker.maav.api:
+    image: dvlop.maav.api
+    container_name: maav.api
+    build:
+      dockerfile: src/maav.webapi/Dockerfile
+      context: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings:VersionDbConnString=version.db
+      - Logging:LogLevel:Default=Debug
+      - Auth:SecretKey:=THIS IS SECRET PHRASE
+    ports:
+      - "5000:80"

@@ -1,0 +1,1478 @@
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/ApplicationService.cs
+FN:10,System.Void MAAV.Application.ApplicationService::.ctor(MAAV.Domain.Repositories.IApplicationRepository)
+FNDA:0,System.Void MAAV.Application.ApplicationService::.ctor(MAAV.Domain.Repositories.IApplicationRepository)
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+FN:16,System.Void MAAV.Application.ApplicationService/<GetLastVersionAsync>d__2::MoveNext()
+FNDA:0,System.Void MAAV.Application.ApplicationService/<GetLastVersionAsync>d__2::MoveNext()
+DA:17,0
+DA:18,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:25,0
+DA:27,0
+DA:28,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:48,0
+DA:49,0
+BRDA:18,173,0,0
+BRDA:18,173,1,0
+BRDA:20,288,0,0
+BRDA:20,288,1,0
+BRDA:30,384,0,0
+BRDA:30,402,0,0
+BRDA:30,384,1,0
+BRDA:30,402,1,0
+BRDA:30,427,0,0
+BRDA:32,456,0,0
+BRDA:32,456,1,0
+BRDA:33,493,0,0
+BRDA:33,493,1,0
+BRDA:34,534,0,0
+BRDA:34,534,1,0
+BRDA:30,427,1,0
+BRDA:38,607,0,0
+BRDA:38,607,1,0
+BRDA:43,645,0,0
+BRDA:43,645,1,0
+BRDA:43,670,0,0
+BRDA:43,670,1,0
+FN:51,System.Void MAAV.Application.ApplicationService/<UpdateLastVersionAsync>d__3::MoveNext()
+FNDA:0,System.Void MAAV.Application.ApplicationService/<UpdateLastVersionAsync>d__3::MoveNext()
+DA:52,0
+DA:53,0
+DA:54,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:61,0
+DA:62,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:73,0
+DA:74,0
+DA:75,0
+DA:76,0
+DA:77,0
+DA:78,0
+DA:80,0
+DA:81,0
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+DA:86,0
+DA:87,0
+DA:89,0
+DA:90,0
+DA:92,0
+DA:93,0
+DA:94,0
+DA:95,0
+DA:96,0
+DA:97,0
+DA:98,0
+DA:99,0
+DA:101,0
+DA:102,0
+DA:103,0
+DA:104,0
+DA:105,0
+DA:107,0
+DA:108,0
+DA:109,0
+DA:111,0
+DA:112,0
+DA:113,0
+DA:114,0
+DA:116,0
+DA:117,0
+DA:118,0
+DA:120,0
+DA:121,0
+DA:123,0
+DA:124,0
+DA:125,0
+DA:126,0
+DA:127,0
+DA:129,0
+DA:130,0
+BRDA:52,14,0,0
+BRDA:54,191,0,0
+BRDA:54,191,1,0
+BRDA:56,306,0,0
+BRDA:64,422,0,0
+BRDA:66,438,0,0
+BRDA:68,464,0,0
+BRDA:68,464,1,0
+BRDA:66,438,1,0
+BRDA:74,543,0,0
+BRDA:74,543,1,0
+BRDA:75,580,0,0
+BRDA:75,580,1,0
+BRDA:64,422,1,0
+BRDA:80,638,0,0
+BRDA:82,664,0,0
+BRDA:82,664,1,0
+BRDA:80,638,1,0
+BRDA:92,806,0,0
+BRDA:92,806,1,0
+BRDA:92,831,0,0
+BRDA:94,857,0,0
+BRDA:94,857,1,0
+BRDA:101,970,0,0
+BRDA:103,999,0,0
+BRDA:103,999,1,0
+BRDA:107,1074,0,0
+BRDA:107,1074,1,0
+BRDA:111,1149,0,0
+BRDA:111,1149,1,0
+BRDA:101,970,1,0
+BRDA:117,1228,0,0
+BRDA:117,1228,1,0
+BRDA:92,831,1,0
+BRDA:123,1284,0,0
+BRDA:125,1323,0,0
+BRDA:52,14,1,0
+BRDA:125,1323,1,0
+BRDA:123,1284,1,0
+BRDA:56,306,1,0
+LF:91
+LH:0
+BRF:62
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/OrganisationService.cs
+FN:13,System.Void MAAV.Application.OrganisationService::.ctor(MAAV.Domain.Repositories.IOrganisationRepository)
+FNDA:0,System.Void MAAV.Application.OrganisationService::.ctor(MAAV.Domain.Repositories.IOrganisationRepository)
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+FN:19,System.Void MAAV.Application.OrganisationService/<DeleteByOrganisationNameAsync>d__2::MoveNext()
+FNDA:0,System.Void MAAV.Application.OrganisationService/<DeleteByOrganisationNameAsync>d__2::MoveNext()
+DA:20,0
+DA:21,0
+DA:22,0
+BRDA:21,173,0,0
+BRDA:21,173,1,0
+FN:24,System.Void MAAV.Application.OrganisationService/<GetByOrganisationNameAsync>d__3::MoveNext()
+FNDA:0,System.Void MAAV.Application.OrganisationService/<GetByOrganisationNameAsync>d__3::MoveNext()
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+BRDA:26,173,0,0
+BRDA:26,173,1,0
+BRDA:27,282,0,0
+BRDA:27,282,1,0
+FN:30,System.Void MAAV.Application.OrganisationService/<RegisterAsync>d__4::MoveNext()
+FNDA:0,System.Void MAAV.Application.OrganisationService/<RegisterAsync>d__4::MoveNext()
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:37,0
+DA:38,0
+BRDA:31,14,0,0
+BRDA:32,207,0,0
+BRDA:32,207,1,0
+BRDA:32,298,0,0
+BRDA:32,298,1,0
+BRDA:37,369,0,0
+BRDA:31,14,1,0
+BRDA:37,369,1,0
+FN:40,System.Void MAAV.Application.OrganisationService/<UpdateAsync>d__5::MoveNext()
+FNDA:0,System.Void MAAV.Application.OrganisationService/<UpdateAsync>d__5::MoveNext()
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:47,0
+DA:48,0
+BRDA:41,14,0,0
+BRDA:42,207,0,0
+BRDA:42,207,1,0
+BRDA:42,301,0,0
+BRDA:42,301,1,0
+BRDA:47,357,0,0
+BRDA:41,14,1,0
+BRDA:47,357,1,0
+LF:23
+LH:0
+BRF:22
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/TeamService.cs
+FN:11,System.Void MAAV.Application.TeamService::.ctor(MAAV.Domain.Repositories.ITeamRepository)
+FNDA:0,System.Void MAAV.Application.TeamService::.ctor(MAAV.Domain.Repositories.ITeamRepository)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+FN:17,System.Void MAAV.Application.TeamService/<GetByTeamNameAsync>d__2::MoveNext()
+FNDA:0,System.Void MAAV.Application.TeamService/<GetByTeamNameAsync>d__2::MoveNext()
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+BRDA:19,257,0,0
+BRDA:19,257,1,0
+BRDA:20,366,0,0
+BRDA:20,366,1,0
+FN:23,System.Void MAAV.Application.TeamService/<AddAsync>d__3::MoveNext()
+FNDA:0,System.Void MAAV.Application.TeamService/<AddAsync>d__3::MoveNext()
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:30,0
+DA:31,0
+DA:33,0
+DA:34,0
+DA:35,0
+BRDA:24,14,0,0
+BRDA:25,292,0,0
+BRDA:25,292,1,0
+BRDA:25,383,0,0
+BRDA:25,383,1,0
+BRDA:33,489,0,0
+BRDA:24,14,1,0
+BRDA:33,489,1,0
+FN:37,System.Void MAAV.Application.TeamService/<UpdateAsync>d__4::MoveNext()
+FNDA:0,System.Void MAAV.Application.TeamService/<UpdateAsync>d__4::MoveNext()
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:44,0
+DA:45,0
+DA:47,0
+DA:48,0
+DA:49,0
+BRDA:38,14,0,0
+BRDA:39,292,0,0
+BRDA:39,292,1,0
+BRDA:39,386,0,0
+BRDA:39,386,1,0
+BRDA:47,477,0,0
+BRDA:38,14,1,0
+BRDA:47,477,1,0
+FN:51,System.Void MAAV.Application.TeamService/<DeleteAsync>d__5::MoveNext()
+FNDA:0,System.Void MAAV.Application.TeamService/<DeleteAsync>d__5::MoveNext()
+DA:52,0
+DA:53,0
+DA:54,0
+BRDA:53,257,0,0
+BRDA:53,257,1,0
+LF:29
+LH:0
+BRF:22
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/UserService.cs
+FN:11,System.Void MAAV.Application.UserService::.ctor(MAAV.Domain.Repositories.IUserRepository)
+FNDA:0,System.Void MAAV.Application.UserService::.ctor(MAAV.Domain.Repositories.IUserRepository)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+FN:17,System.Void MAAV.Application.UserService/<AddAsync>d__2::MoveNext()
+FNDA:0,System.Void MAAV.Application.UserService/<AddAsync>d__2::MoveNext()
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:24,0
+DA:25,0
+DA:27,0
+DA:28,0
+BRDA:18,14,0,0
+BRDA:19,292,0,0
+BRDA:19,292,1,0
+BRDA:19,383,0,0
+BRDA:19,383,1,0
+BRDA:25,466,0,0
+BRDA:18,14,1,0
+BRDA:25,466,1,0
+FN:30,System.Void MAAV.Application.UserService/<DeleteAsync>d__3::MoveNext()
+FNDA:0,System.Void MAAV.Application.UserService/<DeleteAsync>d__3::MoveNext()
+DA:31,0
+DA:32,0
+DA:33,0
+BRDA:32,257,0,0
+BRDA:32,257,1,0
+FN:35,System.Void MAAV.Application.UserService/<GetByUsernameAsync>d__4::MoveNext()
+FNDA:0,System.Void MAAV.Application.UserService/<GetByUsernameAsync>d__4::MoveNext()
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+BRDA:37,257,0,0
+BRDA:37,257,1,0
+BRDA:38,366,0,0
+BRDA:38,366,1,0
+FN:41,System.Void MAAV.Application.UserService/<UpdateAsync>d__5::MoveNext()
+FNDA:0,System.Void MAAV.Application.UserService/<UpdateAsync>d__5::MoveNext()
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:48,0
+DA:49,0
+DA:51,0
+DA:52,0
+BRDA:42,14,0,0
+BRDA:43,292,0,0
+BRDA:43,292,1,0
+BRDA:43,386,0,0
+BRDA:43,386,1,0
+BRDA:49,454,0,0
+BRDA:42,14,1,0
+BRDA:49,454,1,0
+LF:27
+LH:0
+BRF:22
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/Extensions/AutoMapperExtension.cs
+FN:8,AutoMapper.IMapper MAAV.Application.Extensions.AutoMapperExtension::get_CurrentMapper()
+FNDA:0,AutoMapper.IMapper MAAV.Application.Extensions.AutoMapperExtension::get_CurrentMapper()
+DA:9,0
+FN:11,System.Void MAAV.Application.Extensions.AutoMapperExtension::AddMapping(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+FNDA:0,System.Void MAAV.Application.Extensions.AutoMapperExtension::AddMapping(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+DA:67,0
+DA:68,0
+DA:69,0
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:75,0
+DA:77,0
+DA:78,0
+BRDA:13,7,0,0
+BRDA:13,7,1,0
+BRDA:77,51,1,0
+BRDA:77,51,0,0
+BRDA:15,70,0,0
+BRDA:15,70,1,0
+BRDA:15,163,0,0
+BRDA:15,163,1,0
+BRDA:15,256,0,0
+BRDA:15,256,1,0
+BRDA:21,356,0,0
+BRDA:21,356,1,0
+BRDA:21,449,0,0
+BRDA:21,449,1,0
+BRDA:26,549,0,0
+BRDA:26,549,1,0
+BRDA:26,642,0,0
+BRDA:26,642,1,0
+BRDA:26,735,0,0
+BRDA:26,735,1,0
+BRDA:26,828,0,0
+BRDA:26,828,1,0
+BRDA:26,921,0,0
+BRDA:26,921,1,0
+BRDA:26,1014,0,0
+BRDA:26,1014,1,0
+BRDA:35,1114,0,0
+BRDA:35,1114,1,0
+BRDA:35,1207,0,0
+BRDA:35,1207,1,0
+BRDA:45,1328,0,0
+BRDA:45,1328,1,0
+BRDA:45,1421,0,0
+BRDA:45,1421,1,0
+BRDA:50,1521,0,0
+BRDA:50,1521,1,0
+BRDA:50,1614,0,0
+BRDA:50,1614,1,0
+BRDA:55,1714,0,0
+BRDA:55,1714,1,0
+BRDA:55,1807,0,0
+BRDA:55,1807,1,0
+BRDA:55,1900,0,0
+BRDA:55,1900,1,0
+BRDA:55,1993,0,0
+BRDA:55,1993,1,0
+BRDA:55,2086,0,0
+BRDA:55,2086,1,0
+BRDA:55,2179,0,0
+BRDA:55,2179,1,0
+BRDA:64,2279,0,0
+BRDA:64,2279,1,0
+BRDA:64,2372,0,0
+BRDA:64,2372,1,0
+FN:80,MAAV.DataContracts.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Organisation)
+FNDA:0,MAAV.DataContracts.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Organisation)
+DA:81,0
+FN:83,MAAV.Domain.Entities.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Organisation)
+FNDA:0,MAAV.Domain.Entities.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Organisation)
+DA:84,0
+FN:86,MAAV.DataContracts.Team MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Team)
+FNDA:0,MAAV.DataContracts.Team MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Team)
+DA:87,0
+FN:89,MAAV.Domain.Entities.Team MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Team)
+FNDA:0,MAAV.Domain.Entities.Team MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Team)
+DA:90,0
+FN:93,MAAV.DataContracts.User MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.User)
+FNDA:0,MAAV.DataContracts.User MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.User)
+DA:94,0
+FN:96,MAAV.Domain.Entities.User MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.User)
+FNDA:0,MAAV.Domain.Entities.User MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.User)
+DA:97,0
+FN:99,TResult MAAV.Application.Extensions.AutoMapperExtension::ToContract(AutoMapper.IMapper,TEntity)
+FNDA:0,TResult MAAV.Application.Extensions.AutoMapperExtension::ToContract(AutoMapper.IMapper,TEntity)
+DA:100,0
+FN:101,TResult MAAV.Application.Extensions.AutoMapperExtension::ToEntity(AutoMapper.IMapper,TContract)
+FNDA:0,TResult MAAV.Application.Extensions.AutoMapperExtension::ToEntity(AutoMapper.IMapper,TContract)
+DA:102,0
+LF:74
+LH:0
+BRF:54
+BRH:0
+FNF:10
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/Exceptions/NameAlreadyUsedException.cs
+FN:6,System.Void MAAV.Application.Exceptions.NameAlreadyUsedException::.ctor(System.String)
+FNDA:9,System.Void MAAV.Application.Exceptions.NameAlreadyUsedException::.ctor(System.String)
+DA:7,9
+LF:1
+LH:1
+BRF:0
+BRH:0
+FNF:1
+FNH:1
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/BranchMap.cs
+FN:4,System.String MAAV.DataContracts.BranchMap::get_Name()
+FNDA:0,System.String MAAV.DataContracts.BranchMap::get_Name()
+DA:5,0
+FN:5,System.String MAAV.DataContracts.BranchMap::get_BranchPattern()
+FNDA:0,System.String MAAV.DataContracts.BranchMap::get_BranchPattern()
+DA:6,0
+FN:6,System.Boolean MAAV.DataContracts.BranchMap::get_AllowBumpMajor()
+FNDA:0,System.Boolean MAAV.DataContracts.BranchMap::get_AllowBumpMajor()
+DA:7,0
+FN:7,MAAV.DataContracts.IncrementMode MAAV.DataContracts.BranchMap::get_Increment()
+FNDA:0,MAAV.DataContracts.IncrementMode MAAV.DataContracts.BranchMap::get_Increment()
+DA:8,0
+FN:8,MAAV.DataContracts.LabelDescription MAAV.DataContracts.BranchMap::get_Label()
+FNDA:0,MAAV.DataContracts.LabelDescription MAAV.DataContracts.BranchMap::get_Label()
+DA:9,0
+FN:9,System.String MAAV.DataContracts.BranchMap::get_SuffixFormat()
+FNDA:0,System.String MAAV.DataContracts.BranchMap::get_SuffixFormat()
+DA:10,0
+LF:6
+LH:0
+BRF:0
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/Organisation.cs
+FN:6,System.String MAAV.DataContracts.Organisation::get_Name()
+FNDA:41,System.String MAAV.DataContracts.Organisation::get_Name()
+DA:7,41
+FN:7,MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Organisation::get_ScheMap()
+FNDA:0,MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Organisation::get_ScheMap()
+DA:8,0
+LF:2
+LH:1
+BRF:0
+BRH:0
+FNF:2
+FNH:1
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/ScheMapVersion.cs
+FN:4,System.String MAAV.DataContracts.ScheMapVersion::get_Format()
+FNDA:0,System.String MAAV.DataContracts.ScheMapVersion::get_Format()
+DA:5,0
+FN:5,MAAV.DataContracts.BranchMap[] MAAV.DataContracts.ScheMapVersion::get_Branches()
+FNDA:0,MAAV.DataContracts.BranchMap[] MAAV.DataContracts.ScheMapVersion::get_Branches()
+DA:6,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/Team.cs
+FN:4,System.String MAAV.DataContracts.Team::get_Name()
+FNDA:47,System.String MAAV.DataContracts.Team::get_Name()
+DA:5,47
+FN:5,MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Team::get_ScheMap()
+FNDA:0,MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Team::get_ScheMap()
+DA:6,0
+LF:2
+LH:1
+BRF:0
+BRH:0
+FNF:2
+FNH:1
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/User.cs
+FN:4,System.String MAAV.DataContracts.User::get_Username()
+FNDA:47,System.String MAAV.DataContracts.User::get_Username()
+DA:5,47
+LF:1
+LH:1
+BRF:0
+BRH:0
+FNF:1
+FNH:1
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/ApplicationRepository.cs
+FN:13,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.ApplicationRepository::DeleteAsync(MAAV.Domain.Entities.Application)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.ApplicationRepository::DeleteAsync(MAAV.Domain.Entities.Application)
+DA:14,0
+FN:8,System.Void MAAV.Infrastructure.Repository.LiteDb.ApplicationRepository::.ctor(System.String)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.ApplicationRepository::.ctor(System.String)
+DA:9,0
+DA:10,0
+DA:11,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/LiteDbRepository.cs
+FN:21,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::AddAsync(TEntity)
+FNDA:0,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::AddAsync(TEntity)
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+FN:33,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::GetByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::GetByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:34,0
+FN:36,System.Threading.Tasks.Task`1<System.Collections.Generic.IEnumerable`1<TEntity>> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::LoadAllAsync()
+FNDA:0,System.Threading.Tasks.Task`1<System.Collections.Generic.IEnumerable`1<TEntity>> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::LoadAllAsync()
+DA:37,0
+BRDA:37,7,0,0
+BRDA:37,7,1,0
+FN:38,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::UpdateAsync(TEntity)
+FNDA:0,System.Threading.Tasks.Task`1<TEntity> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::UpdateAsync(TEntity)
+DA:39,0
+BRDA:39,13,0,0
+BRDA:39,13,1,0
+FN:41,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::ExistsByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::ExistsByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:42,0
+FN:44,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::DeleteAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::DeleteAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:45,0
+FN:46,System.Threading.Tasks.Task`1<System.Collections.Generic.IEnumerable`1<TEntity>> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::LoadByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+FNDA:0,System.Threading.Tasks.Task`1<System.Collections.Generic.IEnumerable`1<TEntity>> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::LoadByAsync(System.Linq.Expressions.Expression`1<System.Func`2<TEntity,System.Boolean>>)
+DA:47,0
+FN:49,System.Threading.Tasks.Task`1<TResult> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::ExecuteAsync(System.Func`2<LiteDB.LiteRepository,TResult>)
+FNDA:0,System.Threading.Tasks.Task`1<TResult> MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::ExecuteAsync(System.Func`2<LiteDB.LiteRepository,TResult>)
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:65,0
+DA:66,0
+FN:69,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::Dispose(System.Boolean)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::Dispose(System.Boolean)
+DA:70,0
+DA:71,0
+DA:72,0
+DA:73,0
+DA:74,0
+DA:75,0
+BRDA:71,2,0,0
+BRDA:71,2,1,0
+BRDA:71,18,0,0
+BRDA:71,18,1,0
+FN:77,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::Dispose()
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::Dispose()
+DA:78,0
+DA:79,0
+DA:80,0
+DA:81,0
+FN:15,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::.ctor(System.String)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.LiteDbRepository`1::.ctor(System.String)
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+LF:45
+LH:0
+BRF:8
+BRH:0
+FNF:11
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/OrganisationRepository.cs
+FN:13,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.OrganisationRepository::DeleteAsync(MAAV.Domain.Entities.Organisation)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.OrganisationRepository::DeleteAsync(MAAV.Domain.Entities.Organisation)
+DA:14,0
+FN:8,System.Void MAAV.Infrastructure.Repository.LiteDb.OrganisationRepository::.ctor(System.String)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.OrganisationRepository::.ctor(System.String)
+DA:9,0
+DA:10,0
+DA:11,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/TeamRepository.cs
+FN:13,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.TeamRepository::DeleteAsync(MAAV.Domain.Entities.Team)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.TeamRepository::DeleteAsync(MAAV.Domain.Entities.Team)
+DA:14,0
+FN:8,System.Void MAAV.Infrastructure.Repository.LiteDb.TeamRepository::.ctor(System.String)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.TeamRepository::.ctor(System.String)
+DA:9,0
+DA:10,0
+DA:11,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/UserRepository.cs
+FN:13,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.UserRepository::DeleteAsync(MAAV.Domain.Entities.User)
+FNDA:0,System.Threading.Tasks.Task`1<System.Boolean> MAAV.Infrastructure.Repository.LiteDb.UserRepository::DeleteAsync(MAAV.Domain.Entities.User)
+DA:14,0
+FN:8,System.Void MAAV.Infrastructure.Repository.LiteDb.UserRepository::.ctor(System.String)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.UserRepository::.ctor(System.String)
+DA:9,0
+DA:10,0
+DA:11,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Infrastructure.Repository.LiteDb/Extensions/LiteDbRepositoryService.cs
+FN:12,System.Void MAAV.Infrastructure.Repository.LiteDb.Extensions.LiteDbRepositoryService::AddLiteDb(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:0,System.Void MAAV.Infrastructure.Repository.LiteDb.Extensions.LiteDbRepositoryService::AddLiteDb(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)
+DA:13,0
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:48,0
+DA:49,0
+DA:51,0
+DA:52,0
+DA:53,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:59,0
+DA:60,0
+DA:61,0
+DA:62,0
+LF:42
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Application.cs
+FN:6,System.String MAAV.Domain.Entities.Application::get_Name()
+FNDA:0,System.String MAAV.Domain.Entities.Application::get_Name()
+DA:7,0
+FN:7,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_AlphaVersion()
+FNDA:0,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_AlphaVersion()
+DA:8,0
+FN:8,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_BetaVersion()
+FNDA:0,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_BetaVersion()
+DA:9,0
+FN:9,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_ReleaseVersion()
+FNDA:0,MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_ReleaseVersion()
+DA:10,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/BranchMap.cs
+FN:6,System.String MAAV.Domain.Entities.BranchMap::get_Name()
+FNDA:0,System.String MAAV.Domain.Entities.BranchMap::get_Name()
+DA:7,0
+FN:7,System.String MAAV.Domain.Entities.BranchMap::get_BranchPattern()
+FNDA:0,System.String MAAV.Domain.Entities.BranchMap::get_BranchPattern()
+DA:8,0
+FN:8,System.Boolean MAAV.Domain.Entities.BranchMap::get_AllowBumpMajor()
+FNDA:0,System.Boolean MAAV.Domain.Entities.BranchMap::get_AllowBumpMajor()
+DA:9,0
+FN:9,MAAV.Domain.Entities.IncrementMode MAAV.Domain.Entities.BranchMap::get_Increment()
+FNDA:0,MAAV.Domain.Entities.IncrementMode MAAV.Domain.Entities.BranchMap::get_Increment()
+DA:10,0
+FN:10,MAAV.Domain.Entities.LabelDescription MAAV.Domain.Entities.BranchMap::get_Label()
+FNDA:0,MAAV.Domain.Entities.LabelDescription MAAV.Domain.Entities.BranchMap::get_Label()
+DA:11,0
+FN:11,System.String MAAV.Domain.Entities.BranchMap::get_SuffixFormat()
+FNDA:0,System.String MAAV.Domain.Entities.BranchMap::get_SuffixFormat()
+DA:12,0
+LF:6
+LH:0
+BRF:0
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Organisation.cs
+FN:6,System.String MAAV.Domain.Entities.Organisation::get_Name()
+FNDA:0,System.String MAAV.Domain.Entities.Organisation::get_Name()
+DA:7,0
+FN:7,MAAV.Domain.Entities.Team[] MAAV.Domain.Entities.Organisation::get_Teams()
+FNDA:0,MAAV.Domain.Entities.Team[] MAAV.Domain.Entities.Organisation::get_Teams()
+DA:8,0
+FN:8,MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Organisation::get_ScheMap()
+FNDA:0,MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Organisation::get_ScheMap()
+DA:9,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/ScheMapVersion.cs
+FN:6,System.String MAAV.Domain.Entities.ScheMapVersion::get_Format()
+FNDA:0,System.String MAAV.Domain.Entities.ScheMapVersion::get_Format()
+DA:7,0
+FN:7,MAAV.Domain.Entities.BranchMap[] MAAV.Domain.Entities.ScheMapVersion::get_Branches()
+FNDA:0,MAAV.Domain.Entities.BranchMap[] MAAV.Domain.Entities.ScheMapVersion::get_Branches()
+DA:8,0
+LF:2
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Team.cs
+FN:6,System.String MAAV.Domain.Entities.Team::get_OrganisationName()
+FNDA:0,System.String MAAV.Domain.Entities.Team::get_OrganisationName()
+DA:7,0
+FN:7,System.String MAAV.Domain.Entities.Team::get_Name()
+FNDA:0,System.String MAAV.Domain.Entities.Team::get_Name()
+DA:8,0
+FN:8,MAAV.Domain.Entities.Application[] MAAV.Domain.Entities.Team::get_Applications()
+FNDA:0,MAAV.Domain.Entities.Application[] MAAV.Domain.Entities.Team::get_Applications()
+DA:9,0
+FN:9,MAAV.Domain.Entities.User[] MAAV.Domain.Entities.Team::get_Users()
+FNDA:0,MAAV.Domain.Entities.User[] MAAV.Domain.Entities.Team::get_Users()
+DA:10,0
+FN:10,MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Team::get_ScheMap()
+FNDA:0,MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Team::get_ScheMap()
+DA:11,0
+FN:11,System.String MAAV.Domain.Entities.Team::get_Id()
+FNDA:0,System.String MAAV.Domain.Entities.Team::get_Id()
+DA:12,0
+LF:6
+LH:0
+BRF:0
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/User.cs
+FN:6,System.String MAAV.Domain.Entities.User::get_Username()
+FNDA:0,System.String MAAV.Domain.Entities.User::get_Username()
+DA:7,0
+FN:7,System.String MAAV.Domain.Entities.User::get_OrganisationName()
+FNDA:0,System.String MAAV.Domain.Entities.User::get_OrganisationName()
+DA:8,0
+FN:8,MAAV.Domain.Entities.Team[] MAAV.Domain.Entities.User::get_teams()
+FNDA:0,MAAV.Domain.Entities.Team[] MAAV.Domain.Entities.User::get_teams()
+DA:9,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Version.cs
+FN:4,System.Int64 MAAV.Domain.Entities.Version::get_MajorVersionNumber()
+FNDA:0,System.Int64 MAAV.Domain.Entities.Version::get_MajorVersionNumber()
+DA:5,0
+FN:5,System.Int64 MAAV.Domain.Entities.Version::get_MinorVersionNumber()
+FNDA:0,System.Int64 MAAV.Domain.Entities.Version::get_MinorVersionNumber()
+DA:6,0
+FN:6,System.Int64 MAAV.Domain.Entities.Version::get_PatchVersionNumber()
+FNDA:0,System.Int64 MAAV.Domain.Entities.Version::get_PatchVersionNumber()
+DA:7,0
+FN:7,System.String MAAV.Domain.Entities.Version::get_Label()
+FNDA:0,System.String MAAV.Domain.Entities.Version::get_Label()
+DA:8,0
+FN:10,System.String MAAV.Domain.Entities.Version::ToString()
+FNDA:0,System.String MAAV.Domain.Entities.Version::ToString()
+DA:11,0
+LF:5
+LH:0
+BRF:0
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Program.cs
+FN:14,System.Void MAAV.WebAPI.Program::Main(System.String[])
+FNDA:0,System.Void MAAV.WebAPI.Program::Main(System.String[])
+DA:15,0
+DA:16,0
+DA:17,0
+FN:19,Microsoft.Extensions.Hosting.IHostBuilder MAAV.WebAPI.Program::CreateHostBuilder(System.String[])
+FNDA:0,Microsoft.Extensions.Hosting.IHostBuilder MAAV.WebAPI.Program::CreateHostBuilder(System.String[])
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+BRDA:20,30,0,0
+BRDA:20,30,1,0
+BRDA:20,83,0,0
+BRDA:20,83,1,0
+LF:21
+LH:0
+BRF:4
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Startup.cs
+FN:27,Microsoft.Extensions.Configuration.IConfiguration MAAV.WebAPI.Startup::get_Configuration()
+FNDA:0,Microsoft.Extensions.Configuration.IConfiguration MAAV.WebAPI.Startup::get_Configuration()
+DA:28,0
+FN:31,System.Void MAAV.WebAPI.Startup::ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+FNDA:0,System.Void MAAV.WebAPI.Startup::ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+FN:41,System.Void MAAV.WebAPI.Startup::Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)
+FNDA:0,System.Void MAAV.WebAPI.Startup::Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:50,0
+DA:54,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:59,0
+DA:60,0
+BRDA:43,9,0,0
+BRDA:43,9,1,0
+BRDA:54,58,0,0
+BRDA:54,58,1,0
+FN:22,System.Void MAAV.WebAPI.Startup::.ctor(Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:0,System.Void MAAV.WebAPI.Startup::.ctor(Microsoft.Extensions.Configuration.IConfiguration)
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+LF:26
+LH:0
+BRF:4
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Extensions/InitilizeVersionsExtension.cs
+FN:12,System.Void MAAV.WebAPI.Extensions.InitializeVersionsExtension::InitializeVersions(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Configuration.IConfiguration)
+FNDA:0,System.Void MAAV.WebAPI.Extensions.InitializeVersionsExtension::InitializeVersions(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Configuration.IConfiguration)
+DA:13,0
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:26,0
+DA:27,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+DA:35,0
+DA:36,0
+DA:37,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:41,0
+DA:42,0
+DA:43,0
+DA:44,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:53,0
+BRDA:17,513,1,0
+BRDA:21,238,0,0
+BRDA:21,238,1,0
+BRDA:17,513,0,0
+LF:37
+LH:0
+BRF:4
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Controllers/ApplicationController.cs
+FN:13,System.Void MAAV.WebAPI.Controllers.ApplicationController/<GetLastVersion>d__0::MoveNext()
+FNDA:0,System.Void MAAV.WebAPI.Controllers.ApplicationController/<GetLastVersion>d__0::MoveNext()
+DA:14,0
+DA:16,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:22,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:29,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:35,0
+BRDA:14,17,0,0
+BRDA:17,38,0,0
+BRDA:17,38,1,0
+BRDA:17,56,0,0
+BRDA:17,56,1,0
+BRDA:14,17,1,0
+BRDA:24,251,0,0
+BRDA:24,251,1,0
+FN:42,System.Void MAAV.WebAPI.Controllers.ApplicationController/<UpdateLastVersion>d__1::MoveNext()
+FNDA:0,System.Void MAAV.WebAPI.Controllers.ApplicationController/<UpdateLastVersion>d__1::MoveNext()
+DA:43,0
+DA:45,0
+DA:46,0
+DA:47,0
+DA:48,0
+DA:49,0
+DA:50,0
+DA:53,0
+DA:55,0
+DA:56,0
+DA:57,0
+DA:60,0
+DA:62,0
+DA:63,0
+DA:64,0
+DA:66,0
+BRDA:43,17,0,0
+BRDA:46,38,0,0
+BRDA:46,51,0,0
+BRDA:46,38,1,0
+BRDA:46,51,1,0
+BRDA:46,69,0,0
+BRDA:46,69,1,0
+BRDA:43,17,1,0
+BRDA:55,288,0,0
+BRDA:55,288,1,0
+LF:30
+LH:0
+BRF:18
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Controllers/HealthCheckController.cs
+FN:10,System.Void MAAV.WebAPI.Controllers.HealthCheckController/<GetHealthAsync>d__0::MoveNext()
+FNDA:0,System.Void MAAV.WebAPI.Controllers.HealthCheckController/<GetHealthAsync>d__0::MoveNext()
+DA:11,0
+DA:12,0
+DA:13,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Controllers/OrganisationController.cs
+FN:17,System.Void MAAV.WebAPI.Controllers.OrganisationController/<GetOrganisationAsync>d__0::MoveNext()
+FNDA:10,System.Void MAAV.WebAPI.Controllers.OrganisationController/<GetOrganisationAsync>d__0::MoveNext()
+DA:18,10
+DA:19,10
+DA:20,3
+DA:21,3
+DA:25,7
+DA:26,7
+DA:27,6
+DA:28,3
+DA:29,3
+DA:32,3
+DA:34,1
+DA:35,1
+DA:36,1
+DA:38,10
+BRDA:19,28,0,3
+BRDA:19,28,1,7
+BRDA:21,71,0,7
+BRDA:21,71,1,0
+BRDA:27,223,0,3
+BRDA:27,223,1,3
+FN:44,System.Void MAAV.WebAPI.Controllers.OrganisationController/<RegisterOrganisationAsync>d__1::MoveNext()
+FNDA:10,System.Void MAAV.WebAPI.Controllers.OrganisationController/<RegisterOrganisationAsync>d__1::MoveNext()
+DA:45,10
+DA:46,10
+DA:47,4
+DA:48,4
+DA:51,6
+DA:52,1
+DA:53,1
+DA:57,5
+DA:58,5
+DA:60,3
+DA:62,1
+DA:63,1
+DA:64,1
+DA:66,1
+DA:67,1
+DA:68,1
+DA:70,10
+BRDA:46,29,0,7
+BRDA:46,29,1,3
+BRDA:46,45,0,4
+BRDA:46,45,1,6
+BRDA:51,114,0,1
+BRDA:51,114,1,5
+BRDA:53,158,0,5
+BRDA:53,158,1,0
+FN:76,System.Void MAAV.WebAPI.Controllers.OrganisationController/<UpdateOrganisationAsync>d__2::MoveNext()
+FNDA:10,System.Void MAAV.WebAPI.Controllers.OrganisationController/<UpdateOrganisationAsync>d__2::MoveNext()
+DA:77,10
+DA:78,10
+DA:79,4
+DA:80,4
+DA:83,6
+DA:84,1
+DA:85,1
+DA:89,5
+DA:90,5
+DA:91,4
+DA:92,1
+DA:93,1
+DA:96,3
+DA:98,1
+DA:99,1
+DA:100,1
+DA:102,10
+BRDA:78,29,0,7
+BRDA:78,29,1,3
+BRDA:78,45,0,4
+BRDA:78,45,1,6
+BRDA:83,114,0,1
+BRDA:83,114,1,5
+BRDA:85,158,0,5
+BRDA:85,158,1,0
+BRDA:91,313,0,1
+BRDA:91,313,1,3
+FN:106,System.Void MAAV.WebAPI.Controllers.OrganisationController/<DeleteOrganisationAsync>d__3::MoveNext()
+FNDA:9,System.Void MAAV.WebAPI.Controllers.OrganisationController/<DeleteOrganisationAsync>d__3::MoveNext()
+DA:107,9
+DA:108,9
+DA:109,3
+DA:110,3
+DA:114,6
+DA:115,6
+DA:117,3
+DA:119,3
+DA:120,3
+DA:121,3
+DA:123,9
+BRDA:108,28,0,3
+BRDA:108,28,1,6
+BRDA:110,71,0,6
+BRDA:110,71,1,0
+LF:59
+LH:59
+BRF:28
+BRH:24
+FNF:4
+FNH:4
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Controllers/TeamController.cs
+FN:18,System.Void MAAV.WebAPI.Controllers.TeamController/<GetTeamAsync>d__0::MoveNext()
+FNDA:9,System.Void MAAV.WebAPI.Controllers.TeamController/<GetTeamAsync>d__0::MoveNext()
+DA:19,9
+DA:20,9
+DA:21,6
+DA:22,6
+DA:26,3
+DA:27,3
+DA:28,2
+DA:29,1
+DA:30,1
+DA:33,1
+DA:35,1
+DA:36,1
+DA:37,1
+DA:39,9
+BRDA:20,26,0,6
+BRDA:20,26,1,3
+BRDA:20,44,0,6
+BRDA:20,44,1,3
+BRDA:22,66,0,3
+BRDA:22,66,1,0
+BRDA:28,224,0,1
+BRDA:28,224,1,1
+FN:45,System.Void MAAV.WebAPI.Controllers.TeamController/<AddTeamAsync>d__1::MoveNext()
+FNDA:9,System.Void MAAV.WebAPI.Controllers.TeamController/<AddTeamAsync>d__1::MoveNext()
+DA:46,9
+DA:47,9
+DA:48,6
+DA:49,6
+DA:53,3
+DA:54,3
+DA:56,1
+DA:58,1
+DA:59,1
+DA:60,1
+DA:62,1
+DA:63,1
+DA:64,1
+DA:66,9
+BRDA:47,26,0,6
+BRDA:47,35,0,0
+BRDA:47,35,1,6
+BRDA:47,26,1,3
+BRDA:47,56,0,6
+BRDA:47,56,1,3
+BRDA:49,78,0,3
+BRDA:49,78,1,0
+FN:73,System.Void MAAV.WebAPI.Controllers.TeamController/<UpdateTeamAsync>d__2::MoveNext()
+FNDA:13,System.Void MAAV.WebAPI.Controllers.TeamController/<UpdateTeamAsync>d__2::MoveNext()
+DA:74,13
+DA:75,13
+DA:76,10
+DA:77,10
+DA:81,3
+DA:83,3
+DA:85,2
+DA:86,1
+DA:87,1
+DA:90,1
+DA:92,1
+DA:93,1
+DA:94,1
+DA:96,13
+BRDA:75,26,0,10
+BRDA:75,35,0,0
+BRDA:75,35,1,10
+BRDA:75,51,0,4
+BRDA:75,64,0,4
+BRDA:75,79,0,0
+BRDA:75,79,1,4
+BRDA:75,26,1,9
+BRDA:75,51,1,9
+BRDA:75,64,1,9
+BRDA:75,103,0,10
+BRDA:75,103,1,3
+BRDA:77,125,0,3
+BRDA:77,125,1,0
+BRDA:85,283,0,1
+BRDA:85,283,1,1
+FN:102,System.Void MAAV.WebAPI.Controllers.TeamController/<DeleteTeamAsync>d__3::MoveNext()
+FNDA:8,System.Void MAAV.WebAPI.Controllers.TeamController/<DeleteTeamAsync>d__3::MoveNext()
+DA:103,8
+DA:104,8
+DA:105,6
+DA:106,6
+DA:110,2
+DA:111,2
+DA:113,1
+DA:115,1
+DA:116,1
+DA:117,1
+DA:119,8
+BRDA:104,26,0,5
+BRDA:104,26,1,3
+BRDA:104,44,0,6
+BRDA:104,44,1,2
+BRDA:106,66,0,2
+BRDA:106,66,1,0
+LF:53
+LH:53
+BRF:38
+BRH:31
+FNF:4
+FNH:4
+end_of_record
+SF:/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.WebAPI/Controllers/UserController.cs
+FN:18,System.Void MAAV.WebAPI.Controllers.UserController/<GetUserAsync>d__0::MoveNext()
+FNDA:9,System.Void MAAV.WebAPI.Controllers.UserController/<GetUserAsync>d__0::MoveNext()
+DA:19,9
+DA:20,9
+DA:21,6
+DA:22,6
+DA:26,3
+DA:27,3
+DA:28,2
+DA:29,1
+DA:30,1
+DA:33,1
+DA:35,1
+DA:36,1
+DA:37,1
+DA:39,9
+BRDA:20,26,0,6
+BRDA:20,26,1,3
+BRDA:20,44,0,6
+BRDA:20,44,1,3
+BRDA:22,66,0,3
+BRDA:22,66,1,0
+BRDA:28,224,0,1
+BRDA:28,224,1,1
+FN:45,System.Void MAAV.WebAPI.Controllers.UserController/<AddUserAsync>d__1::MoveNext()
+FNDA:9,System.Void MAAV.WebAPI.Controllers.UserController/<AddUserAsync>d__1::MoveNext()
+DA:46,9
+DA:47,9
+DA:48,6
+DA:49,6
+DA:53,3
+DA:54,3
+DA:56,1
+DA:58,1
+DA:59,1
+DA:60,1
+DA:62,1
+DA:63,1
+DA:64,1
+DA:66,9
+BRDA:47,26,0,6
+BRDA:47,35,0,0
+BRDA:47,35,1,6
+BRDA:47,26,1,3
+BRDA:47,56,0,6
+BRDA:47,56,1,3
+BRDA:49,78,0,3
+BRDA:49,78,1,0
+FN:73,System.Void MAAV.WebAPI.Controllers.UserController/<UpdateUserAsync>d__2::MoveNext()
+FNDA:13,System.Void MAAV.WebAPI.Controllers.UserController/<UpdateUserAsync>d__2::MoveNext()
+DA:74,13
+DA:75,13
+DA:76,10
+DA:77,10
+DA:81,3
+DA:83,3
+DA:85,2
+DA:86,1
+DA:87,1
+DA:90,1
+DA:92,1
+DA:93,1
+DA:94,1
+DA:96,13
+BRDA:75,26,0,10
+BRDA:75,35,0,0
+BRDA:75,35,1,10
+BRDA:75,51,0,4
+BRDA:75,64,0,4
+BRDA:75,79,0,0
+BRDA:75,79,1,4
+BRDA:75,26,1,9
+BRDA:75,51,1,9
+BRDA:75,64,1,9
+BRDA:75,103,0,10
+BRDA:75,103,1,3
+BRDA:77,125,0,3
+BRDA:77,125,1,0
+BRDA:85,283,0,1
+BRDA:85,283,1,1
+FN:102,System.Void MAAV.WebAPI.Controllers.UserController/<DeleteUserAsync>d__3::MoveNext()
+FNDA:8,System.Void MAAV.WebAPI.Controllers.UserController/<DeleteUserAsync>d__3::MoveNext()
+DA:103,8
+DA:104,8
+DA:105,6
+DA:106,6
+DA:110,2
+DA:111,2
+DA:113,1
+DA:115,1
+DA:116,1
+DA:117,1
+DA:119,8
+BRDA:104,26,0,5
+BRDA:104,26,1,3
+BRDA:104,44,0,6
+BRDA:104,44,1,2
+BRDA:106,66,0,2
+BRDA:106,66,1,0
+LF:53
+LH:53
+BRF:38
+BRH:31
+FNF:4
+FNH:4
+end_of_record

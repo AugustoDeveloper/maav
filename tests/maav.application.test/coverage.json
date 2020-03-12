@@ -1,0 +1,1689 @@
+{
+  "MAAV.Application.dll": {
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/ApplicationService.cs": {
+      "MAAV.Application.ApplicationService": {
+        "System.Void MAAV.Application.ApplicationService::.ctor(MAAV.Domain.Repositories.IApplicationRepository)": {
+          "Lines": {
+            "11": 0,
+            "12": 0,
+            "13": 0,
+            "14": 0
+          },
+          "Branches": []
+        }
+      },
+      "MAAV.Application.ApplicationService/<GetLastVersionAsync>d__2": {
+        "System.Void MAAV.Application.ApplicationService/<GetLastVersionAsync>d__2::MoveNext()": {
+          "Lines": {
+            "17": 0,
+            "18": 0,
+            "20": 0,
+            "21": 0,
+            "22": 0,
+            "25": 0,
+            "27": 0,
+            "28": 0,
+            "30": 0,
+            "31": 0,
+            "32": 0,
+            "33": 0,
+            "34": 0,
+            "35": 0,
+            "38": 0,
+            "39": 0,
+            "40": 0,
+            "43": 0,
+            "44": 0,
+            "45": 0,
+            "48": 0,
+            "49": 0
+          },
+          "Branches": [
+            {
+              "Line": 18,
+              "Offset": 173,
+              "EndOffset": 175,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 18,
+              "Offset": 173,
+              "EndOffset": 243,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 0
+            },
+            {
+              "Line": 20,
+              "Offset": 288,
+              "EndOffset": 290,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 0
+            },
+            {
+              "Line": 20,
+              "Offset": 288,
+              "EndOffset": 298,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 384,
+              "EndOffset": 386,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 402,
+              "EndOffset": 404,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 384,
+              "EndOffset": 422,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 402,
+              "EndOffset": 422,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 427,
+              "EndOffset": 432,
+              "Path": 0,
+              "Ordinal": 8,
+              "Hits": 0
+            },
+            {
+              "Line": 32,
+              "Offset": 456,
+              "EndOffset": 458,
+              "Path": 0,
+              "Ordinal": 10,
+              "Hits": 0
+            },
+            {
+              "Line": 32,
+              "Offset": 456,
+              "EndOffset": 461,
+              "Path": 1,
+              "Ordinal": 11,
+              "Hits": 0
+            },
+            {
+              "Line": 33,
+              "Offset": 493,
+              "EndOffset": 495,
+              "Path": 0,
+              "Ordinal": 12,
+              "Hits": 0
+            },
+            {
+              "Line": 33,
+              "Offset": 493,
+              "EndOffset": 498,
+              "Path": 1,
+              "Ordinal": 13,
+              "Hits": 0
+            },
+            {
+              "Line": 34,
+              "Offset": 534,
+              "EndOffset": 536,
+              "Path": 0,
+              "Ordinal": 14,
+              "Hits": 0
+            },
+            {
+              "Line": 34,
+              "Offset": 534,
+              "EndOffset": 554,
+              "Path": 1,
+              "Ordinal": 15,
+              "Hits": 0
+            },
+            {
+              "Line": 30,
+              "Offset": 427,
+              "EndOffset": 587,
+              "Path": 1,
+              "Ordinal": 9,
+              "Hits": 0
+            },
+            {
+              "Line": 38,
+              "Offset": 607,
+              "EndOffset": 609,
+              "Path": 0,
+              "Ordinal": 16,
+              "Hits": 0
+            },
+            {
+              "Line": 38,
+              "Offset": 607,
+              "EndOffset": 629,
+              "Path": 1,
+              "Ordinal": 17,
+              "Hits": 0
+            },
+            {
+              "Line": 43,
+              "Offset": 645,
+              "EndOffset": 647,
+              "Path": 0,
+              "Ordinal": 18,
+              "Hits": 0
+            },
+            {
+              "Line": 43,
+              "Offset": 645,
+              "EndOffset": 665,
+              "Path": 1,
+              "Ordinal": 19,
+              "Hits": 0
+            },
+            {
+              "Line": 43,
+              "Offset": 670,
+              "EndOffset": 672,
+              "Path": 0,
+              "Ordinal": 20,
+              "Hits": 0
+            },
+            {
+              "Line": 43,
+              "Offset": 670,
+              "EndOffset": 692,
+              "Path": 1,
+              "Ordinal": 21,
+              "Hits": 0
+            }
+          ]
+        }
+      },
+      "MAAV.Application.ApplicationService/<UpdateLastVersionAsync>d__3": {
+        "System.Void MAAV.Application.ApplicationService/<UpdateLastVersionAsync>d__3::MoveNext()": {
+          "Lines": {
+            "52": 0,
+            "53": 0,
+            "54": 0,
+            "56": 0,
+            "57": 0,
+            "58": 0,
+            "59": 0,
+            "61": 0,
+            "62": 0,
+            "64": 0,
+            "65": 0,
+            "66": 0,
+            "67": 0,
+            "68": 0,
+            "69": 0,
+            "70": 0,
+            "71": 0,
+            "73": 0,
+            "74": 0,
+            "75": 0,
+            "76": 0,
+            "77": 0,
+            "78": 0,
+            "80": 0,
+            "81": 0,
+            "82": 0,
+            "83": 0,
+            "84": 0,
+            "85": 0,
+            "86": 0,
+            "87": 0,
+            "89": 0,
+            "90": 0,
+            "92": 0,
+            "93": 0,
+            "94": 0,
+            "95": 0,
+            "96": 0,
+            "97": 0,
+            "98": 0,
+            "99": 0,
+            "101": 0,
+            "102": 0,
+            "103": 0,
+            "104": 0,
+            "105": 0,
+            "107": 0,
+            "108": 0,
+            "109": 0,
+            "111": 0,
+            "112": 0,
+            "113": 0,
+            "114": 0,
+            "116": 0,
+            "117": 0,
+            "118": 0,
+            "120": 0,
+            "121": 0,
+            "123": 0,
+            "124": 0,
+            "125": 0,
+            "126": 0,
+            "127": 0,
+            "129": 0,
+            "130": 0
+          },
+          "Branches": [
+            {
+              "Line": 52,
+              "Offset": 14,
+              "EndOffset": 28,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 54,
+              "Offset": 191,
+              "EndOffset": 193,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 0
+            },
+            {
+              "Line": 54,
+              "Offset": 191,
+              "EndOffset": 261,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 0
+            },
+            {
+              "Line": 56,
+              "Offset": 306,
+              "EndOffset": 311,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 0
+            },
+            {
+              "Line": 64,
+              "Offset": 422,
+              "EndOffset": 427,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 0
+            },
+            {
+              "Line": 66,
+              "Offset": 438,
+              "EndOffset": 440,
+              "Path": 0,
+              "Ordinal": 8,
+              "Hits": 0
+            },
+            {
+              "Line": 68,
+              "Offset": 464,
+              "EndOffset": 466,
+              "Path": 0,
+              "Ordinal": 10,
+              "Hits": 0
+            },
+            {
+              "Line": 68,
+              "Offset": 464,
+              "EndOffset": 469,
+              "Path": 1,
+              "Ordinal": 11,
+              "Hits": 0
+            },
+            {
+              "Line": 66,
+              "Offset": 438,
+              "EndOffset": 519,
+              "Path": 1,
+              "Ordinal": 9,
+              "Hits": 0
+            },
+            {
+              "Line": 74,
+              "Offset": 543,
+              "EndOffset": 545,
+              "Path": 0,
+              "Ordinal": 12,
+              "Hits": 0
+            },
+            {
+              "Line": 74,
+              "Offset": 543,
+              "EndOffset": 548,
+              "Path": 1,
+              "Ordinal": 13,
+              "Hits": 0
+            },
+            {
+              "Line": 75,
+              "Offset": 580,
+              "EndOffset": 582,
+              "Path": 0,
+              "Ordinal": 14,
+              "Hits": 0
+            },
+            {
+              "Line": 75,
+              "Offset": 580,
+              "EndOffset": 585,
+              "Path": 1,
+              "Ordinal": 15,
+              "Hits": 0
+            },
+            {
+              "Line": 64,
+              "Offset": 422,
+              "EndOffset": 618,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 0
+            },
+            {
+              "Line": 80,
+              "Offset": 638,
+              "EndOffset": 643,
+              "Path": 0,
+              "Ordinal": 16,
+              "Hits": 0
+            },
+            {
+              "Line": 82,
+              "Offset": 664,
+              "EndOffset": 666,
+              "Path": 0,
+              "Ordinal": 18,
+              "Hits": 0
+            },
+            {
+              "Line": 82,
+              "Offset": 664,
+              "EndOffset": 767,
+              "Path": 1,
+              "Ordinal": 19,
+              "Hits": 0
+            },
+            {
+              "Line": 80,
+              "Offset": 638,
+              "EndOffset": 790,
+              "Path": 1,
+              "Ordinal": 17,
+              "Hits": 0
+            },
+            {
+              "Line": 92,
+              "Offset": 806,
+              "EndOffset": 808,
+              "Path": 0,
+              "Ordinal": 20,
+              "Hits": 0
+            },
+            {
+              "Line": 92,
+              "Offset": 806,
+              "EndOffset": 826,
+              "Path": 1,
+              "Ordinal": 21,
+              "Hits": 0
+            },
+            {
+              "Line": 92,
+              "Offset": 831,
+              "EndOffset": 836,
+              "Path": 0,
+              "Ordinal": 22,
+              "Hits": 0
+            },
+            {
+              "Line": 94,
+              "Offset": 857,
+              "EndOffset": 859,
+              "Path": 0,
+              "Ordinal": 24,
+              "Hits": 0
+            },
+            {
+              "Line": 94,
+              "Offset": 857,
+              "EndOffset": 960,
+              "Path": 1,
+              "Ordinal": 25,
+              "Hits": 0
+            },
+            {
+              "Line": 101,
+              "Offset": 970,
+              "EndOffset": 975,
+              "Path": 0,
+              "Ordinal": 26,
+              "Hits": 0
+            },
+            {
+              "Line": 103,
+              "Offset": 999,
+              "EndOffset": 1001,
+              "Path": 0,
+              "Ordinal": 28,
+              "Hits": 0
+            },
+            {
+              "Line": 103,
+              "Offset": 999,
+              "EndOffset": 1004,
+              "Path": 1,
+              "Ordinal": 29,
+              "Hits": 0
+            },
+            {
+              "Line": 107,
+              "Offset": 1074,
+              "EndOffset": 1076,
+              "Path": 0,
+              "Ordinal": 30,
+              "Hits": 0
+            },
+            {
+              "Line": 107,
+              "Offset": 1074,
+              "EndOffset": 1079,
+              "Path": 1,
+              "Ordinal": 31,
+              "Hits": 0
+            },
+            {
+              "Line": 111,
+              "Offset": 1149,
+              "EndOffset": 1151,
+              "Path": 0,
+              "Ordinal": 32,
+              "Hits": 0
+            },
+            {
+              "Line": 111,
+              "Offset": 1149,
+              "EndOffset": 1154,
+              "Path": 1,
+              "Ordinal": 33,
+              "Hits": 0
+            },
+            {
+              "Line": 101,
+              "Offset": 970,
+              "EndOffset": 1204,
+              "Path": 1,
+              "Ordinal": 27,
+              "Hits": 0
+            },
+            {
+              "Line": 117,
+              "Offset": 1228,
+              "EndOffset": 1230,
+              "Path": 0,
+              "Ordinal": 34,
+              "Hits": 0
+            },
+            {
+              "Line": 117,
+              "Offset": 1228,
+              "EndOffset": 1233,
+              "Path": 1,
+              "Ordinal": 35,
+              "Hits": 0
+            },
+            {
+              "Line": 92,
+              "Offset": 831,
+              "EndOffset": 1266,
+              "Path": 1,
+              "Ordinal": 23,
+              "Hits": 0
+            },
+            {
+              "Line": 123,
+              "Offset": 1284,
+              "EndOffset": 1286,
+              "Path": 0,
+              "Ordinal": 36,
+              "Hits": 0
+            },
+            {
+              "Line": 125,
+              "Offset": 1323,
+              "EndOffset": 1325,
+              "Path": 0,
+              "Ordinal": 38,
+              "Hits": 0
+            },
+            {
+              "Line": 52,
+              "Offset": 14,
+              "EndOffset": 1363,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 0
+            },
+            {
+              "Line": 125,
+              "Offset": 1323,
+              "EndOffset": 1392,
+              "Path": 1,
+              "Ordinal": 39,
+              "Hits": 0
+            },
+            {
+              "Line": 123,
+              "Offset": 1284,
+              "EndOffset": 1401,
+              "Path": 1,
+              "Ordinal": 37,
+              "Hits": 0
+            },
+            {
+              "Line": 56,
+              "Offset": 306,
+              "EndOffset": 1402,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 0
+            }
+          ]
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/OrganisationService.cs": {
+      "MAAV.Application.OrganisationService": {
+        "System.Void MAAV.Application.OrganisationService::.ctor(MAAV.Domain.Repositories.IOrganisationRepository)": {
+          "Lines": {
+            "14": 20,
+            "15": 20,
+            "16": 20,
+            "17": 20
+          },
+          "Branches": []
+        }
+      },
+      "MAAV.Application.OrganisationService/<DeleteByOrganisationNameAsync>d__2": {
+        "System.Void MAAV.Application.OrganisationService/<DeleteByOrganisationNameAsync>d__2::MoveNext()": {
+          "Lines": {
+            "20": 3,
+            "21": 3,
+            "22": 3
+          },
+          "Branches": [
+            {
+              "Line": 21,
+              "Offset": 173,
+              "EndOffset": 175,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 21,
+              "Offset": 173,
+              "EndOffset": 239,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 3
+            }
+          ]
+        }
+      },
+      "MAAV.Application.OrganisationService/<GetByOrganisationNameAsync>d__3": {
+        "System.Void MAAV.Application.OrganisationService/<GetByOrganisationNameAsync>d__3::MoveNext()": {
+          "Lines": {
+            "25": 5,
+            "26": 5,
+            "27": 5,
+            "28": 5
+          },
+          "Branches": [
+            {
+              "Line": 26,
+              "Offset": 173,
+              "EndOffset": 175,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 26,
+              "Offset": 173,
+              "EndOffset": 243,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 5
+            },
+            {
+              "Line": 27,
+              "Offset": 282,
+              "EndOffset": 284,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 1
+            },
+            {
+              "Line": 27,
+              "Offset": 282,
+              "EndOffset": 288,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 4
+            }
+          ]
+        }
+      },
+      "MAAV.Application.OrganisationService/<RegisterAsync>d__4": {
+        "System.Void MAAV.Application.OrganisationService/<RegisterAsync>d__4::MoveNext()": {
+          "Lines": {
+            "31": 9,
+            "32": 9,
+            "33": 3,
+            "34": 3,
+            "37": 6,
+            "38": 6
+          },
+          "Branches": [
+            {
+              "Line": 31,
+              "Offset": 14,
+              "EndOffset": 28,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 9
+            },
+            {
+              "Line": 32,
+              "Offset": 207,
+              "EndOffset": 209,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 0
+            },
+            {
+              "Line": 32,
+              "Offset": 207,
+              "EndOffset": 277,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 9
+            },
+            {
+              "Line": 32,
+              "Offset": 298,
+              "EndOffset": 300,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 3
+            },
+            {
+              "Line": 32,
+              "Offset": 298,
+              "EndOffset": 323,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 6
+            },
+            {
+              "Line": 37,
+              "Offset": 369,
+              "EndOffset": 371,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 0
+            },
+            {
+              "Line": 31,
+              "Offset": 14,
+              "EndOffset": 409,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 0
+            },
+            {
+              "Line": 37,
+              "Offset": 369,
+              "EndOffset": 438,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 6
+            }
+          ]
+        }
+      },
+      "MAAV.Application.OrganisationService/<UpdateAsync>d__5": {
+        "System.Void MAAV.Application.OrganisationService/<UpdateAsync>d__5::MoveNext()": {
+          "Lines": {
+            "41": 3,
+            "42": 3,
+            "43": 3,
+            "44": 3,
+            "47": 0,
+            "48": 3
+          },
+          "Branches": [
+            {
+              "Line": 41,
+              "Offset": 14,
+              "EndOffset": 28,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 3
+            },
+            {
+              "Line": 42,
+              "Offset": 207,
+              "EndOffset": 209,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 0
+            },
+            {
+              "Line": 42,
+              "Offset": 207,
+              "EndOffset": 277,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 3
+            },
+            {
+              "Line": 42,
+              "Offset": 301,
+              "EndOffset": 303,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 3
+            },
+            {
+              "Line": 42,
+              "Offset": 301,
+              "EndOffset": 311,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 0
+            },
+            {
+              "Line": 47,
+              "Offset": 357,
+              "EndOffset": 359,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 0
+            },
+            {
+              "Line": 41,
+              "Offset": 14,
+              "EndOffset": 397,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 0
+            },
+            {
+              "Line": 47,
+              "Offset": 357,
+              "EndOffset": 426,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 0
+            }
+          ]
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/TeamService.cs": {
+      "MAAV.Application.TeamService": {
+        "System.Void MAAV.Application.TeamService::.ctor(MAAV.Domain.Repositories.ITeamRepository)": {
+          "Lines": {
+            "11": 2,
+            "12": 2,
+            "13": 2,
+            "14": 2
+          },
+          "Branches": []
+        }
+      },
+      "MAAV.Application.TeamService/<GetByTeamNameAsync>d__2": {
+        "System.Void MAAV.Application.TeamService/<GetByTeamNameAsync>d__2::MoveNext()": {
+          "Lines": {
+            "17": 2
+          },
+          "Branches": [
+            {
+              "Line": 17,
+              "Offset": 256,
+              "EndOffset": 258,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 17,
+              "Offset": 256,
+              "EndOffset": 323,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 2
+            },
+            {
+              "Line": 17,
+              "Offset": 343,
+              "EndOffset": 345,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 1
+            },
+            {
+              "Line": 17,
+              "Offset": 343,
+              "EndOffset": 349,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 1
+            }
+          ]
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/Extensions/AutoMapperExtension.cs": {
+      "MAAV.Application.Extensions.AutoMapperExtension": {
+        "AutoMapper.IMapper MAAV.Application.Extensions.AutoMapperExtension::get_CurrentMapper()": {
+          "Lines": {
+            "9": 39
+          },
+          "Branches": []
+        },
+        "System.Void MAAV.Application.Extensions.AutoMapperExtension::AddMapping(Microsoft.Extensions.DependencyInjection.IServiceCollection)": {
+          "Lines": {
+            "12": 22,
+            "13": 22,
+            "14": 44,
+            "15": 44,
+            "16": 44,
+            "17": 66,
+            "18": 66,
+            "19": 66,
+            "20": 22,
+            "21": 44,
+            "22": 44,
+            "23": 66,
+            "24": 66,
+            "25": 22,
+            "26": 44,
+            "27": 44,
+            "28": 66,
+            "29": 66,
+            "30": 66,
+            "31": 66,
+            "32": 66,
+            "33": 66,
+            "34": 22,
+            "35": 44,
+            "36": 44,
+            "37": 22,
+            "38": 44,
+            "39": 44,
+            "40": 22,
+            "41": 44,
+            "42": 44,
+            "43": 66,
+            "44": 66,
+            "45": 22,
+            "46": 44,
+            "47": 44,
+            "48": 66,
+            "49": 66,
+            "50": 22,
+            "51": 44,
+            "52": 44,
+            "53": 66,
+            "54": 66,
+            "55": 66,
+            "56": 66,
+            "57": 66,
+            "58": 66,
+            "59": 22,
+            "60": 44,
+            "61": 44,
+            "62": 22,
+            "63": 44,
+            "64": 44,
+            "65": 44,
+            "67": 22,
+            "69": 22,
+            "70": 22
+          },
+          "Branches": [
+            {
+              "Line": 13,
+              "Offset": 7,
+              "EndOffset": 9,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 1
+            },
+            {
+              "Line": 13,
+              "Offset": 7,
+              "EndOffset": 32,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 22
+            },
+            {
+              "Line": 69,
+              "Offset": 51,
+              "EndOffset": 55,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 0
+            },
+            {
+              "Line": 69,
+              "Offset": 51,
+              "EndOffset": 67,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 22
+            },
+            {
+              "Line": 15,
+              "Offset": 70,
+              "EndOffset": 72,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 1
+            },
+            {
+              "Line": 15,
+              "Offset": 70,
+              "EndOffset": 95,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 22
+            },
+            {
+              "Line": 15,
+              "Offset": 163,
+              "EndOffset": 165,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 2
+            },
+            {
+              "Line": 15,
+              "Offset": 163,
+              "EndOffset": 188,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 22
+            },
+            {
+              "Line": 15,
+              "Offset": 256,
+              "EndOffset": 258,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 1
+            },
+            {
+              "Line": 15,
+              "Offset": 256,
+              "EndOffset": 281,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 22
+            },
+            {
+              "Line": 21,
+              "Offset": 356,
+              "EndOffset": 358,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 1
+            },
+            {
+              "Line": 21,
+              "Offset": 356,
+              "EndOffset": 381,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 22
+            },
+            {
+              "Line": 21,
+              "Offset": 449,
+              "EndOffset": 451,
+              "Path": 0,
+              "Ordinal": 8,
+              "Hits": 1
+            },
+            {
+              "Line": 21,
+              "Offset": 449,
+              "EndOffset": 474,
+              "Path": 1,
+              "Ordinal": 9,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 549,
+              "EndOffset": 551,
+              "Path": 0,
+              "Ordinal": 10,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 549,
+              "EndOffset": 574,
+              "Path": 1,
+              "Ordinal": 11,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 642,
+              "EndOffset": 644,
+              "Path": 0,
+              "Ordinal": 12,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 642,
+              "EndOffset": 667,
+              "Path": 1,
+              "Ordinal": 13,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 735,
+              "EndOffset": 737,
+              "Path": 0,
+              "Ordinal": 14,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 735,
+              "EndOffset": 760,
+              "Path": 1,
+              "Ordinal": 15,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 828,
+              "EndOffset": 830,
+              "Path": 0,
+              "Ordinal": 16,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 828,
+              "EndOffset": 853,
+              "Path": 1,
+              "Ordinal": 17,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 921,
+              "EndOffset": 923,
+              "Path": 0,
+              "Ordinal": 18,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 921,
+              "EndOffset": 946,
+              "Path": 1,
+              "Ordinal": 19,
+              "Hits": 22
+            },
+            {
+              "Line": 26,
+              "Offset": 1014,
+              "EndOffset": 1016,
+              "Path": 0,
+              "Ordinal": 20,
+              "Hits": 1
+            },
+            {
+              "Line": 26,
+              "Offset": 1014,
+              "EndOffset": 1039,
+              "Path": 1,
+              "Ordinal": 21,
+              "Hits": 22
+            },
+            {
+              "Line": 41,
+              "Offset": 1142,
+              "EndOffset": 1144,
+              "Path": 0,
+              "Ordinal": 22,
+              "Hits": 2
+            },
+            {
+              "Line": 41,
+              "Offset": 1142,
+              "EndOffset": 1167,
+              "Path": 1,
+              "Ordinal": 23,
+              "Hits": 22
+            },
+            {
+              "Line": 41,
+              "Offset": 1235,
+              "EndOffset": 1237,
+              "Path": 0,
+              "Ordinal": 24,
+              "Hits": 1
+            },
+            {
+              "Line": 41,
+              "Offset": 1235,
+              "EndOffset": 1260,
+              "Path": 1,
+              "Ordinal": 25,
+              "Hits": 22
+            },
+            {
+              "Line": 46,
+              "Offset": 1335,
+              "EndOffset": 1337,
+              "Path": 0,
+              "Ordinal": 26,
+              "Hits": 1
+            },
+            {
+              "Line": 46,
+              "Offset": 1335,
+              "EndOffset": 1360,
+              "Path": 1,
+              "Ordinal": 27,
+              "Hits": 22
+            },
+            {
+              "Line": 46,
+              "Offset": 1428,
+              "EndOffset": 1430,
+              "Path": 0,
+              "Ordinal": 28,
+              "Hits": 1
+            },
+            {
+              "Line": 46,
+              "Offset": 1428,
+              "EndOffset": 1453,
+              "Path": 1,
+              "Ordinal": 29,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1528,
+              "EndOffset": 1530,
+              "Path": 0,
+              "Ordinal": 30,
+              "Hits": 1
+            },
+            {
+              "Line": 51,
+              "Offset": 1528,
+              "EndOffset": 1553,
+              "Path": 1,
+              "Ordinal": 31,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1621,
+              "EndOffset": 1623,
+              "Path": 0,
+              "Ordinal": 32,
+              "Hits": 2
+            },
+            {
+              "Line": 51,
+              "Offset": 1621,
+              "EndOffset": 1646,
+              "Path": 1,
+              "Ordinal": 33,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1714,
+              "EndOffset": 1716,
+              "Path": 0,
+              "Ordinal": 34,
+              "Hits": 1
+            },
+            {
+              "Line": 51,
+              "Offset": 1714,
+              "EndOffset": 1739,
+              "Path": 1,
+              "Ordinal": 35,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1807,
+              "EndOffset": 1809,
+              "Path": 0,
+              "Ordinal": 36,
+              "Hits": 1
+            },
+            {
+              "Line": 51,
+              "Offset": 1807,
+              "EndOffset": 1832,
+              "Path": 1,
+              "Ordinal": 37,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1900,
+              "EndOffset": 1902,
+              "Path": 0,
+              "Ordinal": 38,
+              "Hits": 1
+            },
+            {
+              "Line": 51,
+              "Offset": 1900,
+              "EndOffset": 1925,
+              "Path": 1,
+              "Ordinal": 39,
+              "Hits": 22
+            },
+            {
+              "Line": 51,
+              "Offset": 1993,
+              "EndOffset": 1995,
+              "Path": 0,
+              "Ordinal": 40,
+              "Hits": 1
+            },
+            {
+              "Line": 51,
+              "Offset": 1993,
+              "EndOffset": 2018,
+              "Path": 1,
+              "Ordinal": 41,
+              "Hits": 22
+            }
+          ]
+        },
+        "MAAV.DataContracts.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Organisation)": {
+          "Lines": {
+            "73": 10
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Organisation MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Organisation)": {
+          "Lines": {
+            "76": 6
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.Team MAAV.Application.Extensions.AutoMapperExtension::ToContract(MAAV.Domain.Entities.Team)": {
+          "Lines": {
+            "79": 1
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Team MAAV.Application.Extensions.AutoMapperExtension::ToEntity(MAAV.DataContracts.Team)": {
+          "Lines": {
+            "82": 0
+          },
+          "Branches": []
+        },
+        "TResult MAAV.Application.Extensions.AutoMapperExtension::ToContract(AutoMapper.IMapper,TEntity)": {
+          "Lines": {
+            "85": 11
+          },
+          "Branches": []
+        },
+        "TResult MAAV.Application.Extensions.AutoMapperExtension::ToEntity(AutoMapper.IMapper,TContract)": {
+          "Lines": {
+            "87": 6
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/MAAV.Application/Exceptions/NameAlreadyUsedException.cs": {
+      "MAAV.Application.Exceptions.NameAlreadyUsedException": {
+        "System.Void MAAV.Application.Exceptions.NameAlreadyUsedException::.ctor(System.String)": {
+          "Lines": {
+            "7": 9
+          },
+          "Branches": []
+        }
+      }
+    }
+  },
+  "MAAV.DataContracts.dll": {
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/BranchMap.cs": {
+      "MAAV.DataContracts.BranchMap": {
+        "System.String MAAV.DataContracts.BranchMap::get_Name()": {
+          "Lines": {
+            "5": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.DataContracts.BranchMap::get_BranchPattern()": {
+          "Lines": {
+            "6": 0
+          },
+          "Branches": []
+        },
+        "System.Boolean MAAV.DataContracts.BranchMap::get_AllowBumpMajor()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.IncrementMode MAAV.DataContracts.BranchMap::get_Increment()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.LabelDescription MAAV.DataContracts.BranchMap::get_Label()": {
+          "Lines": {
+            "9": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.DataContracts.BranchMap::get_SuffixFormat()": {
+          "Lines": {
+            "10": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/Organisation.cs": {
+      "MAAV.DataContracts.Organisation": {
+        "System.String MAAV.DataContracts.Organisation::get_Name()": {
+          "Lines": {
+            "7": 45
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Organisation::get_ScheMap()": {
+          "Lines": {
+            "8": 22
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/ScheMapVersion.cs": {
+      "MAAV.DataContracts.ScheMapVersion": {
+        "System.String MAAV.DataContracts.ScheMapVersion::get_Format()": {
+          "Lines": {
+            "5": 0
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.BranchMap[] MAAV.DataContracts.ScheMapVersion::get_Branches()": {
+          "Lines": {
+            "6": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/Team.cs": {
+      "MAAV.DataContracts.Team": {
+        "System.String MAAV.DataContracts.Team::get_Name()": {
+          "Lines": {
+            "5": 2
+          },
+          "Branches": []
+        },
+        "MAAV.DataContracts.ScheMapVersion MAAV.DataContracts.Team::get_ScheMap()": {
+          "Lines": {
+            "6": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.datacontracts/User.cs": {
+      "MAAV.DataContracts.User": {
+        "System.String MAAV.DataContracts.User::get_Username()": {
+          "Lines": {
+            "5": 0
+          },
+          "Branches": []
+        }
+      }
+    }
+  },
+  "MAAV.Domain.dll": {
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Application.cs": {
+      "MAAV.Domain.Entities.Application": {
+        "System.String MAAV.Domain.Entities.Application::get_Name()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_AlphaVersion()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_BetaVersion()": {
+          "Lines": {
+            "9": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Version MAAV.Domain.Entities.Application::get_ReleaseVersion()": {
+          "Lines": {
+            "10": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/BranchMap.cs": {
+      "MAAV.Domain.Entities.BranchMap": {
+        "System.String MAAV.Domain.Entities.BranchMap::get_Name()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.BranchMap::get_BranchPattern()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        },
+        "System.Boolean MAAV.Domain.Entities.BranchMap::get_AllowBumpMajor()": {
+          "Lines": {
+            "9": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.IncrementMode MAAV.Domain.Entities.BranchMap::get_Increment()": {
+          "Lines": {
+            "10": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.LabelDescription MAAV.Domain.Entities.BranchMap::get_Label()": {
+          "Lines": {
+            "11": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.BranchMap::get_SuffixFormat()": {
+          "Lines": {
+            "12": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Organisation.cs": {
+      "MAAV.Domain.Entities.Organisation": {
+        "System.String MAAV.Domain.Entities.Organisation::get_Name()": {
+          "Lines": {
+            "7": 26
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Team[] MAAV.Domain.Entities.Organisation::get_Teams()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Organisation::get_ScheMap()": {
+          "Lines": {
+            "9": 19
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/ScheMapVersion.cs": {
+      "MAAV.Domain.Entities.ScheMapVersion": {
+        "System.String MAAV.Domain.Entities.ScheMapVersion::get_Format()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.BranchMap[] MAAV.Domain.Entities.ScheMapVersion::get_Branches()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Team.cs": {
+      "MAAV.Domain.Entities.Team": {
+        "System.String MAAV.Domain.Entities.Team::get_OrganisationName()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.Team::get_Name()": {
+          "Lines": {
+            "8": 2
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.Application[] MAAV.Domain.Entities.Team::get_Applications()": {
+          "Lines": {
+            "9": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.User[] MAAV.Domain.Entities.Team::get_Users()": {
+          "Lines": {
+            "10": 0
+          },
+          "Branches": []
+        },
+        "MAAV.Domain.Entities.ScheMapVersion MAAV.Domain.Entities.Team::get_ScheMap()": {
+          "Lines": {
+            "11": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.Team::get_Id()": {
+          "Lines": {
+            "12": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/User.cs": {
+      "MAAV.Domain.Entities.User": {
+        "System.String MAAV.Domain.Entities.User::get_Username()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "/Users/augustocesar/Documents/Projetos/Csharp/semantic-version-server/src/maav.domain/Entities/Version.cs": {
+      "MAAV.Domain.Entities.Version": {
+        "System.Int64 MAAV.Domain.Entities.Version::get_MajorVersionNumber()": {
+          "Lines": {
+            "5": 0
+          },
+          "Branches": []
+        },
+        "System.Int64 MAAV.Domain.Entities.Version::get_MinorVersionNumber()": {
+          "Lines": {
+            "6": 0
+          },
+          "Branches": []
+        },
+        "System.Int64 MAAV.Domain.Entities.Version::get_PatchVersionNumber()": {
+          "Lines": {
+            "7": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.Version::get_Label()": {
+          "Lines": {
+            "8": 0
+          },
+          "Branches": []
+        },
+        "System.String MAAV.Domain.Entities.Version::ToString()": {
+          "Lines": {
+            "11": 0
+          },
+          "Branches": []
+        }
+      }
+    }
+  }
+}
