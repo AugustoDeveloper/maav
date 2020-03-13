@@ -12,6 +12,6 @@
     <PackageReference Include="coverlet.msbuild" Version="2.8.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MAAV.WebAPI\MAAV.WebAPI.csproj" />
+    <ProjectReference Include="..\..\src\maav.webapi\MAAV.WebAPI.csproj" />
   </ItemGroup>
 </Project>
