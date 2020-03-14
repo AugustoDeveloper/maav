@@ -25,7 +25,7 @@ namespace MAAV.Application.Test.OrganisationService
           [InlineData("ebay")]
           public async Task Given_OrganisationName_Registered_When_Call_RegisterOrganisationAsync_ShouldReturns_NameAlreadyUsedException(string organisationName)
           {
-              var requestOrganisation = new DataContracts.Organisation { Name = organisationName };
+              var requestOrganisation = new DataContracts.OrganisationRegistration { Name = organisationName };
                var moqRepository = new Mock<IOrganisationRepository>();
                moqRepository
                     .Setup(o => o.ExistsByAsync(It.IsAny<Expression<Func<Organisation, bool>>>()))
@@ -43,7 +43,7 @@ namespace MAAV.Application.Test.OrganisationService
           [InlineData("ebay")]
           public async Task Given_OrganisationName_Not_Registered_When_Call_RegisterOrganisationAsync_ShouldReturns_OrganisationInstance_With_ScheMap_Property_Null(string organisationName)
           {
-              var requestOrganisation = new DataContracts.Organisation { Name = organisationName };
+              var requestOrganisation = new DataContracts.OrganisationRegistration { Name = organisationName };
                var moqRepository = new Mock<IOrganisationRepository>();
                moqRepository
                     .Setup(o => o.ExistsByAsync(It.IsAny<Expression<Func<Organisation, bool>>>()))
@@ -69,7 +69,7 @@ namespace MAAV.Application.Test.OrganisationService
           [InlineData("ebay")]
           public async Task Given_OrganisationName_Not_Registered_When_Call_RegisterOrganisationAsync_ShouldReturns_OrganisationInstance_With_ScheMap_Property_Not_Null(string organisationName)
           {
-              var requestOrganisation = new DataContracts.Organisation { Name = organisationName };
+              var requestOrganisation = new DataContracts.OrganisationRegistration { Name = organisationName };
                var moqRepository = new Mock<IOrganisationRepository>();
                moqRepository
                     .Setup(o => o.ExistsByAsync(It.IsAny<Expression<Func<Organisation, bool>>>()))

@@ -46,7 +46,7 @@ namespace MAAV.Application
 
             userEntity.PasswordHash = passkeys.PasswordHash;
             userEntity.PasswordSalt = passkeys.PasswordSalt;
-            userEntity.OrganisationRoles = new []{ "Administrator" };
+            userEntity.OrganisationRoles = new []{ "User" };
             userEntity = await repository.AddAsync(userEntity);
 
             return userEntity.ToContract();

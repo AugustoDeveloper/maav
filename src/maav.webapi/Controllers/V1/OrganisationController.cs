@@ -41,7 +41,7 @@ namespace MAAV.WebAPI.Controllers
         [HttpPost("{organisationName}"), AllowAnonymous]
         public async Task<IActionResult> RegisterOrganisationAsync(
             [FromRoute] string organisationName,
-            [FromBody] Organisation organisation,
+            [FromBody] OrganisationRegistration organisation,
             [FromServices]IOrganisationService service)
         {
             if (string.IsNullOrWhiteSpace(organisationName) || organisation == null)

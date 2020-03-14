@@ -9,6 +9,5 @@ then
     echo "Up web api applicaiton"
     docker-compose up
 else
-    echo 2
     dotnet run -p src/maav.webapi/ 
 fi

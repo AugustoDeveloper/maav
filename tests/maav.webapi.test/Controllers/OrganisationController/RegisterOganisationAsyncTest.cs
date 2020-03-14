@@ -18,7 +18,7 @@ namespace MAAV.WebAPI.Test.Controllers.OrganisationController
         [InlineData("", null)]
         [InlineData(" ", null)]
         [InlineData("apple", null)]
-        public async Task  Given_A_Invalid_OrganisationName_When_Call_RegisterOrganisationAsync_ShouldReturns_BadRequest(string organisationName, DataContracts.Organisation organisation)
+        public async Task  Given_A_Invalid_OrganisationName_When_Call_RegisterOrganisationAsync_ShouldReturns_BadRequest(string organisationName, DataContracts.OrganisationRegistration organisation)
         {
             var controller = new WebAPI.Controllers.OrganisationController();
             var result = await controller.RegisterOrganisationAsync(organisationName, organisation, null);
@@ -33,7 +33,7 @@ namespace MAAV.WebAPI.Test.Controllers.OrganisationController
         public async Task  Given_A_Invalid_OrganisationName_And_Request_Organisation_Name_Is_Different_When_Call_RegisterOrganisationAsync_ShouldReturns_BadRequest(string organisationName)
         {
             var controller = new WebAPI.Controllers.OrganisationController();
-            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.Organisation { Name = "Apple" }, null);
+            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.OrganisationRegistration { Name = "Apple" }, null);
             Assert.IsType<BadRequestObjectResult>(result);
             var badRequestResult = (BadRequestObjectResult)result;
             Assert.NotNull(badRequestResult);
@@ -46,12 +46,12 @@ namespace MAAV.WebAPI.Test.Controllers.OrganisationController
         {
             var moqService = new Mock<IOrganisationService>();
             moqService
-                .Setup(o => o.RegisterAsync(It.IsAny<DataContracts.Organisation>()))
+                .Setup(o => o.RegisterAsync(It.IsAny<DataContracts.OrganisationRegistration>()))
                 .ThrowsAsync(new NameAlreadyUsedException(organisationName))
                 .Verifiable();
 
             var controller = new WebAPI.Controllers.OrganisationController();
-            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.Organisation { Name = organisationName}, moqService.Object);
+            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.OrganisationRegistration { Name = organisationName}, moqService.Object);
             moqService.Verify();
             Assert.IsType<BadRequestObjectResult>(result);
             var badRequestResult = (BadRequestObjectResult)result;
@@ -64,7 +64,7 @@ namespace MAAV.WebAPI.Test.Controllers.OrganisationController
         public async Task  Given_A_Invalid_OrganisationService_Is_Null_When_Call_RegisterOrganisationAsync_ShouldReturns_InternalServerError(string organisationName)
         {
             var controller = new WebAPI.Controllers.OrganisationController();
-            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.Organisation { Name = organisationName }, null);
+            var result = await controller.RegisterOrganisationAsync(organisationName, new DataContracts.OrganisationRegistration { Name = organisationName }, null);
             Assert.IsType<StatusCodeResult>(result);
             var statusCodeResult = (StatusCodeResult)result;
             Assert.NotNull(statusCodeResult);
@@ -77,10 +77,10 @@ namespace MAAV.WebAPI.Test.Controllers.OrganisationController
         [InlineData("apple")]
         public async Task Given_A_Valid_OrganisationService_And_OrganisationName_And_OrganisationRequest_When_Call_UpdateOrganisationAsync_ShouldReturns_CreatedAtRouteResult(string organisationName)
         {
-            var organisation = new DataContracts.Organisation { Name = organisationName };
+            var organisation = new DataContracts.OrganisationRegistration { Name = organisationName };
             var moqService = new Mock<IOrganisationService>();
             moqService
-                .Setup(o => o.RegisterAsync(It.IsAny<DataContracts.Organisation>()))
+                .Setup(o => o.RegisterAsync(It.IsAny<DataContracts.OrganisationRegistration>()))
                 .ReturnsAsync(organisation)
                 .Verifiable();
 
