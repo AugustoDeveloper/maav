@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MAAV.Infrastructure.Repository.LiteDB.Extensions;
 using MAAV.WebAPI.Extensions;
+using MAAV.Infrastructure.Repository.MongoDB.Extensions;
 
 namespace MAAV.WebAPI
 {
@@ -39,7 +40,8 @@ namespace MAAV.WebAPI
                 .AddScoped<ITeamService, TeamService>()
                 .AddScoped<IUserService, UserService>()
                 .AddMapping()
-                .AddLiteDb(Configuration)                
+                //.AddLiteDb(Configuration)
+                .AddMongoDB(Configuration)
                 .AddAuthorization(options => 
                 {
                     options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
