@@ -1,0 +1,91 @@
+parameters:
+- name: artifactName
+  type: string
+- name: artifactPreparationName
+  type: string
+- name: appName
+  type: string
+- name: dockerfile
+  type: string
+- name: dockerContext
+  type: string
+  default: '.'
+- name: deploymentBashFile
+  type: string
+- name: argumentBashFile
+  type: string
+
+steps:
+- task: DownloadPipelineArtifact@2
+  displayName: 'Download Pipeline Artifact'
+  inputs:
+    artifactName: ${{ parameters.artifactName }}
+    targetPath: '$(Pipeline.Workspace)/${{ parameters.artifactName }}'
+- task: DownloadPipelineArtifact@2
+  displayName: 'Download Pipeline Artifact'
+  inputs:
+    artifactName: ${{ parameters.artifactPreparationName }}
+    targetPath: '$(Pipeline.Workspace)/${{ parameters.artifactPreparationName }}'
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Pipeline.Workspace)/${{ parameters.artifactName }}'
+  inputs:
+    Contents: '**/*' 
+    SourceFolder: '$(Pipeline.Workspace)/${{ parameters.artifactName }}'
+    TargetFolder: 'app'
+    OverWrite: true
+    CleanTargetFolder: true
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Pipeline.Workspace)/${{ parameters.artifactName }}'
+  inputs:
+    Contents: '**/*' 
+    SourceFolder: '$(Pipeline.Workspace)/${{ parameters.artifactPreparationName }}'
+    TargetFolder: 'app'
+    OverWrite: true
+- task: CopyFiles@2
+  displayName: 'Copy Files dockerfile: app/${{ parameters.dockerfile }}'
+  inputs:
+    Contents: '${{ parameters.dockerfile }}' 
+    SourceFolder: 'app'
+    TargetFolder: '.'
+    OverWrite: true
+- task: CopyFiles@2
+  displayName: 'Copy Files bash file: app/${{ parameters.deploymentBashFile }}'
+  inputs:
+    Contents: '${{ parameters.deploymentBashFile }}' 
+    SourceFolder: 'app'
+    TargetFolder: '.'
+    OverWrite: true
+- task: DeleteFiles@1
+  displayName: 'Delete $(Pipeline.Workspace)/${{ parameters.artifactName }}/${{ parameters.dockerfile }}'
+  inputs:
+    SourceFolder: 'app'
+    Contents: '${{ parameters.dockerfile }}'
+- task: DeleteFiles@1
+  displayName: 'Delete $(Pipeline.Workspace)/${{ parameters.artifactName }}/${{ parameters.deploymentBashFile }}'
+  inputs:
+    SourceFolder: 'app'
+    Contents: '${{ parameters.deploymentBashFile }}'
+- task: Docker@2
+  displayName: 'Build new image to Heroku Container Registry'
+  inputs:
+    containerRegistry: 'Heroku Registry'
+    repository: '${{ parameters.appName }}/web'
+    command: 'build'
+    Dockerfile: '${{ parameters.dockerfile }}'
+    buildContext: '${{ parameters.dockerContext }}'
+    tags: 'latest'
+- task: Docker@2
+  displayName: 'Push new image to Heroku Container Registry'
+  inputs:
+    containerRegistry: 'Heroku Registry'
+    repository: '${{ parameters.appName }}/web'
+    command: 'push'
+    Dockerfile: '${{ parameters.dockerfile }}'
+    buildContext: '${{ parameters.dockerContext }}'
+    tags: 'latest'
+    addPipelineData: false
+- task: Bash@3
+  displayName: 'Apply new image on Heroku Container Registry'
+  inputs:
+    filePath: '${{ parameters.deploymentBashFile }}'
+    arguments: ${{ parameters.argumentBashFile }}

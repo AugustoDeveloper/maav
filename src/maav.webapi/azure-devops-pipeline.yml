@@ -1,0 +1,81 @@
+name: 'v${{ parameters.prefixCurrentVersion }}.$(buildCount)'
+trigger:
+  branches:
+    include:      
+      - master
+pr:
+  branches:
+    include:
+      - master
+pool:
+  vmImage: 'ubuntu-latest'
+parameters:
+- name: deployOnEnv
+  type: string
+  default: $(Build.SourceBranchName)
+- name: prefixCurrentVersion
+  type: string
+  default: '0.0.1'
+variables:
+- name: appVersion
+  value: ${{ parameters.prefixCurrentVersion }}
+- name: buildCount
+  value: $[counter(variables['appVersion'], 0)]
+- name: artifactBuildName
+  value: 'artifact-build-$(Build.SourceBranchName)-$(Build.BuildId)'
+- name: prefixArtifactPreparationName
+  value: 'artifact-preparation-$(Build.BuildId)'
+stages:
+- stage: build_stage
+  displayName: 'Build Application'
+  jobs:
+  - template: ../../tools/.pipelines/template-build-netcore.yml
+    parameters:
+        artifactName: $(artifactBuildName)
+        mainProjectName: 'MAAV.WebAPI'
+        mainProject: 'src/maav.webapi/MAAV.WebAPI.csproj'
+        currentVersion: '$(appVersion)$(buildCount)'
+        outputDirectory: 'app'
+        dockerfile: 'Heroku.Dockerfile'
+        dockerfilePath: 'src/maav.webapi/'
+        deploymentBashFile: 'container-release-heroku.sh'
+        deploymentBashPath: 'tools/'
+- stage: preparation_stage
+  displayName: 'Preparation artifacts'
+  condition: "and(succeeded(), contains('${{ parameters.deployOnEnv }}', 'master'))"
+  dependsOn: build_stage
+  variables:
+  - group: development-database
+  - group: maav-webapi-development
+  - name: artifactPreparationName
+    value: $[format('{0}.{1}', variables['prefixArtifactPreparationName'], variables['System.StageAttempt'])]
+  jobs:
+  - job: preparation_job
+    displayName: 'Preparation to Deploy'
+    steps:
+    - checkout: none
+    - template: ../../tools/.pipelines/template-preparation-netcore.yml
+      parameters:
+        artifactName: $(artifactBuildName)
+        artifactPreparationName: $(artifactPreparationName)
+- stage: deployment_stage
+  condition: "and(succeeded(), contains('${{ parameters.deployOnEnv }}', 'master'))"
+  dependsOn: preparation_stage
+  displayName: 'Deploy Application'
+  variables:
+  - group: maav-webapi-development
+  - name: artifactPreparationName
+    value: $[format('{0}.{1}', variables['prefixArtifactPreparationName'], variables['System.StageAttempt'])]
+  jobs:
+  - job: deploy_job
+    displayName: 'Deploy on Heroku'
+    steps:
+    - checkout: none
+    - template: ../../tools/.pipelines/template-deployment-netcore.yml
+      parameters:
+        artifactName: $(artifactBuildName)
+        artifactPreparationName: $(artifactPreparationName)
+        appName: 'maav-webapi'
+        dockerfile: Heroku.Dockerfile
+        deploymentBashFile: 'container-release-heroku.sh'
+        argumentBashFile: 'maav-webapi $(Heroku:Api:Token)'

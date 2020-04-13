@@ -1,0 +1,39 @@
+parameters:
+- name: artifactName
+  default: ''
+  type: string
+- name: artifactPreparationName
+  default: ''
+  type: string
+
+steps:
+- task: DownloadPipelineArtifact@2
+  displayName: 'Download Pipeline Artifact'
+  inputs:
+    artifactName: ${{ parameters.artifactName }}
+    targetPath: '$(Pipeline.Workspace)/${{ parameters.artifactName }}'
+
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in **/*.json'
+  inputs:
+    rootDirectory: '$(Pipeline.Workspace)/${{ parameters.artifactName }}'
+    targetFiles: '**/*.json'
+    escapeType: none
+    actionOnMissing: fail
+    keepToken: true
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Pipeline.Workspace)/${{ parameters.artifactName }}'
+  inputs:
+    Contents: '**/*.json' 
+    SourceFolder: '$(Pipeline.Workspace)/${{ parameters.artifactName }}'
+    TargetFolder: '$(Pipeline.Workspace)/${{ parameters.artifactPreparationName }}'
+    CleanTargetFolder: true
+    OverWrite: true
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Pipeline Artifact'
+  inputs:
+    artifact: '${{ parameters.artifactPreparationName }}'
+    targetPath: '$(Pipeline.Workspace)/${{ parameters.artifactPreparationName }}'

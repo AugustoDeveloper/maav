@@ -1,0 +1,121 @@
+parameters:
+- name: artifactName
+  default: ''
+  type: string
+  displayName: 'Name of artifact for another stage download'
+- name: mainProjectName
+  default: ''
+  type: string
+  displayName: 'Name of the main project (Foo.csproj)'
+- name: mainProject
+  default: ''
+  type: string
+  displayName: 'Directory with main project name (src/Foo.csproj)'
+- name: currentVersion
+  default: ''
+  type: string
+  displayName: 'Current version'
+- name: buildDirectory
+  default: ''
+  type: string
+  displayName: 'Directory of build application of project'
+- name: runtimeIdentifier
+  default: 'linux-x64'
+  type: string
+- name: netCoreVersion
+  default: '3.1.100'
+  type: string
+- name: netCoreAppVersion
+  default: 'netcoreapp3.1'
+  type: string
+- name: buildConfiguration
+  default: 'Release'
+  type: string
+- name: outputDirectory
+  type: string
+- name: dockerfile
+  type: string
+- name: dockerfilePath
+  type: string
+- name: deploymentBashFile
+  type: string
+- name: deploymentBashPath
+  type: string
+
+jobs:
+- job: build_dotnetcore_project
+  workspace:
+    clean: all
+  displayName: 'Build ${{ parameters.mainProjectName }}'
+  variables:
+    solution: '**/*.sln'
+    mainProjectName: ${{ parameters.mainProjectName }}
+    mainProject: ${{ parameters.mainProject }}
+    majorVersion: ${{ parameters.currentVersion }}
+    buildPlatform: 'AnyCPU'
+    buildConfiguration: ${{ parameters.buildConfiguration }}
+    artifactName: ${{ parameters.artifactName }}
+    assemblyVersion: '$(majorVersion)'
+    runtimeIdentifier: ${{ parameters.runtimeIdentifier }}
+    netCoreAppVersion: ${{ parameters.netCoreAppVersion }}
+    netCoreVersion: ${{ parameters.netCoreVersion }}
+    yearFourDigits: $[format('{0:yyyy}', Pipeline.startTime)]
+    artifactDirectory: '${{ parameters.outputDirectory }}'
+
+  steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk $(netCoreVersion)'
+    inputs:
+      version: $(netCoreVersion)
+
+  - task: Assembly-Info-NetCore@2 
+    displayName: 'Set Assembly Manifest Data - v$(assemblyVersion)'
+    inputs:
+      FileNames: '**/*.csproj'
+      Copyright: 'Copyright © $(yearFourDigits) Unicarioca'
+      Company: 'Unicarioca'
+      Authors: 'Augusto Mesquita'
+      Product: $(mainProjectName)
+      LogLevel: 'verbose'
+      FailOnWarning: false
+      DisableTelemetry: false
+      VersionNumber: '$(assemblyVersion)'
+      FileVersionNumber: '$(assemblyVersion)'
+      InformationalVersion: '$(assemblyVersion)'
+      PackageVersion: '$(assemblyVersion)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish -f $(netCoreAppVersion) -c Release -r $(runtimeIdentifier) -o $(artifactDirectory) --self-contained'
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: '$(mainProject)'
+      arguments: '-f $(netCoreAppVersion) -c Release -r $(runtimeIdentifier) -o $(artifactDirectory) --self-contained'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    inputs:
+      SourceFolder: '$(artifactDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files dockerfile: ${{ parameters.dockerfile }}'
+    inputs:
+      Contents: '${{ parameters.dockerfile }}' 
+      SourceFolder: '${{ parameters.dockerfilePath }}'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files bash file: ${{ parameters.deploymentBashFile }}'
+    inputs:
+      Contents: '${{ parameters.deploymentBashFile }}' 
+      SourceFolder: '${{ parameters.deploymentBashPath }}'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Pipeline Artifact'
+    inputs:
+      artifact: '$(artifactName)'
+      targetPath: '$(Build.ArtifactStagingDirectory)'
