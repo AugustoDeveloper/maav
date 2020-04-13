@@ -18,7 +18,7 @@
     },
     "MAAV.WebAPI": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_URLS": "http://*:5892",
         "ASPNETCORE_ENVIRONMENT": "Development"

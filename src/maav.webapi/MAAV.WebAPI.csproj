@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
     <ProjectReference Include="..\maav.infrastructure.repository.litedb\MAAV.Infrastructure.Repository.LiteDB.csproj" />
+    <ProjectReference Include="..\maav.infrastructure.repository.mongodb\MAAV.Infrastructure.Repository.MongoDB.csproj" />
     <ProjectReference Include="..\maav.application\MAAV.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -10,4 +11,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="connectionStrings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
