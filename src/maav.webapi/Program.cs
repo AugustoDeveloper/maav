@@ -28,7 +28,6 @@ namespace MAAV.WebAPI
                     config
                         .SetBasePath(enviroment.ContentRootPath)
                         .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true)
-                        .AddJsonFile("connectionStrings.json", optional: true, reloadOnChange: true)
                         .AddJsonFile($"appSettings.{enviroment.EnvironmentName}.json", optional: true, reloadOnChange: true)
                         .AddEnvironmentVariables("MAAV_")
                         .AddCommandLine(args);
