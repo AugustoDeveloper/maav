@@ -17,6 +17,9 @@ using Microsoft.Extensions.Logging;
 using MAAV.Infrastructure.Repository.LiteDB.Extensions;
 using MAAV.WebAPI.Extensions;
 using MAAV.Infrastructure.Repository.MongoDB.Extensions;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Http;
 
 namespace MAAV.WebAPI
 {
@@ -33,6 +36,7 @@ namespace MAAV.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            var healthCheckBuilder = services.AddHealthChecks();
             services
                 .AddScoped<IOrganisationService, OrganisationService>()
                 .AddScoped<IApplicationService, ApplicationService>()
@@ -41,7 +45,7 @@ namespace MAAV.WebAPI
                 .AddScoped<IUserService, UserService>()
                 .AddMapping()
                 //.AddLiteDb(Configuration)
-                .AddMongoDB(Configuration)
+                .AddMongoDB(Configuration, healthCheckBuilder)
                 .AddAuthorization(options => 
                 {
                     options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
@@ -68,6 +72,17 @@ namespace MAAV.WebAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthcheck", new HealthCheckOptions
+                {
+                    ResultStatusCodes = 
+                    {
+                        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+                        [HealthStatus.Unhealthy] = StatusCodes.Status500InternalServerError,
+                        [HealthStatus.Degraded] = StatusCodes.Status500InternalServerError,
+                    },
+                    AllowCachingResponses = false,
+                    ResponseWriter = HealthCheckExtension.WriteHealthCheck
+                });
             });
         }
     }
