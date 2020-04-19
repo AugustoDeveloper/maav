@@ -1,0 +1,172 @@
+<form clrStepper #applicationForm="ngForm" (ngSubmit)="onSubmit(applicationForm)">
+    <clr-modal [(clrModalOpen)]="showDialog" [clrModalClosable]="true" [clrModalSize]="'xl'">
+        <h3 class="modal-title">Add Application<clr-spinner clrMedium class="ml-10" *ngIf="showProgress" aria-label="In progress"></clr-spinner></h3>
+        <div class="modal-body">
+            <clr-alert [clrAlertType]="alert.type" *ngFor="let alert of alertService.alerts" (clrAlertClosedChange)="alertService.close(alert)">
+                <clr-alert-item>
+                    <span class="alert-text">
+                        {{alert.message}}
+                    </span>
+                </clr-alert-item>
+            </clr-alert>
+            <clr-stepper-panel ngModelGroup="name">
+                <clr-step-title>Application Name</clr-step-title>
+                <clr-step-description>The identificator of an application</clr-step-description>
+                <clr-step-content [(clrIfExpanded)]="expandable">
+                    <clr-input-container>
+                        <label>Name</label>
+                        <input type="text" clrInput class="wd-50" [(ngModel)]="currentApplication.name" name="appNameTextField" [disabled]="showProgress" required />
+                    </clr-input-container>
+                    <clr-toggle-container clrInline>
+                        <clr-toggle-wrapper>
+                            <label>Has PreRelease Label?</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="hasPreReleaseLabel" name="hasPreReleaseLabel" [disabled]="showProgress" />
+                        </clr-toggle-wrapper>
+                        <clr-toggle-wrapper>
+                            <label>Has Build Label?</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="hasBuildLabel" name="hasBuildLabel" [disabled]="showProgress" />
+                        </clr-toggle-wrapper>
+                        <clr-toggle-wrapper>
+                            <label>Use Github WebHook</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="currentApplication.webHookEnabled" name="useGithubWebHook" [disabled]="showProgress"/>
+                        </clr-toggle-wrapper>                        
+                    </clr-toggle-container>
+                    <clr-input-container *ngIf="currentApplication.webHookEnabled">
+                        <label>Secret Github Webhook</label>
+                        <input type="text" clrInput class="wd-75" [(ngModel)]="currentApplication.githubSecretKey"  name="githubSecretKey" [disabled]="showProgress" required />    
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Initial Version</label>
+                        <input type="number" clrInput class="wd-30" [(ngModel)]="currentApplication.initialVersion.major" placeholder="Major..." [pattern]="validationPatterns.onlyNumbers" name="majorInitialVersion" [disabled]="showProgress" required />
+                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.minor" placeholder="Minor..." [pattern]="validationPatterns.onlyNumbers" name="minorInitialVersion" [disabled]="showProgress" required />
+                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.patch" placeholder="Patch..." [pattern]="validationPatterns.onlyNumbers" name="patchInitialVersion" [disabled]="showProgress" required />
+                        <input *ngIf="hasPreReleaseLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.preRelease" placeholder="-PreRelease..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="preReleaseInitialVersion" [disabled]="showProgress" required />
+                        <input *ngIf="hasBuildLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.build" placeholder="+Build..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="buildInitialVersion" [disabled]="showProgress" required />
+                    </clr-input-container>
+                    <button clrStepButton="next" [disabled]="showProgress" >next</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+            <clr-stepper-panel ngModelGroup="key-branching">
+                <clr-step-title>Key Branches</clr-step-title>
+                <clr-step-description>Key Branches for application</clr-step-description>
+                <clr-step-content>
+                    <clr-input-container>
+                        <label>Branch Name</label>
+                        <input clrInput [(ngModel)]="keyBranch.name" class="wd-50" name="branchVersionName" [required]="currentApplication.keyBranches.length === 0" autofocus [disabled]="showProgress"/>
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Branch Pattern</label>
+                        <input clrInput [(ngModel)]="keyBranch.branchPattern" class="wd-50" name="branchVersionName" [required]="currentApplication.keyBranches.length === 0" [disabled]="showProgress"/>
+                    </clr-input-container>
+                    <clr-toggle-container>
+                        <clr-toggle-wrapper>
+                            <label>Branch Enabled</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="keyBranch.enabled" name="branchVersionEnabled" [disabled]="showProgress"/>
+                        </clr-toggle-wrapper>
+                    </clr-toggle-container>
+                    <clr-toggle-container clrInline>
+                        <clr-toggle-wrapper>
+                            <label>Use PreRelease Label?</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="usePreReleaseLabel" name="usePreReleaseLabel" (change)="onUseLabel($event)" [disabled]="showProgress"/>
+                        </clr-toggle-wrapper>
+                        <clr-toggle-wrapper>
+                            <label>Use Build Label?</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="useBuildLabel" name="useBuildLabel" (change)="onUseLabel($event)" [disabled]="showProgress"/>
+                        </clr-toggle-wrapper>
+                    </clr-toggle-container>
+                    <clr-input-container>
+                        <label>Format Versioning</label>
+                        <input type="text" clrInput class="wd-100" name="formatVersion" disabled [(ngModel)]="keyBranch.formatVersion" />
+                    </clr-input-container>
+                    <button type="button" class="btn btn-outline btn-icon add-branch-button" title="Add branch" (click)="addKeyBranch(keyBranch)" [disabled]="showProgress">
+                        <clr-icon shape="plus"></clr-icon>
+                    </button>
+                    <clr-datagrid>
+                        <clr-dg-column>Branch Name</clr-dg-column>
+                        <clr-dg-column>Branch Enabled</clr-dg-column>
+                        <clr-dg-column>Pattern</clr-dg-column>
+                        <clr-dg-column>Format Version</clr-dg-column>
+                        <clr-dg-row *ngFor="let branch of currentApplication.keyBranches">
+                            <clr-dg-action-overflow>
+                                <button class="action-item" (click)="deleteBranchVersion(branch)" [disabled]="showProgress">Delete</button>
+                            </clr-dg-action-overflow>
+                            <clr-dg-cell>{{branch.name}}</clr-dg-cell>
+                            <clr-dg-cell> <input type="checkbox" clrCheckbox disabled [checked]="branch.enabled" /></clr-dg-cell>
+                            <clr-dg-cell>{{branch.branchPattern}}</clr-dg-cell>
+                            <clr-dg-cell>{{branch.formatVersion}}</clr-dg-cell>
+                        </clr-dg-row>
+                    </clr-datagrid>
+                    <button clrStepButton="next">Next</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+            <clr-stepper-panel ngModelGroup="branch-map">
+                <clr-step-title>Branch Mapping</clr-step-title>
+                <clr-step-description>Map action for branch on application</clr-step-description>
+                <clr-step-content>
+                    <clr-input-container>
+                        <label>Map Name</label>
+                        <input clrInput [(ngModel)]="branchMap.name" name="branchMapName" class="wd-50" [required]="currentApplication.branches.length === 0" [disabled]="showProgress"/>
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Pattern Branch</label>
+                        <input clrInput [(ngModel)]="branchMap.branchPattern" name="branchMapPattern" class="wd-50" [required]="currentApplication.branches.length === 0" [disabled]="showProgress"/>
+                    </clr-input-container>
+                    <clr-toggle-container clrInline>
+                        <clr-toggle-wrapper>
+                            <label>Allow Bump Major Version</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="branchMap.allowBumpMajor" name="branchMapAllowBumpMajorVersion" [disabled]="showProgress"/>
+                        </clr-toggle-wrapper>
+                    </clr-toggle-container>
+                    <clr-input-container *ngIf="branchMap.allowBumpMajor">
+                        <label>Bump Major Text</label>
+                        <input clrInput [(ngModel)]="branchMap.bumpMajorText" name="bumpMajorText" placeholder="Bump Major Text" class="wd-50" [required]="currentApplication.branches.length === 0" [disabled]="showProgress"/>
+                    </clr-input-container>
+                    <clr-radio-container clrInline>
+                        <label>Increment Mode</label>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Major" [required]="currentApplication.branches.length === 0" [(ngModel)]="incrementModeMap" [disabled]="showProgress"/>
+                            <label>Major</label>
+                        </clr-radio-wrapper>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Minor" [required]="currentApplication.branches.length === 0" [(ngModel)]="incrementModeMap" [disabled]="showProgress"/>
+                            <label>Minor</label>
+                        </clr-radio-wrapper>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Patch" [required]="currentApplication.branches.length === 0" [(ngModel)]="incrementModeMap" [disabled]="showProgress"/>
+                            <label>Patch</label>
+                        </clr-radio-wrapper>
+                    </clr-radio-container>
+                    <clr-select-container>
+                        <label>Inherited From</label>
+                        <select clrSelect name="branchMapInheritedFrom" [(ngModel)]="branchMap.inheritedFrom" [required]="currentApplication.branches.length === 0" [disabled]="showProgress">
+                            <option *ngFor="let branch of currentApplication.keyBranches" [ngValue]="branch" value="{{branch}}">{{ branch.name }}</option>                            
+                        </select>
+                    </clr-select-container>
+                    <button type="button" type="button" class="btn btn-outline btn-icon add-branch-button" title="Add branch" (click)="addBranchMap(branchMap)" [disabled]="showProgress">
+                        <clr-icon shape="plus"></clr-icon>
+                    </button>
+                    <clr-datagrid>
+                        <clr-dg-column>Map Name</clr-dg-column>
+                        <clr-dg-column>Branch Pattern</clr-dg-column>
+                        <clr-dg-column>Bump Version?</clr-dg-column>
+                        <clr-dg-column>Increment</clr-dg-column>
+                        <clr-dg-column>Inherited</clr-dg-column>
+                        <clr-dg-row *ngFor="let mapping of currentApplication.branches" [clrDgItem]="mapping">
+                            <clr-dg-action-overflow>
+                                <button class="action-item" (click)="deleteBranchMap(mapping)" [disabled]="showProgress">Delete</button>
+                            </clr-dg-action-overflow>
+                            <clr-dg-cell>{{mapping.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.branchPattern}}</clr-dg-cell>
+                            <clr-dg-cell> <input type="checkbox" clrCheckbox disabled [checked]="mapping.allowBumpMajor" /></clr-dg-cell>
+                            <clr-dg-cell>{{mapping.incrementMode}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.inheritedFrom?.name}}</clr-dg-cell>
+                        </clr-dg-row>
+                    </clr-datagrid>
+                    <button clrStepButton="submit" class="btn btn-success-outline" [disabled]="currentApplication.branches.length === 0 || showProgress">
+                        {{buttonTitle}}
+                    </button>
+                </clr-step-content>
+            </clr-stepper-panel>
+        </div>
+    </clr-modal>
+</form>

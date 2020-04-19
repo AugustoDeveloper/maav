@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace MAAV.Domain.Entities
 {
-    public class User : IEntity
+    public class User : TeamUser, IEntity
     {
-        public object Id { get; set; }
-        public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string OrganisationName { get; set; }
-        public List<UserTeamRole> TeamRoles { get; set; }  = new List<UserTeamRole>();
+        public string OrganisationId { get; set; }
+
+        public List<TeamPermission> TeamsPermissions { get; set; }  = new List<TeamPermission>();
         public string[] OrganisationRoles { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; }
     }
 }

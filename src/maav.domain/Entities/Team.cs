@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
 
 namespace MAAV.Domain.Entities
 {
     public class Team : IEntity
     {
-        public object Id { get; set; }
-        public string OrganisationName { get; set; }
+        public string Id { get; set; }
+        public string OrganisationId { get; set; }
         public string Name { get; set; }
-        public Application[] Applications { get; set; }
-        public User[] Users { get; set; }
-        public ScheMapVersion ScheMap { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public List<TeamApplication> Applications { get; set; } = new List<TeamApplication>();
+        public List<TeamUser> Users { get; set; } = new List<TeamUser>();
     }
 }

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 
 namespace MAAV.Domain.Entities
 {
-    public class Application : IEntity
+    public class Application : TeamApplication
     {
-        public object Id { get; set; }
-        public string Name { get; set; }
-        public string TeamName { get; set; }
-        public string OrganisationName { get; set; }
-        public ScheMapVersion ScheMap { get; set; }
-        public Version InitialVersion { get; set; }
-        public List<BranchVersion> BranchVersions { get; set; } = new List<BranchVersion>();
+        public BranchActionMap[] Branches { get; set; }
+        public SemanticVersion InitialVersion { get; set; }
+        public List<KeyBranch> KeyBranches { get; set; } = new List<KeyBranch>();
+        public List<KeyBranchVersioning> KeyBranchVersionings { get; set; } = new List<KeyBranchVersioning>();
+        public string GithubSecretKey { get; set; }
+        public bool WebHookEnabled { get; set; }
     }
 }

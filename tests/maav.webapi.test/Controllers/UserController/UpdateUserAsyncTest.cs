@@ -45,7 +45,7 @@ namespace MAAV.WebAPI.Test.Controllers.UserController
         {
             var moqService = new Mock<IUserService>();
             moqService
-                .Setup(t => t.UpdateAsync(It.IsAny<string>(), It.IsAny<DataContracts.User>()))
+                .Setup(t => t.UpdateAsync(It.IsAny<string>(), It.IsAny<DataContracts.User>(), It.IsAny<bool>()))
                 .ReturnsAsync(() => null)
                 .Verifiable();
             
@@ -74,7 +74,7 @@ namespace MAAV.WebAPI.Test.Controllers.UserController
         {
             var moqService = new Mock<IUserService>();
             moqService
-                .Setup(t => t.UpdateAsync(It.IsAny<string>(), It.IsAny<DataContracts.User>()))
+                .Setup(t => t.UpdateAsync(It.IsAny<string>(), It.IsAny<DataContracts.User>(), It.IsAny<bool>()))
                 .ReturnsAsync(new DataContracts.User { Username = userName })
                 .Verifiable();
             

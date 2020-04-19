@@ -9,7 +9,7 @@ namespace MAAV.Infrastructure.Repository.MongoDB
     {
         protected override string collectionName => nameof(User).ToLower();
         
-        public UserRepository(string connectionString, string databaseName) : base(connectionString, databaseName)
+        public UserRepository(string connectionString) : base(connectionString)
         {
         }
 

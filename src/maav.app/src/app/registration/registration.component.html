@@ -1,0 +1,58 @@
+<div class="login-wrapper" >
+    <form class="login" #registrationForm (ngSubmit)="onSubmit(registrationForm)" >
+        <section class="title" [@fadeInOut]>
+            <h3 class="welcome">Welcome to</h3>
+            MAAV
+            <h5 class="hint">Register your company or sign in</h5>
+        </section>
+        <clr-alert [clrAlertType]="alert.type" *ngFor="let alert of alertService.alerts" (clrAlertClosedChange)="alertService.close(alert)">
+            <clr-alert-item>
+                <span class="alert-text">
+                    {{alert.message}}
+                </span>
+            </clr-alert-item>
+        </clr-alert>
+        <div class="login-group" [@fadeInOut]>
+            <clr-input-container>
+                <label class="clr-sr-only">Organisation Name</label>
+                <input type="text" name="orgName" placeholder="Organisation Name" clrInput autofocus [disabled]="showProgress" [(ngModel)]="registration.name" required minlength="3" />
+                <clr-control-error>The organisation must be informed</clr-control-error>
+            </clr-input-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Organisation Id</label>
+                <input type="text" name="orgId" class="org-id" placeholder="Organisation-Id" clrInput autofocus [disabled]="showProgress" [(ngModel)]="registration.id" [pattern]="validationPatterns.onlyLetterNumbersDots" required />
+                <clr-control-error>The organisation id is invalid</clr-control-error>
+            </clr-input-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Admin. Name</label>
+                <input type="text" name="adminName" placeholder="Admin. Name" clrInput autofocus [disabled]="showProgress" [(ngModel)]="registration.adminUser.firstName" required minlength="3" />
+                <clr-control-error>The adminstrator name is invalid</clr-control-error>
+            </clr-input-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Admin. Last Name</label>
+                <input type="text" name="adminLastname" placeholder="Admin. Last Name" clrInput autofocus [disabled]="showProgress" [(ngModel)]="registration.adminUser.lastName" required minlength="3"/>
+                <clr-control-error>The adminstrator last name is invalid</clr-control-error>
+            </clr-input-container>            
+            <clr-input-container>
+                <label class="clr-sr-only">Admin. Username</label>
+                <input type="text" name="adminUsername" placeholder="Admin. Username" clrInput autofocus [disabled]="showProgress" [(ngModel)]="registration.adminUser.username" required minlength="5" />
+                <clr-control-error>The adminstrator username is invalid</clr-control-error>
+            </clr-input-container>
+            <clr-password-container>
+                <label class="clr-sr-only">Password</label>
+                <input type="password" name="password" placeholder="Password" clrPassword autofocus [disabled]="showProgress" [(ngModel)]="registration.adminUser.password" required minlength="5" />
+                <clr-control-error>The adminstrator password is invalid</clr-control-error>
+            </clr-password-container>
+            <clr-password-container>
+                <label class="clr-sr-only">Password</label>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" clrPassword autofocus [disabled]="showProgress" [(ngModel)]="confirmAdminPassword" required minlength="5" />
+                <clr-control-error>The adminstrator password is invalid</clr-control-error>
+            </clr-password-container>
+            <button type="submit" class="btn btn-info-outline">
+                <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+                <span *ngIf="!showProgress">Register</span>
+            </button>
+            <a routerLink="../login" class="signup">Sign in</a>
+        </div>
+    </form>
+</div>

@@ -41,7 +41,7 @@ namespace MAAV.Application.Test.UserService
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Exists_User_When_Call_UpdateAsync_ShouldReturns_A_New_Instance_Of_User(string organisationName, string userName)
+        public async Task Given_Exists_User_When_Call_UpdateAsync_ShouldReturns_A_New_Instance_Of_User(string organisationId, string userName)
         {
             var moqRepository = new Mock<IUserRepository>();
             moqRepository
@@ -57,11 +57,11 @@ namespace MAAV.Application.Test.UserService
 
             moqRepository
                 .Setup(t => t.UpdateAsync(It.IsAny<User>()))
-                .ReturnsAsync(new User { Username = userName, OrganisationName = organisationName })
+                .ReturnsAsync(new User { Username = userName, OrganisationId = organisationId })
                 .Verifiable();
             
             var service = new Application.UserService(moqRepository.Object, moqOrgRepository.Object);
-            var userResult = await service.UpdateAsync("organisationName", new DataContracts.User { Username = userName });
+            var userResult = await service.UpdateAsync("organisationId", new DataContracts.User { Username = userName });
             moqRepository.VerifyAll();
             Assert.NotNull(userResult);
             Assert.Equal(userName, userResult.Username);

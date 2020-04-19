@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MAAV.Application.Exceptions;
 using MAAV.Application.Extensions;
+using MAAV.DataContracts;
 using MAAV.DataContracts.Extensions;
 using MAAV.Domain.Repositories;
 
@@ -15,345 +18,446 @@ namespace MAAV.Application
         private readonly IApplicationRepository repository;
         private readonly ITeamRepository teamRepository;
         private readonly IOrganisationRepository organisationRepository;
-        public ApplicationService(IApplicationRepository applicationRepository, IOrganisationRepository organisationRepository, ITeamRepository teamRepository)
+        private readonly IKeyBranchVersionHistoryRepository versionHistoryRepository;
+        public ApplicationService(IApplicationRepository applicationRepository, IOrganisationRepository organisationRepository, ITeamRepository teamRepository, IKeyBranchVersionHistoryRepository versionHistoryRepository)
         {
             this.repository = applicationRepository;
             this.teamRepository = teamRepository;
             this.organisationRepository = organisationRepository;
+            this.versionHistoryRepository = versionHistoryRepository;
         }
 
-        public async Task DeleteByNameAsync(string organisationName, string teamName, string applicationName)
+        public async Task DeleteByIdAsync(string organisationId, string teamId, string appId)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            var teamEntity = await this.teamRepository.GetByAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
+            if (teamEntity == null)
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
-            await this.repository.DeleteAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationName == organisationName);
+            teamEntity.Applications.RemoveAll(a => a.Id == appId);
+            await this.versionHistoryRepository.DeleteAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appId);
+            await this.teamRepository.UpdateAsync(teamEntity);
+            await this.repository.DeleteAsync(app => appId.Equals(app.Id) && app.TeamId == teamId && app.OrganisationId == organisationId);
         }
 
-        public async Task<DataContracts.Application> GetByNameAsync(string organisationName, string teamName, string applicationName)
+        public async Task<DataContracts.Application> GetByIdAsync(string organisationId, string teamId, string appId)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
-            var application = await repository.GetByAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationName == organisationName);
+            var application = await repository.GetByAsync(app => appId.Equals(app.Id) && app.TeamId == teamId && app.OrganisationId == organisationId);
 
             return application?.ToContract();
         }
 
-        public async Task<DataContracts.Application> AddAsync(string organisationName, string teamName, DataContracts.Application application)
+        public async Task<DataContracts.Application> AddAsync(string organisationId, string teamId, DataContracts.Application application)
         {
-            var orgEntity = await organisationRepository.GetByAsync(o => o.Name == organisationName);
+            var orgEntity = await organisationRepository.GetByAsync(o => o.Id == organisationId);
             if (orgEntity == null)
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
             
-            var teamEntity = await this.teamRepository.GetByAsync(t => t.Name == teamName && t.OrganisationName == organisationName);
+            var teamEntity = await this.teamRepository.GetByAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
             if (teamEntity == null)
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
-            }
-
-            if (await this.repository.ExistsByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == application.Name))
-            {
-                throw new NameAlreadyUsedException($"The application {application.Name} team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
             var appEntity = application.ToEntity();
-            appEntity.TeamName = teamName;
-            appEntity.OrganisationName = organisationName;
-            appEntity.ScheMap = appEntity.ScheMap ?? teamEntity.ScheMap ?? orgEntity.ScheMap;
-
-            if  (appEntity.ScheMap?.Branches?.Length < 1)
-            {
-                throw new ArgumentException("Create a BranchMap.");
-            }
+            appEntity.TeamId = teamId;
+            appEntity.OrganisationId = organisationId;
 
             var invalidBranchSetting = 
-                application.ScheMap.Branches.Any(b => application.ScheMap.Branches.Count(x => x.Name == b.Name) > 1) ||
-                application.ScheMap.Branches.Any(b => application.ScheMap.Branches.Count(x => x.BranchPattern == b.BranchPattern) > 1);
+                application.Branches.Any(b => application.Branches.Count(x => x.Name == b.Name) > 1) ||
+                application.Branches.Any(b => application.Branches.Count(x => x.BranchPattern == b.BranchPattern) > 1);
 
             if  (invalidBranchSetting)
             {
                 throw new ArgumentException("Invalid branch map settings.");
             }
 
-            if (application.ScheMap.Branches.Count(bm => bm.IsKeyBranch) < 1)
+            if (!application.KeyBranches.Any())
             {
                 throw new ArgumentException("Must create one key branch unless.");
             }
 
-            if (application.ScheMap.Branches.Count(bm => !bm.IsKeyBranch) < 1)
+            if (!application.Branches.Any())
             {
                 throw new ArgumentException("Must create one normal branch unless.");
             }
 
-            var version = new DataContracts.Version(application.InitialVersion);
-            appEntity.InitialVersion = version.ToEntity();
+            appEntity.KeyBranchVersionings = appEntity.KeyBranches.Select(b => new Domain.Entities.KeyBranchVersioning
+            {
+                KeyBranchName = b.Name,
+                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                CurrentVersion = appEntity.InitialVersion
+            }).ToList();
 
-            appEntity.BranchVersions = application
-                .ScheMap
-                .Branches
-                .Where(b => b.IsKeyBranch)
-                .Select(b => new Domain.Entities.BranchVersion 
-                { 
-                    BranchMapName = b.Name, 
-                    Version = new Domain.Entities.Version
+            teamEntity.Applications.Add(new Domain.Entities.TeamApplication(appEntity));
+
+            await this.teamRepository.UpdateAsync(teamEntity);
+
+            var result = await repository.AddAsync(appEntity);
+
+            appEntity.KeyBranches.ForEach(kb =>
+            {
+                var history = new Domain.Entities.KeyBranchVersionHistory
+                {
+                    ApplicationId = result.Id,
+                    KeyBranchName = kb.Name,
+                    OrganisationId = organisationId,
+                    TeamId = teamId,
+                    VersionHistory = new List<Domain.Entities.KeyBranchVersion>()
+                };
+                history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+                {
+                    CreatedAt = DateTime.UtcNow,
+                    FormatVersion = kb.FormatVersion,
+                    Request = new Domain.Entities.BranchActionRequest
                     {
-                        Major = version.Major,
-                        Minor = version.Minor,
-                        Patch = version.Patch,
-                        Label = b.Label.FormatLabel()
-                    }  
-                })
-                .ToList();
+                        Message = "Initial Version",
+                        From = "*",
+                        To = "*",
+                        BuildLabel = "",
+                        PreReleaseLabel = "",
+                        Commit = ""
+                    },
+                    Version = appEntity.InitialVersion
+                });
 
-            return (await repository.AddAsync(appEntity)).ToContract();
+                this.versionHistoryRepository.AddAsync(history).GetAwaiter().GetResult();
+            });
+
+            return result.ToContract();
         }
 
-        public async Task<DataContracts.Application> UpdateAsync(string organisationName, string teamName, DataContracts.Application application)
+        public async Task<DataContracts.Application> UpdateAsync(string organisationId, string teamId, DataContracts.Application application)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == application.Name);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && application.Id == app.Id);
             if (appLocated == null)
             {
                 return null;
             }
 
             var appEntity = application.ToEntity();
-            appEntity.OrganisationName = organisationName;
-            appEntity.TeamName = teamName;
-            appEntity.BranchVersions = appLocated.BranchVersions;
-            appEntity.Id = appLocated.Id;
+            appEntity.OrganisationId = organisationId;
+            appEntity.TeamId = teamId;
+            appEntity.KeyBranchVersionings = appLocated.KeyBranchVersionings;
+            appEntity.GithubSecretKey =  string.IsNullOrWhiteSpace(appEntity.GithubSecretKey) ? appLocated.GithubSecretKey : appEntity.GithubSecretKey;
 
-            if  (appEntity.ScheMap?.Branches?.Length < 1)
-            {
-                throw new ArgumentException("Create a BranchMap.");
-            }
+            var invalidBranchSetting =
+                application.Branches.Any(b => application.Branches.Count(x => x.Name == b.Name) > 1) ||
+                application.Branches.Any(b => application.Branches.Count(x => x.BranchPattern == b.BranchPattern) > 1);
 
-            var invalidBranchSetting = 
-                application.ScheMap.Branches.Any(b => application.ScheMap.Branches.Count(x => x.Name == b.Name) > 1) ||
-                application.ScheMap.Branches.Any(b => application.ScheMap.Branches.Count(x => x.BranchPattern == b.BranchPattern) > 1);
-
-            if  (invalidBranchSetting)
+            if (invalidBranchSetting)
             {
                 throw new ArgumentException("Invalid branch map settings.");
             }
 
-            if (application.ScheMap.Branches.Count(bm => bm.IsKeyBranch) < 1)
+            if (!application.KeyBranches.Any())
             {
                 throw new ArgumentException("Must create one key branch unless.");
             }
 
-            if (application.ScheMap.Branches.Count(bm => !bm.IsKeyBranch) < 1)
+            if (!application.Branches.Any())
             {
                 throw new ArgumentException("Must create one normal branch unless.");
             }
 
-            var version = new DataContracts.Version(application.InitialVersion);
-            appEntity.InitialVersion = version.ToEntity();
-            
-            var branchVersions = application
-                .ScheMap
-                .Branches
-                .Where(b => b.IsKeyBranch)
-                .Select(b => new Domain.Entities.BranchVersion 
-                { 
-                    BranchMapName = b.Name, 
-                    Version = new Domain.Entities.Version
+            appEntity.KeyBranchVersionings.RemoveAll(b => !appEntity.KeyBranches.Any(kb => kb.Name == b.KeyBranchName));
+
+            appEntity.KeyBranchVersionings.AddRange(appEntity.KeyBranches.Where(b => !appEntity.KeyBranchVersionings.Any(kb => kb.KeyBranchName == b.Name)).Select(b => new Domain.Entities.KeyBranchVersioning
+            {
+                KeyBranchName = b.Name,
+                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow,
+                CurrentVersion = appEntity.InitialVersion
+            }).ToArray());
+
+
+            appEntity.KeyBranches.ForEach(kb =>
+            {
+                if (!this.versionHistoryRepository.ExistsByAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appLocated.Id && h.KeyBranchName == kb.Name).GetAwaiter().GetResult())
+                {
+                    var history = new Domain.Entities.KeyBranchVersionHistory
                     {
-                        Major = appEntity.InitialVersion.Major,
-                        Minor = appEntity.InitialVersion.Minor,
-                        Patch = appEntity.InitialVersion.Patch,
-                        Label = b.Label.FormatLabel()
-                    }
-                })
-                .ToList();
-             
-            appEntity.BranchVersions.Where(bvx => !branchVersions.Any(bv => bv.BranchMapName == bvx.BranchMapName)).ToList().ForEach(bv => 
-            {
-                bv.IsEnabled = false;
+                        ApplicationId = appLocated.Id,
+                        KeyBranchName = kb.Name,
+                        OrganisationId = organisationId,
+                        TeamId = teamId,
+                        VersionHistory = new List<Domain.Entities.KeyBranchVersion>()
+                    };
+                    history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        FormatVersion = kb.FormatVersion,
+                        Request = new Domain.Entities.BranchActionRequest
+                        {
+                            Message = "Initial Version",
+                            From = "*",
+                            To = "*",
+                            BuildLabel = "",
+                            PreReleaseLabel = "",
+                            Commit = ""
+                        },
+                        Version = appEntity.InitialVersion
+                    });
+
+                    this.versionHistoryRepository.AddAsync(history).GetAwaiter().GetResult();
+                }
             });
 
-            appEntity.BranchVersions.Where(bvx => branchVersions.Any(bv => bv.BranchMapName == bvx.BranchMapName)).ToList().ForEach(bv => 
-            {
-                var bvUpdate = branchVersions.FirstOrDefault(x => x.BranchMapName == bv.BranchMapName);
-                bv.IsEnabled = true;
-                bv.Version = bvUpdate?.Version;
-            });
-
-            branchVersions.Where(bvx => !appLocated.BranchVersions.Any(bv => bv.BranchMapName == bvx.BranchMapName)).ToList().ForEach(bv => 
-            {
-                appEntity.BranchVersions.Add(bv);
-            });
-
-            return (await repository.UpdateAsync(appEntity)).ToContract();
+            var result = await repository.UpdateAsync(appEntity);
+            return result.ToContract();
         }
 
-        public async Task<List<DataContracts.Application>> LoadAllFromTeamAsync(string organisationName, string teamName)
+        public async Task<List<DataContracts.Application>> LoadAllFromTeamAsync(string organisationId, string teamId)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
             {
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var applications = await repository.LoadByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName);
+            var applications = await repository.LoadByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId);
 
             return applications?.ToContract().ToList();
         }
 
-        public async Task<string> GetVersionFromSourceBranchAsync(string organisationName, string teamName, string appName, string source, object data)
+        public async Task<SemanticVersion> UpdateVersionOnBranches(string organisationId, string teamId, string appId, BranchActionRequest data)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                return null;
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == appName);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
             if (appLocated == null)
             {
-                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationName} not exists");
+                return null;
             }
 
-            var branchMap = appLocated.ScheMap.Branches.Where(x => new Regex(x.BranchPattern).IsMatch(source)).FirstOrDefault();
-            if (branchMap == null)
+            var keyBranch = appLocated.KeyBranches.FirstOrDefault(b => Regex.IsMatch(data.To, b.BranchPattern));
+            if (keyBranch == null)
             {
-                throw new ArgumentException("Not could find source branch map for this parameter");
+                return null;
             }
 
-            Domain.Entities.Version version = null;
-
-            if (!string.IsNullOrWhiteSpace(branchMap.InheritedFrom))
+            var keyBranchVersion = appLocated.KeyBranchVersionings.FirstOrDefault(k => k.KeyBranchName == keyBranch.Name);
+            if (keyBranchVersion == null)
             {
-                version = appLocated.BranchVersions.FirstOrDefault(bv => bv.BranchMapName == branchMap.InheritedFrom).Version;
+                return null;
             }
-            else 
+
+            var branch = appLocated.Branches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+            if (branch == null)
             {
-                version = appLocated.BranchVersions.FirstOrDefault(bv => bv.BranchMapName == branchMap.Name).Version;
-            }
+                var fromKeyBranch = appLocated.KeyBranches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+                if (fromKeyBranch == null)
+                {
+                    return null;
+                }
 
-            if (version == null)
-            {   
-                throw new ArgumentException($"the {source} branch is invalid configuration registered.");
-            }
+                var fromKeyBranchVersion = appLocated.KeyBranchVersionings.FirstOrDefault(kv => kv.KeyBranchName == fromKeyBranch.Name);
+                if (fromKeyBranchVersion == null)
+                {
+                    return null;
+                }
 
-            switch(branchMap.Increment)
+                keyBranchVersion.CurrentVersion.Major = fromKeyBranchVersion.CurrentVersion.Major;
+                keyBranchVersion.CurrentVersion.Minor = fromKeyBranchVersion.CurrentVersion.Minor;
+                keyBranchVersion.CurrentVersion.Patch = fromKeyBranchVersion.CurrentVersion.Patch;
+                keyBranchVersion.CurrentVersion.Build = fromKeyBranchVersion.CurrentVersion.Build;
+                keyBranchVersion.CurrentVersion.PreRelease = fromKeyBranchVersion.CurrentVersion.PreRelease;
+            }
+            else
             {
-                case Domain.Entities.IncrementMode.Major : 
-                    version.Major += 1;
-                    break;
-                case Domain.Entities.IncrementMode.Minor : 
-                    version.Minor += 1;
-                    break;
-                case Domain.Entities.IncrementMode.Patch : 
-                    version.Patch += 1;
-                    break;
+                var incrementMode = branch.AllowBumpMajor && data.Message.Contains(branch.BumpMajorText) ? Domain.Entities.IncrementMode.Major : branch.Increment;
+                keyBranchVersion.CurrentVersion.Major += incrementMode == Domain.Entities.IncrementMode.Major ? 1 : 0;
+                keyBranchVersion.CurrentVersion.Minor += incrementMode == Domain.Entities.IncrementMode.Minor ? 1 : 0;
+                keyBranchVersion.CurrentVersion.Patch += incrementMode == Domain.Entities.IncrementMode.Patch ? 1 : 0;
+
+                keyBranchVersion.CurrentVersion.Minor = incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Minor;
+                keyBranchVersion.CurrentVersion.Patch = incrementMode == Domain.Entities.IncrementMode.Minor || incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Patch;
             }
 
-            return $"{version.FormatVersion(appLocated.ScheMap.Format)}{branchMap.SuffixFormat?.Replace("{Label}", version.Label)}";
-
-        }
-
-        public async Task<string> GetVersionFromSourceAndTagetBranchAsync(string organisationName, string teamName, string appName,string source, string target, object data)
-        {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
-            }
+                keyBranchVersion.CurrentVersion.PreRelease = $"-{data.PreReleaseLabel}";
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            }
+            if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                keyBranchVersion.CurrentVersion.Build = $"+{data.BuildLabel}";
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == appName);
-            if (appLocated == null)
+            keyBranchVersion.UpdatedAt = DateTime.UtcNow;
+
+            var history = await this.versionHistoryRepository.GetByAsync(h => h.KeyBranchName == keyBranch.Name);
+            if (history == null)
             {
-                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationName} not exists");
+                return null;
             }
 
-            var sourcebranchMap = appLocated.ScheMap.Branches.Where(x => new Regex(x.BranchPattern).IsMatch(source)).FirstOrDefault();
-            var targetbranchMap = appLocated.ScheMap.Branches.Where(x => new Regex(x.BranchPattern).IsMatch(target)).FirstOrDefault();
-
-            if (sourcebranchMap == null || targetbranchMap == null)
+            history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
             {
-                throw new ArgumentException("Not could find source|target branch map for theses parameters");
-            }
+                CreatedAt = DateTime.UtcNow,
+                FormatVersion = keyBranch.FormatVersion,
+                Request = data.ToEntity(),
+                Version = keyBranchVersion.CurrentVersion,
+            });
 
-            Domain.Entities.Version version = null;
+            history.KeyBranchName = keyBranchVersion.KeyBranchName;
+            history.OrganisationId = organisationId;
+            history.TeamId = teamId;
+            history.ApplicationId = appId;
 
-            if (!string.IsNullOrWhiteSpace(targetbranchMap.InheritedFrom))
-            {
-                version = appLocated.BranchVersions.FirstOrDefault(bv => bv.BranchMapName == targetbranchMap.InheritedFrom).Version;
-            }
-            else 
-            {
-                version = appLocated.BranchVersions.FirstOrDefault(bv => bv.BranchMapName == targetbranchMap.Name).Version;
-            }
-
-            if (version == null)
-            {
-                throw new ArgumentException($"the {target} branch is invalid configuration registered.");
-            }
-
-            switch(sourcebranchMap.Increment)
-            {
-                case Domain.Entities.IncrementMode.Major : 
-                    version.Major += 1;
-                    break;
-                case Domain.Entities.IncrementMode.Minor : 
-                    version.Minor += 1;
-                    break;
-                case Domain.Entities.IncrementMode.Patch : 
-                    version.Patch += 1;
-                    break;
-                case Domain.Entities.IncrementMode.None:
-                    if (sourcebranchMap.IsKeyBranch && targetbranchMap.IsKeyBranch)
-                    {
-                        var targetbranchVersion =  appLocated.BranchVersions.First(bv => bv.BranchMapName == targetbranchMap.Name);
-                        var sourcebranchVersion = appLocated.BranchVersions.First(bv => bv.BranchMapName == sourcebranchMap.Name);
-                        targetbranchVersion.Version = sourcebranchVersion.Version;
-                        version  = targetbranchVersion.Version;
-                    }
-
-                    break;
-            }
+            await this.versionHistoryRepository.UpdateAsync(history);
             await this.repository.UpdateAsync(appLocated);
 
-            return $"{version.FormatVersion(appLocated.ScheMap.Format)}{targetbranchMap.SuffixFormat?.Replace("{Label}", version.Label)}";
+            return keyBranchVersion.CurrentVersion.ToContract();
+        }
+
+        public async Task<SemanticVersion> GetVersionFromSourceBranchAsync(string organisationId, string teamId, string appId, BranchActionRequest data)
+        {
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
+            {
+                return null;
+            }
+
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            {
+                return null;
+            }
+
+            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
+            if (appLocated == null)
+            {
+                return null;
+            }
+
+            var keyBranch = appLocated.KeyBranches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+            if (keyBranch == null)
+            {
+                var branch = appLocated.Branches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+                if (branch == null)
+                {
+                    return null;
+                }
+
+                keyBranch = appLocated.KeyBranches.FirstOrDefault(b => b.Name == branch.InheritedFrom.Name);
+                if (keyBranch == null)
+                {
+                    return null;
+                }
+            }
+
+            var keyBranchVersion = appLocated.KeyBranchVersionings.FirstOrDefault(k => k.KeyBranchName == keyBranch.Name);
+            if (keyBranchVersion == null)
+            {
+                return null;
+            }
+
+            if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
+            {
+                keyBranchVersion.CurrentVersion.PreRelease = $"-{data.PreReleaseLabel}";
+
+            }
+            if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
+            {
+                keyBranchVersion.CurrentVersion.Build = $"+{data.BuildLabel}";
+            }
+
+            return keyBranchVersion.CurrentVersion.ToContract();
+        }
+
+        public async Task<KeyBranchVersionHistory> LoadHistoryFromKeyBranchName(string organisationId, string teamId, string appId, string keyBranchName)
+        {
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == organisationId))
+            {
+                return null;
+            }
+
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            {
+                return null;
+            }
+
+            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
+            if (appLocated == null)
+            {
+                return null;
+            }
+
+            var history = await this.versionHistoryRepository.GetByAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appId && h.KeyBranchName == keyBranchName);
+            return history?.ToContract() ;
+        }
+
+        public async Task<bool> IsValidSha1Async(string orgId, string teamId, string appId, string sha1, string payload)
+        {
+
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
+            {
+                return false;
+            }
+
+            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == orgId))
+            {
+                return false;
+            }
+
+            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == orgId && app.Id == appId);
+            if (appLocated == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(appLocated.GithubSecretKey))
+            {
+                return true;
+            }
+
+            var key = Encoding.ASCII.GetBytes(appLocated.GithubSecretKey);
+            var newSha1 = new HMACSHA1(key);
+            var body = Encoding.ASCII.GetBytes(payload);
+            var bodyEnc = newSha1.ComputeHash(body);
+            var secretSha1 ="sha1="+ bodyEnc.ToHexString();
+
+            return sha1 == secretSha1;
         }
     }
 }

@@ -8,30 +8,32 @@ using MongoDB.Driver;
 
 namespace MAAV.Infrastructure.Repository.MongoDB
 {
-	public abstract class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
-	{
-		private readonly string connectionString;
-		private readonly string databaseName;
-		private Lazy<MongoClient> lazyClient;
+    public abstract class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    {
+        private readonly MongoUrl mongoUrl;
+        private readonly string connectionString;
+        private readonly string databaseName;
+        private Lazy<MongoClient> lazyClient;
 
-		protected abstract string collectionName { get; }
-		private IMongoDatabase Database => lazyClient.Value.GetDatabase(this.databaseName);
-		private IMongoCollection<TEntity> Collection => Database.GetCollection<TEntity>(this.collectionName);
+        protected abstract string collectionName { get; }
+        private IMongoDatabase Database => lazyClient.Value.GetDatabase(this.databaseName);
+        private IMongoCollection<TEntity> Collection => Database.GetCollection<TEntity>(this.collectionName);
 
-        protected MongoRepository(string connectionString, string databaseName)
+        protected MongoRepository(string connectionString)
         {
+            this.mongoUrl = new MongoUrl(connectionString);
             this.connectionString = connectionString;
-            this.databaseName = databaseName;
-            lazyClient = new Lazy<MongoClient>(() => new MongoClient(this.connectionString));
+            this.databaseName = this.mongoUrl.DatabaseName;
+            lazyClient = new Lazy<MongoClient>(() => new MongoClient(this.mongoUrl));
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             await Collection.InsertOneAsync(entity);
             return entity;
         }
 
-        public async Task<TEntity> UpdateAsync(TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var result = await Collection.ReplaceOneAsync(RetrieveUpdateExpression(entity), entity);
             return entity;

@@ -1,0 +1,26 @@
+<form clrForm #teamForm="ngForm" (ngSubmit)="onSubmit(teamForm)">
+    <clr-modal [(clrModalOpen)]="showDialog" [clrModalClosable]="true" [clrModalSize]="'lg'">
+        <h3 class="modal-title">Add Team</h3>
+        <div class="modal-body mb-10">
+            <clr-alert [clrAlertType]="alert.type" *ngFor="let alert of alertService.alerts" (clrAlertClosedChange)="alertService.close(alert)">
+                <clr-alert-item>
+                    <span class="alert-text">
+                        {{alert.message}}
+                    </span>
+                </clr-alert-item>
+            </clr-alert>
+            <clr-input-container>
+                <label>Name</label>
+                <input type="text" clrInput [(ngModel)]="team.name" class="wd-70" name="teamName" [disabled]="showProgress" required minlength="3" />
+            </clr-input-container>
+            <clr-input-container>
+                <label>Team Code</label>
+                <input type="text" class="team-id" clrInput [(ngModel)]="team.id"  class="wd-70" name="teamId" [disabled]="showProgress" [pattern]="validationPatterns.onlyLetterNumbersDots" required minlength="3" />
+            </clr-input-container>
+            <button type="button" class="btn btn-outline-success mt-30" type="submit">
+                <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+                <span *ngIf="!showProgress">Create</span>
+            </button>
+        </div>
+    </clr-modal>
+</form>

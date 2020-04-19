@@ -5,27 +5,35 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MAAV.Application;
 using MAAV.Application.Exceptions;
+using System.Text.Json;
+using MAAV.WebAPI.Serializers;
+using MAAV.DataContracts.GitHub;
 
 namespace MAAV.WebAPI.Controllers
 {
     [ApiController, Route("api/v1"), Authorize]
     public class ApplicationController : ControllerBase
     {
-        [HttpGet("{organisationName}/teams/{teamName}/apps/{appName}", Name = nameof(GetApplicationAsync)), Authorize(Roles = "User,Administrator,Leader")]
+        private JsonSerializerOptions optionSerialization = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = SnakeCaseNamingPolicy.Instance
+        };
+
+        [HttpGet("{organisationId}/teams/{teamId}/apps/{appId}", Name = nameof(GetApplicationAsync)), Authorize(Roles = "user,developer,admin,team-leader")]
         public async Task<IActionResult> GetApplicationAsync(
-            [FromRoute] string organisationName, 
-            [FromRoute] string teamName, 
-            [FromRoute] string appName, 
+            [FromRoute] string organisationId, 
+            [FromRoute] string teamId, 
+            [FromRoute] string appId, 
             [FromServices] IApplicationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(appName))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId) || string.IsNullOrWhiteSpace(appId))
             {
                 return BadRequest(new { reason = $"Invalid parameters!" });
             }
 
             try
             {
-                var app = await service.GetByNameAsync(organisationName, teamName, appName);
+                var app = await service.GetByIdAsync(organisationId, teamId, appId);
                 if (app == null)
                 {
                     return NotFound();
@@ -39,20 +47,20 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpGet("{organisationName}/teams/{teamName}/apps"), Authorize(Roles = "User,Administrator,Leader")]
+        [HttpGet("{organisationId}/teams/{teamId}/apps"), Authorize(Roles = "user,developer,admin,team-leader")]
         public async Task<IActionResult> LoadAllApplicationFromTeam(
-            [FromRoute] string organisationName, 
-            [FromRoute] string teamName, 
+            [FromRoute] string organisationId, 
+            [FromRoute] string teamId, 
             [FromServices] IApplicationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId))
             {
                 return BadRequest(new { reason = $"Invalid parameters!" });
             }
 
             try
             {
-                var apps = await service.LoadAllFromTeamAsync(organisationName, teamName);
+                var apps = await service.LoadAllFromTeamAsync(organisationId, teamId);
 
                 return Ok(apps);
             }
@@ -62,23 +70,32 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpPost("{organisationName}/teams/{teamName}/apps"), Authorize(Roles = "User,Administrator,Leader")]
+        [HttpPost("{organisationId}/teams/{teamId}/apps"), Authorize(Roles = "user,developer,admin,team-leader")]
         public async Task<IActionResult> AddApplicationAsync(
-            [FromRoute] string organisationName,
-            [FromRoute] string teamName,
+            [FromRoute] string organisationId,
+            [FromRoute] string teamId,
             [FromBody] DataContracts.Application app,
-            [FromServices]IApplicationService service)
+            [FromServices]IApplicationService service,
+            [FromServices]IUserService userService)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(app?.Name))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId) || string.IsNullOrWhiteSpace(app?.Name))
             {
                 return BadRequest(new { reason = $"Invalid parameters" });
             }
 
             try
             {
-                var appResult = await service.AddAsync(organisationName, teamName, app);
+                var hasPermission = await userService.IsOwner(organisationId, teamId, User.Identity.Name);
+                if (!hasPermission)
+                {
+                    return Forbid();
+                }
 
-                return CreatedAtRoute(nameof(GetApplicationAsync), new { organisationName, teamName, appName = app.Name }, appResult);
+                app.CreatedAt = DateTime.Now;
+                app.Id = null;
+                var appResult = await service.AddAsync(organisationId, teamId, app);
+
+                return CreatedAtRoute(nameof(GetApplicationAsync), new { organisationId, teamId, appId = app.Name }, appResult);
             }
             catch(NameAlreadyUsedException ex)
             {
@@ -90,27 +107,34 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpPut("{organisationName}/teams/{teamName}/apps/{appName}"), Authorize(Roles = "User,Administrator,Leader")]
+        [HttpPut("{organisationId}/teams/{teamId}/apps/{appId}"), Authorize(Roles = "user,developer,admin,team-leader")]
         public async Task<IActionResult> UpdateApplicationAsync(
-            [FromRoute] string organisationName,
-            [FromRoute] string teamName,
-            [FromRoute] string appName,
+            [FromRoute] string organisationId,
+            [FromRoute] string teamId,
+            [FromRoute] string appId,
             [FromBody]DataContracts.Application application,
-            [FromServices]IApplicationService service)
+            [FromServices]IApplicationService service,
+            [FromServices]IUserService userService)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(appName) || string.IsNullOrWhiteSpace(application?.Name))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId) || string.IsNullOrWhiteSpace(appId) || string.IsNullOrWhiteSpace(application?.Name))
             {
                 return BadRequest(new { reason = $"Invalid parameters!" });
             }
 
-            if (!string.Equals(application?.Name, appName))
+            if (!string.Equals(application?.Id, appId))
             {
-                return BadRequest(new { reason = $"Invalid application name!", request = application, appName });
+                return BadRequest(new { reason = $"Invalid application name!", request = application, appId });
             }
 
             try
             {
-                var appResult = await service.UpdateAsync(organisationName, teamName, application);
+                var hasPermission = await userService.IsOwner(organisationId, teamId, User.Identity.Name);
+                if (!hasPermission)
+                {
+                    return Forbid();
+                }
+
+                var appResult = await service.UpdateAsync(organisationId, teamId, application);
                 if (appResult == null)
                 {
                     return NotFound();
@@ -128,21 +152,28 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpDelete("{organisationName}/teams/{teamName}/apps/{appName}"), Authorize(Roles = "Administrator,Leader")]
-        public async Task<IActionResult> DeleteOrganisationAsync(
-            [FromRoute] string organisationName,
-            [FromRoute] string teamName,
-            [FromRoute] string appName,
-            [FromServices] IApplicationService service)
+        [HttpDelete("{organisationId}/teams/{teamId}/apps/{appId}"), Authorize(Roles = "user,developer,admin,team-leader")]
+        public async Task<IActionResult> DeleteApplicationAsync(
+            [FromRoute] string organisationId,
+            [FromRoute] string teamId,
+            [FromRoute] string appId,
+            [FromServices] IApplicationService service,
+            [FromServices] IUserService userService)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(appName))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId) || string.IsNullOrWhiteSpace(appId))
             {
                 return BadRequest(new { reason = $"Invalid parameters!" });
             }
 
             try
             {
-                await service.DeleteByNameAsync(organisationName, teamName, appName);
+                var hasPermission = await userService.IsOwner(organisationId, teamId, User.Identity.Name);
+                if (!hasPermission)
+                {
+                    return Forbid();
+                }
+
+                await service.DeleteByIdAsync(organisationId, teamId, appId);
 
                 return NoContent();
             }
@@ -150,6 +181,59 @@ namespace MAAV.WebAPI.Controllers
             {
                 return StatusCode(statusCode: (int)HttpStatusCode.InternalServerError);
             }
+        }
+
+        [HttpGet("{orgId}/teams/{teamId}/apps/{appId}/webhook/{commit}"), AllowAnonymous]
+        public async Task<IActionResult> GetLastActionResultAsync(
+            [FromRoute] string orgId,
+            [FromRoute] string teamId,
+            [FromRoute] string appId,
+            [FromRoute] string commit,
+            [FromServices]IGithubEventResultService service)
+        {
+            var result = await service.GetLastEventAsync(commit, teamId, appId, orgId);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("{organisationId}/teams/{teamId}/apps/{appId}/webhook"), AllowAnonymous]
+        public async Task<IActionResult> PostWebHookIntegrationAsync(
+            [FromRoute] string organisationId,
+            [FromRoute] string teamId,
+            [FromRoute] string appId,
+            [FromBody]object payload, 
+            [FromServices]IApplicationService service, 
+            [FromServices]IGitHubWebHookService githubService)
+        {
+            var headerAuth = Request.Headers["X-Hub-Signature"];
+            var headerEvent = Request.Headers["X-GitHub-Event"];
+
+            if(!string.IsNullOrWhiteSpace(headerEvent) && !string.IsNullOrWhiteSpace(headerAuth) && await service.IsValidSha1Async(organisationId, teamId, appId, headerAuth, payload.ToString()))
+            {
+                if (headerEvent.Equals("push") || headerEvent.Equals("pull_request"))
+                {
+
+                    IGithubEvent @event = null;
+                    if (headerEvent.Equals("push"))
+                    {
+                        @event = JsonSerializer.Deserialize<PushEvent>(payload.ToString(), optionSerialization);
+                    }
+                    else
+                    {
+                        @event = JsonSerializer.Deserialize<PullRequestEvent>(payload.ToString(), optionSerialization);
+                    }
+
+                    @event.ApplicationId = appId;
+                    @event.OrganisationId = organisationId;
+                    @event.TeamId = teamId;
+                    await githubService.EnqueueAsync(@event);
+                }
+            }
+            return Ok();
         }
     }
 }

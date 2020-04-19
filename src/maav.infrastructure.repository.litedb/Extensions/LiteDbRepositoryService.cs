@@ -22,63 +22,59 @@ namespace MAAV.Infrastructure.Repository.LiteDB.Extensions
             mapper.Entity<Application>()
                 .Id(a => a.Id)
                 .Field(a => a.Name, "name")
-                .Field(a => a.OrganisationName, "organisation_name")
-                .Field(a => a.TeamName, "team_name")
-                .Field(a => a.ScheMap, "schemap")
-                .Field(a => a.BranchVersions, "branch_versions")
+                .Field(a => a.OrganisationId, "organisation_name")
+                .Field(a => a.TeamId, "team_name")
+                .Field(a => a.KeyBranches, "key_branches")
                 .Field(a => a.InitialVersion, "initial_version");
 
-            mapper.Entity<Version>()
-                .Field(s => s.Label, "label")
+            mapper.Entity<SemanticVersion>()
                 .Field(s => s.Major, "major_version")
                 .Field(s => s.Minor, "minor_version")
-                .Field(s => s.Patch, "patch_version");
+                .Field(s => s.Patch, "patch_version")
+                .Field(s => s.PreRelease, "pre_release")
+                .Field(s => s.Build, "minor_version");
 
-            mapper.Entity<BranchVersion>()
-                .Field(s => s.BranchMapName, "branch_map_name")
+            mapper.Entity<KeyBranch>()
+                .Field(s => s.Name, "branch_map_name")
                 .Field(s => s.IsEnabled, "is_enabled")
-                .Field(s => s.Version, "version");
+                .Field(s => s.BranchPattern, "branch_pattern")
+                .Field(s => s.FormatVersion, "format_version");
 
             mapper.Entity<Organisation>()
                 .Field(s => s.Name, "name")
                     .Id(o => o.Name, false)
-                .Field(s => s.ScheMap, "schemap")
                 .Field(s => s.Teams, "teams");
 
             mapper.Entity<Team>()
                 .Field(t => t.Id, "id").Id(t => t.Id, autoId: true)
-                .Field(t => t.OrganisationName, "organisation_name")
+                .Field(t => t.OrganisationId, "organisation_id")
                 .Field(t => t.Name, "name")
-                .Field(t => t.ScheMap, "schemap")
                 .Field(t => t.Users, "users")
                 .Field(t => t.Applications, "applications");
 
             mapper.Entity<User>()
                 .Field(t => t.Id, "id").Id(t => t.Id, autoId: true)
                 .Field(u => u.Username, "username")
-                .Field(u => u.OrganisationName, "organisation_name")
+                .Field(u => u.OrganisationId, "organisation_id")
                 .Field(u => u.OrganisationRoles, "organisation_roles")
                 .Field(u => u.PasswordHash, "password_hash")
                 .Field(u => u.PasswordSalt, "password_salt")
                 .Field(u => u.FirstName, "last_name")
                 .Field(u => u.LastName, "last_name")
-                .Field(u => u.TeamRoles, "team_roles");
-            
-            mapper.Entity<UserTeamRole>()
+                .Field(u => u.TeamsPermissions, "team_roles");
+
+            mapper.Entity<TeamPermission>()
                 .Field(utr => utr.TeamId, "team_id")
-                .Field(utr => utr.Roles, "roles")
-                .Field(utr => utr.TeamName, "team_name");
+                .Field(utr => utr.IsOwner, "is_owner")
+                .Field(utr => utr.IsReader, "is_reader")
+                .Field(utr => utr.IsWriter, "is_writer");
 
-            mapper.Entity<ScheMapVersion>()
-                .Field(smv => smv.Format, "fomat")
-                .Field(smv => smv.Branches, "branches");
-
-            mapper.Entity<BranchMap>()
+            mapper.Entity<BranchActionMap>()
                 .Field(bm => bm.Name, "name")
-                .Field(bm => bm.SuffixFormat, "suffix_format")
-                .Field(bm => bm.Increment, "increment")
-                .Field(bm => bm.Label, "label")
                 .Field(bm => bm.BranchPattern, "branch_pattern")
+                .Field(bm => bm.Increment, "increment")
+                .Field(bm => bm.BumpMajorText, "bump_major_text")
+                .Field(bm => bm.InheritedFrom, "inherited_from")
                 .Field(bm => bm.AllowBumpMajor, "allow_bump_major");
 
 

@@ -6,8 +6,7 @@ namespace MAAV.DataContracts
     {
         public string AccessToken { get; set; }
         public DateTime Expiration { get; set; }
-        public string[] Roles { get; set; }
         public User User { get; set; }
-        public string OrganisationName { get; set; }
+        public string OrganisationId { get; set; }
     }
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace MAAV.Domain.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : IEntity
+    public interface IRepository { }
+    public interface IRepository<TEntity>: IRepository where TEntity : IEntity
     {        
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);

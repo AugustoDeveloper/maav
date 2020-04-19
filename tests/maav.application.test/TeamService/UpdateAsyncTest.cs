@@ -32,7 +32,7 @@ namespace MAAV.Application.Test.TeamService
                 .ReturnsAsync(true)
                 .Verifiable();  
 
-            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object);
+            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object, null);
             var teamResult = await service.UpdateAsync("", new DataContracts.Team { Name = "development" });
             moqRepository.Verify(t => t.UpdateAsync(It.IsAny<Team>()), Times.Never);
             moqRepository.Verify();
@@ -41,17 +41,17 @@ namespace MAAV.Application.Test.TeamService
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Exists_Team_When_Call_UpdateAsync_ShouldReturns_A_New_Instance_Of_Team(string organisationName, string teamName)
+        public async Task Given_Exists_Team_When_Call_UpdateAsync_ShouldReturns_A_New_Instance_Of_Team(string organisationId, string teamName)
         {
             var moqRepository = new Mock<ITeamRepository>();
             moqRepository
                 .Setup(t => t.GetByAsync(It.IsAny<Expression<Func<Team, bool>>>()))
-                .ReturnsAsync(new Team { Name = teamName, OrganisationName = organisationName, Id = Guid.NewGuid()})
+                .ReturnsAsync(new Team { Name = teamName, OrganisationId = organisationId, Id = Guid.NewGuid().ToString()})
                 .Verifiable();
 
             moqRepository
                 .Setup(t => t.UpdateAsync(It.IsAny<Team>()))
-                .ReturnsAsync(new Team { Name = teamName, OrganisationName = organisationName })
+                .ReturnsAsync(new Team { Name = teamName, OrganisationId = organisationId })
                 .Verifiable();
             
             var moqOrgRepository = new Mock<IOrganisationRepository>();
@@ -60,8 +60,8 @@ namespace MAAV.Application.Test.TeamService
                 .ReturnsAsync(true)
                 .Verifiable();  
             
-            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object);
-            var teamResult = await service.UpdateAsync("organisationName", new DataContracts.Team { Name = teamName });
+            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object, null);
+            var teamResult = await service.UpdateAsync("organisationId", new DataContracts.Team { Name = teamName });
             moqRepository.VerifyAll();
             Assert.NotNull(teamResult);
             Assert.Equal(teamName, teamResult.Name);

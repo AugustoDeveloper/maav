@@ -1,0 +1,52 @@
+<div class="line-separator">
+    <h1>Users<clr-spinner class="ml-10" clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner></h1>
+</div>
+<div class="line-separator-transparent">
+    <button type="button" class="btn btn-info-outline btn-icon" (click)="performAddUser()" [disabled]="persistencyMode !== 'view' || !userRoles.isAdmin || showProgress"><clr-icon shape="plus"></clr-icon></button>
+    <div class="clr-row card-app-info">
+        <div class="clr-col-12 clr-col-sm-6 card-app-info-row">
+            <div class="card">
+              <div class="card-block">
+                <div class="card-app-info">
+                  <div class="card-app-info-row">
+                    <app-user-persistency [(modelUser)]="persistentUser" [(isAdmin)]="userRoles.isAdmin" [persistencyMode]="persistencyMode" (finished)="finish($event)"></app-user-persistency>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ml-20 clr-row card-app-info mt-10">
+        <clr-datagrid (clrDgSingleSelectedChange)="selectionChanged($event)" [clrDgSingleSelected]="persistencyMode === 'view'" [clrDgRowSelection]="true">
+            <clr-dg-column class="dg-row-names">First Name</clr-dg-column>
+            <clr-dg-column>User Id</clr-dg-column>
+            <clr-dg-column  class="dg-row-names">Created At</clr-dg-column>
+            <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
+            
+            <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user" [clrDgSelectable]="persistencyMode === 'view'">
+                <clr-dg-action-overflow>
+                    <button class="action-item" (click)="editUser(user)" [disabled]="persistencyMode !== 'view' || !userRoles.isAdmin || showProgress" >Edit</button>
+                    <button class="action-item" (click)="deleteUser(user)" [disabled]="persistencyMode !== 'view' || !userRoles.isAdmin || showProgress" >Delete</button>
+                </clr-dg-action-overflow>
+                
+                <clr-dg-cell>{{user.firstName}}</clr-dg-cell>
+                <clr-dg-cell>{{user.username}}</clr-dg-cell>
+                <clr-dg-cell>{{user.createdAt | date}}</clr-dg-cell>
+            </clr-dg-row>
+        
+            <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+        </clr-datagrid>
+    </div>
+    <clr-modal *ngIf="showDeleteModal" [(clrModalOpen)]="showDeleteModal" [clrModalClosable]="false">
+        <h3 class="modal-title">Confirmation</h3>
+        <div class="modal-body">
+            <p>Do you want delete the user {{persistentUser.firstName}}?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+            <button type="button" class="btn btn-outline-danger" (click)="confirmDelete()">
+                <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+                <span *ngIf="!showProgress">Delete</span>
+            </button>
+        </div>>
+    </clr-modal>
+</div>

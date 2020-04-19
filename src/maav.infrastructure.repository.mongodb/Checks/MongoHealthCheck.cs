@@ -12,8 +12,10 @@ namespace MAAV.Infrastrucuture.Repository.MongoDB.Checks
     public sealed class MongoHealthCheck : IHealthCheck
     {
         private readonly MongoUrl mongoUrl;
+        
         public MongoHealthCheck(string connectionstring)
-            => this.mongoUrl = new MongoUrl(connectionstring); 
+            => this.mongoUrl = new MongoUrl(connectionstring);
+
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
         {
             try

@@ -20,6 +20,7 @@ using MAAV.Infrastructure.Repository.MongoDB.Extensions;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Http;
+using MAAV.Domain.Repositories;
 
 namespace MAAV.WebAPI
 {
@@ -35,6 +36,7 @@ namespace MAAV.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             var healthCheckBuilder = services.AddHealthChecks();
             services
@@ -43,6 +45,14 @@ namespace MAAV.WebAPI
                 .AddScoped<IVersionService, ApplicationService>()
                 .AddScoped<ITeamService, TeamService>()
                 .AddScoped<IUserService, UserService>()
+                .AddScoped<IGithubEventResultService, GithubEventResultService>()
+                .AddSingleton<IGitHubWebHookService, GitHubWebHookService>(svc =>
+                {
+                    return new GitHubWebHookService(
+                        (IGithubEventResultRepository)MongoExtension.GetRepository<IGithubEventResultRepository>(),
+                        (IApplicationRepository)MongoExtension.GetRepository<IApplicationRepository>()
+                    );
+                })
                 .AddMapping()
                 //.AddLiteDb(Configuration)
                 .AddMongoDB(Configuration, healthCheckBuilder)
@@ -52,7 +62,7 @@ namespace MAAV.WebAPI
                         .RequireAuthenticatedUser()
                         .Build();
                 })
-                .AddBearerTokenValidation(Configuration.GetValue<string>("Auth:SecretKey"), TimeSpan.FromMinutes(30));
+                .AddBearerTokenValidation(Configuration.GetValue<string>("Auth:SecretKey"), TimeSpan.FromMinutes(120));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +78,13 @@ namespace MAAV.WebAPI
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
+
+            app.UseCors(op =>
+            {
+                op.AllowAnyOrigin();
+                op.AllowAnyMethod();
+                op.AllowAnyHeader();
+            });
 
             app.UseEndpoints(endpoints =>
             {

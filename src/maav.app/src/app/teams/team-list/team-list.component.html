@@ -1,0 +1,24 @@
+<div class="line-separator">    
+    <h1>Teams</h1>
+</div>
+<div class="line-separator-transparent">
+    <button class="btn btn-outline btn-icon" type="button" title="Add team" (click)="performShowPersistencyModal()">
+        <clr-icon shape="plus"></clr-icon>
+    </button>
+    <clr-datagrid>
+        <clr-dg-column>
+            Team Name
+            <clr-dg-string-filter [clrDgStringFilter]="teamNameFilter"></clr-dg-string-filter>
+        </clr-dg-column>
+        <clr-dg-column>Created at</clr-dg-column>
+        <clr-dg-placeholder>We couldn't find any teams!</clr-dg-placeholder>
+        
+        <clr-dg-row *ngFor="let team of teams">
+            <clr-dg-cell><a routerLink="../{{team.id}}">{{team.name}}</a></clr-dg-cell>
+            <clr-dg-cell>{{team.createdAt}}</clr-dg-cell>
+        </clr-dg-row>
+    
+        <clr-dg-footer>{{teams.length}} teams</clr-dg-footer>
+    </clr-datagrid>
+</div>
+<app-team-persistency *ngIf="showPersistencyTeamModal" (closed)="onClosePersistencyModal($event)" [persistencyMode]="'Add'"></app-team-persistency>

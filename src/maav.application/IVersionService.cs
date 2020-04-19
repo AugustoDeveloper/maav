@@ -1,3 +1,4 @@
+using MAAV.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,7 +7,8 @@ namespace MAAV.Application
 {
     public interface IVersionService
     {
-        Task<string> GetVersionFromSourceBranchAsync(string organisationName, string teamName, string appName, string source, object data);
-        Task<string> GetVersionFromSourceAndTagetBranchAsync(string organisationName, string teamName, string appName,string source, string target, object data);
+        Task<SemanticVersion> UpdateVersionOnBranches(string organisationName, string teamName, string appName, BranchActionRequest data);
+        Task<SemanticVersion> GetVersionFromSourceBranchAsync(string organisationName, string teamName, string appName, BranchActionRequest data);
+        Task<KeyBranchVersionHistory> LoadHistoryFromKeyBranchName(string organisationId, string teamId, string appId, string keyBranchName);
     }
 }

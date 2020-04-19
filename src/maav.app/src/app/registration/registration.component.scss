@@ -1,0 +1,20 @@
+.org-id {
+    text-transform: lowercase;
+}
+
+.register-input {
+    max-width: 100%;
+    flex: 0 0 100%;
+}
+
+.registration {    
+    background: #1b2a32;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.2rem 3rem;
+    height: auto;
+    min-height: 100vh;
+    width: 25.2rem;
+}

@@ -17,7 +17,7 @@ namespace MAAV.Application.Test.TeamService
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Not_Registered_OrganisationName_Or_TeamName_When_Call_GetByTeamNameAsync_ShouldReturns_Null_Instance(string organisationName, string teamName)
+        public async Task Given_Not_Registered_OrganisationId_Or_TeamName_When_Call_GetByTeamNameAsync_ShouldReturns_Null_Instance(string organisationId, string teamName)
         {
             var moqRepository = new Mock<ITeamRepository>();
             moqRepository
@@ -31,19 +31,19 @@ namespace MAAV.Application.Test.TeamService
                 .ReturnsAsync(true)
                 .Verifiable();  
             
-            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object);
-            Assert.Null(await service.GetByTeamNameAsync(organisationName, teamName));
+            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object, null);
+            Assert.Null(await service.GetByTeamNameAsync(organisationId, teamName));
             moqRepository.Verify();
         }
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Registered_OrganisationName_Or_TeamName_When_Call_GetByTeamNameAsync_ShouldReturns_Team_Instance(string organisationName, string teamName)
+        public async Task Given_Registered_OrganisationId_Or_TeamName_When_Call_GetByTeamNameAsync_ShouldReturns_Team_Instance(string organisationId, string teamName)
         {
             var moqRepository = new Mock<ITeamRepository>();
             moqRepository
                 .Setup(t => t.GetByAsync(It.IsAny<Expression<Func<Domain.Entities.Team, bool>>>()))
-                .ReturnsAsync(() => new Domain.Entities.Team { Name = teamName, OrganisationName = organisationName})
+                .ReturnsAsync(() => new Domain.Entities.Team { Name = teamName, OrganisationId = organisationId})
                 .Verifiable();
 
             var moqOrgRepository = new Mock<IOrganisationRepository>();
@@ -52,8 +52,8 @@ namespace MAAV.Application.Test.TeamService
                 .ReturnsAsync(true)
                 .Verifiable();  
             
-            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object);
-            var teamResult = await service.GetByTeamNameAsync(organisationName, teamName);
+            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object, null);
+            var teamResult = await service.GetByTeamNameAsync(organisationId, teamName);
             moqRepository.Verify();
             Assert.NotNull(teamResult);
             Assert.Equal(teamName, teamResult.Name);

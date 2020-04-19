@@ -1,0 +1,64 @@
+<form clrForm #userForm (ngSubmit)="onSubmit(userForm)">
+    <clr-alert [clrAlertType]="alert.type" *ngFor="let alert of alertService.alerts" (clrAlertClosedChange)="alertService.close(alert)">
+        <clr-alert-item>
+            <span class="alert-text">
+                {{alert.message}}
+            </span>
+        </clr-alert-item>
+    </clr-alert>
+    <clr-input-container>
+        <label>Name</label>
+        <input type="text" clrInput [(ngModel)]="user.firstName"  class="wd-75" name="firstName" [disabled]="persistencyMode == 'view'" />
+    </clr-input-container>  
+    <clr-input-container>
+        <label>Last Name</label>
+        <input type="text" clrInput [(ngModel)]="user.lastName"  class="wd-75" name="lastName"  [disabled]="persistencyMode == 'view'"/>
+    </clr-input-container>
+    <clr-input-container>
+        <label>User Id</label>
+        <input type="text" clrInput [(ngModel)]="user.username"  class="wd-75" name="username"  [disabled]="persistencyMode == 'view'"/>
+    </clr-input-container>
+    
+    <div *ngIf="(!resetPassword && user.username != '') && persistencyMode != 'add'" class="mt-20">
+        <strong class="mr-25">Password:</strong>
+        <button class="btn btn-outline-info btn-icon" (click)="performResetPassword()" [disabled]="!isAdmin"><clr-icon shape="key"></clr-icon></button>
+    </div>
+    <div *ngIf="(resetPassword && user.username != '') || persistencyMode == 'add'">
+        <clr-password-container>
+            <label>Password</label>
+            <input type="password" clrPassword [(ngModel)]="user.password"  class="wd-75" name="userPassword" value="" />
+        </clr-password-container>
+        <clr-password-container>
+            <label>Confirm Password</label>
+            <input type="password" name="userConfirmPassword" clrPassword [(ngModel)]="confirmPassword"  class="wd-75" value="" />
+        </clr-password-container>
+    </div>
+    <clr-checkbox-container clrInline>
+        <label>Roles</label>
+        <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox name="roleUser" value="isUser" [(ngModel)]="roles.isUser" checked  [disabled]="persistencyMode == 'view'"/>
+            <label>User</label> 
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox name="roleAdmin" value="isAdmin" [(ngModel)]="roles.isAdmin"  [disabled]="persistencyMode == 'view'"/>
+            <label>Admin</label> 
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox name="roleIntegration" value="isIntegration" [(ngModel)]="roles.isIntegration"  [disabled]="persistencyMode == 'view'"/>
+            <label>Integration</label> 
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox name="roleDeveloper" value="isDeveloper" [(ngModel)]="roles.isDeveloper"  [disabled]="persistencyMode == 'view'"/>
+            <label>Developer</label> 
+        </clr-checkbox-wrapper>                        
+        <clr-checkbox-wrapper class="mb-25">
+            <input type="checkbox" clrCheckbox name="roleTeamLeader" value="isTeamLeader" [(ngModel)]="roles.isTeamLeader"  [disabled]="persistencyMode == 'view'"/>
+            <label>Leader</label> 
+        </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+    <button class="btn btn-outline-danger" type="button" [disabled]="persistencyMode == 'view' || showProgress" (click)="cancel()">Cancel</button>
+    <button class="btn btn-outline-success" type="submit"  [disabled]="persistencyMode == 'view'">
+        <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+        <span *ngIf="!showProgress">{{buttonTitle}}</span>
+    </button>
+</form>

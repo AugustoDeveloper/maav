@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace MAAV.DataContracts
 {
-    public class Application
+    public class Application : TeamApplication
     {
-        public string Name { get; set; }
-        public ScheMapVersion ScheMap { get; set; }
-        public string InitialVersion { get; set; }
-        public List<BranchVersion> BranchVersions { get; set; } = new List<BranchVersion>();
+        public BranchActionMap[] Branches { get; set; }
+        public SemanticVersion InitialVersion { get; set; }
+        public List<KeyBranch> KeyBranches { get; set; } = new List<KeyBranch>();
+        public string GithubSecretKey { get; set; }
+        public bool WebHookEnabled { get; set; }
     }
 }

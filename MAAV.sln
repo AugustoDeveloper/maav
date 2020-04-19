@@ -1,29 +1,44 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{08D65852-BF71-40D6-84A5-A747FD5E8489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.Application", "src\maav.application\MAAV.Application.csproj", "{0B1C4CF9-6666-47F5-B7CE-68C406857818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.Application", "src\maav.application\MAAV.Application.csproj", "{0B1C4CF9-6666-47F5-B7CE-68C406857818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.DataContracts", "src\maav.datacontracts\MAAV.DataContracts.csproj", "{39B9D627-20FA-461C-A493-57713DFABEF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.DataContracts", "src\maav.datacontracts\MAAV.DataContracts.csproj", "{39B9D627-20FA-461C-A493-57713DFABEF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.Domain", "src\maav.domain\MAAV.Domain.csproj", "{443215E3-9159-46E8-9DAC-9E48E1AF9B22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.Domain", "src\maav.domain\MAAV.Domain.csproj", "{443215E3-9159-46E8-9DAC-9E48E1AF9B22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.Infrastructure.Repository.LiteDB", "src\maav.infrastructure.repository.litedb\MAAV.Infrastructure.Repository.LiteDB.csproj", "{43898812-0121-499C-9081-CDECCC1E6AB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.Infrastructure.Repository.LiteDB", "src\maav.infrastructure.repository.litedb\MAAV.Infrastructure.Repository.LiteDB.csproj", "{43898812-0121-499C-9081-CDECCC1E6AB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.Infrastructure.Repository.MongoDB", "src\maav.infrastructure.repository.mongodb\MAAV.Infrastructure.Repository.MongoDB.csproj", "{01C37779-49FC-431F-9CEC-C78C672C1A44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.Infrastructure.Repository.MongoDB", "src\maav.infrastructure.repository.mongodb\MAAV.Infrastructure.Repository.MongoDB.csproj", "{01C37779-49FC-431F-9CEC-C78C672C1A44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.WebAPI", "src\maav.webapi\MAAV.WebAPI.csproj", "{861C7B20-8060-42CA-B506-BBCDF21D3D42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.WebAPI", "src\maav.webapi\MAAV.WebAPI.csproj", "{861C7B20-8060-42CA-B506-BBCDF21D3D42}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{54A8DB7B-CDBC-46AC-BA33-5046BE85B7F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.Application.Test", "tests\maav.application.test\MAAV.Application.Test.csproj", "{B1C94963-3292-47E9-BDB2-1DD4D83EE17B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.Application.Test", "tests\maav.application.test\MAAV.Application.Test.csproj", "{B1C94963-3292-47E9-BDB2-1DD4D83EE17B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.WebAPI.Test", "tests\maav.webapi.test\MAAV.WebAPI.Test.csproj", "{8B653EF1-C2A2-42D0-90CA-3551BAC40E9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.WebAPI.Test", "tests\maav.webapi.test\MAAV.WebAPI.Test.csproj", "{8B653EF1-C2A2-42D0-90CA-3551BAC40E9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAAV.WebAPI.Integration.Test", "tests\maav.webapi.integration.test\MAAV.WebAPI.Integration.Test.csproj", "{8BDB608A-CCDB-4397-A6B7-7CF27DC59E85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAAV.WebAPI.Integration.Test", "tests\maav.webapi.integration.test\MAAV.WebAPI.Integration.Test.csproj", "{8BDB608A-CCDB-4397-A6B7-7CF27DC59E85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{1DACB90B-FC09-41F0-9E2D-91B781E48D2E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		_config.yml = _config.yml
+		docker-compose.yml = docker-compose.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{2866EE0A-04FA-4437-8A42-F7FCD1DDD3A9}"
+	ProjectSection(SolutionItems) = preProject
+		tools\build.sh = tools\build.sh
+		tools\container-release-heroku.sh = tools\container-release-heroku.sh
+		tools\run.sh = tools\run.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +48,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0B1C4CF9-6666-47F5-B7CE-68C406857818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -147,6 +159,9 @@ Global
 		{8BDB608A-CCDB-4397-A6B7-7CF27DC59E85}.Release|x86.ActiveCfg = Release|Any CPU
 		{8BDB608A-CCDB-4397-A6B7-7CF27DC59E85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B1C4CF9-6666-47F5-B7CE-68C406857818} = {08D65852-BF71-40D6-84A5-A747FD5E8489}
 		{39B9D627-20FA-461C-A493-57713DFABEF1} = {08D65852-BF71-40D6-84A5-A747FD5E8489}
@@ -157,5 +172,8 @@ Global
 		{B1C94963-3292-47E9-BDB2-1DD4D83EE17B} = {54A8DB7B-CDBC-46AC-BA33-5046BE85B7F7}
 		{8B653EF1-C2A2-42D0-90CA-3551BAC40E9E} = {54A8DB7B-CDBC-46AC-BA33-5046BE85B7F7}
 		{8BDB608A-CCDB-4397-A6B7-7CF27DC59E85} = {54A8DB7B-CDBC-46AC-BA33-5046BE85B7F7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8806EF0-1C10-44CD-A41A-EAA60DFE63B2}
 	EndGlobalSection
 EndGlobal
