@@ -16,9 +16,9 @@ namespace MAAV.Application.Extensions
             {
                 cfg
                     .CreateMap<DataContracts.Organisation, Domain.Entities.Organisation>()
+                    .ForMember(o => o.Id, opt => opt.MapFrom(s => s.Id))
                     .ForMember(o => o.Name, opt => opt.MapFrom(s => s.Name))
-                    .ForMember(o => o.Teams, opt => opt.Ignore())
-                    .ForMember(o => o.ScheMap, opt => opt.MapFrom(s => s.ScheMap));
+                    .ForMember(o => o.Teams, opt => opt.Ignore());
 
                 cfg
                     .CreateMap<DataContracts.ScheMapVersion, Domain.Entities.ScheMapVersion>()
@@ -36,15 +36,19 @@ namespace MAAV.Application.Extensions
 
                 cfg
                     .CreateMap<DataContracts.Team, Domain.Entities.Team>()
-                    .ForMember(t => t.Name, opt => opt.MapFrom(ts => ts.Name))
-                    .ForMember(t => t.ScheMap, opt => opt.MapFrom(ts => ts.ScheMap));
+                    .ForMember(t => t.Id, opt => opt.MapFrom(ts => ts.Id))
+                    .ForMember(t => t.CreatedAt, opt => opt.MapFrom(ts => ts.CreatedAt))
+                    .ForMember(t => t.Name, opt => opt.MapFrom(ts => ts.Name));
 
                 cfg
                     .CreateMap<DataContracts.User, Domain.Entities.User>()
                     .ForMember(u => u.Username, opt => opt.MapFrom(du => du.Username))
                     .ForMember(u => u.FirstName, opt => opt.MapFrom(du => du.FirstName))
                     .ForMember(u => u.LastName, opt => opt.MapFrom(du => du.LastName))
-                    .ForMember(u => u.TeamRoles, opt => opt.MapFrom(du => du.TeamRoles));
+                    .ForMember(u => u.CreatedAt, opt => opt.MapFrom(du => du.CreatedAt))
+                    .ForMember(u => u.OrganisationRoles, opt => opt.MapFrom(du => du.Roles))
+                    .ForMember(u => u.TeamsPermissions, opt => opt.MapFrom(du => du.TeamsPermissions))
+                    .ForMember(u => u.TeamsPermissions, opt => opt.MapFrom(du => du.TeamsPermissions));
 
 
                 cfg.CreateMap<DataContracts.IncrementMode, Domain.Entities.IncrementMode>();
@@ -52,8 +56,8 @@ namespace MAAV.Application.Extensions
 
                 cfg
                     .CreateMap<Domain.Entities.Organisation, DataContracts.Organisation>()
-                    .ForMember(o => o.Name, opt => opt.MapFrom(s => s.Name))
-                    .ForMember(o => o.ScheMap, opt => opt.MapFrom(s => s.ScheMap));
+                    .ForMember(o => o.Id, opt => opt.MapFrom(s => s.Id))
+                    .ForMember(o => o.Name, opt => opt.MapFrom(s => s.Name));
 
                 cfg.
                     CreateMap<Domain.Entities.ScheMapVersion, DataContracts.ScheMapVersion>()
@@ -71,18 +75,22 @@ namespace MAAV.Application.Extensions
 
                 cfg
                     .CreateMap<Domain.Entities.Team, DataContracts.Team>()
-                    .ForMember(t => t.Name, opt => opt.MapFrom(ts => ts.Name))
-                    .ForMember(t => t.ScheMap, opt => opt.MapFrom(ts => ts.ScheMap));
-                    
+                    .ForMember(t => t.Id, opt => opt.MapFrom(ts => ts.Id))
+                    .ForMember(t => t.CreatedAt, opt => opt.MapFrom(ts => ts.CreatedAt))
+                    .ForMember(t => t.Users, opt => opt.MapFrom(ts => ts.Users))
+                    .ForMember(t => t.Name, opt => opt.MapFrom(ts => ts.Name));
+
                 cfg
                     .CreateMap<Domain.Entities.User, DataContracts.User>()
                     .ForMember(u => u.Username, opt => opt.MapFrom(du => du.Username))
                     .ForMember(u => u.FirstName, opt => opt.MapFrom(du => du.FirstName))
                     .ForMember(u => u.LastName, opt => opt.MapFrom(du => du.LastName))
-                    .ForMember(u => u.TeamRoles, opt => opt.MapFrom(du => du.TeamRoles));
+                    .ForMember(u => u.CreatedAt, opt => opt.MapFrom(u => u.CreatedAt))
+                    .ForMember(u => u.Roles, opt => opt.MapFrom(du => du.OrganisationRoles))
+                    .ForMember(u => u.TeamsPermissions, opt => opt.MapFrom(du => du.TeamsPermissions));
 
-                cfg.CreateMap<Domain.Entities.UserTeamRole, DataContracts.UserTeamRole>();
-                cfg.CreateMap<DataContracts.UserTeamRole, Domain.Entities.UserTeamRole>();
+                cfg.CreateMap<Domain.Entities.TeamPermission, DataContracts.TeamPermission>();
+                cfg.CreateMap<DataContracts.TeamPermission, Domain.Entities.TeamPermission>();
 
                 cfg
                     .CreateMap<Domain.Entities.Application, DataContracts.Application>()
@@ -94,11 +102,14 @@ namespace MAAV.Application.Extensions
                     .CreateMap<DataContracts.Application, Domain.Entities.Application>()
                     .ForMember(a => a.Name, opt => opt.MapFrom(ae => ae.Name))
                     .ForMember(a => a.ScheMap, opt => opt.MapFrom(ae => ae.ScheMap))
-                    .ForMember(a => a.OrganisationName, opt => opt.Ignore())
+                    .ForMember(a => a.OrganisationId, opt => opt.Ignore())
                     .ForMember(a => a.TeamName, opt => opt.Ignore())
                     .ForMember(a => a.BranchVersions, opt => opt.MapFrom(au => au.BranchVersions))
                     .ForMember(a => a.InitialVersion, opt => opt.Ignore());
 
+
+                cfg.CreateMap<Domain.Entities.TeamUser, DataContracts.TeamUser>();
+                cfg.CreateMap<DataContracts.TeamUser, Domain.Entities.TeamUser>();
 
                 cfg.CreateMap<Domain.Entities.Version, DataContracts.Version>();
                 cfg.CreateMap<DataContracts.Version, Domain.Entities.Version>();
@@ -129,11 +140,11 @@ namespace MAAV.Application.Extensions
             => ToEntity<DataContracts.Team, Domain.Entities.Team>(CurrentMapper, source);
 
         
-        public static DataContracts.UserTeamRole ToContract(this Domain.Entities.UserTeamRole source)
-            => ToContract<Domain.Entities.UserTeamRole, DataContracts.UserTeamRole>(CurrentMapper, source);
+        public static DataContracts.TeamPermission ToContract(this Domain.Entities.TeamPermission source)
+            => ToContract<Domain.Entities.TeamPermission, DataContracts.TeamPermission>(CurrentMapper, source);
 
-        public static Domain.Entities.UserTeamRole ToEntity(this DataContracts.UserTeamRole source)
-            => ToEntity<DataContracts.UserTeamRole, Domain.Entities.UserTeamRole>(CurrentMapper, source);
+        public static Domain.Entities.TeamPermission ToEntity(this DataContracts.TeamPermission source)
+            => ToEntity<DataContracts.TeamPermission, Domain.Entities.TeamPermission>(CurrentMapper, source);
 
         public static DataContracts.Application ToContract(this Domain.Entities.Application source)
         {
@@ -154,10 +165,13 @@ namespace MAAV.Application.Extensions
         public static IEnumerable<DataContracts.Team> ToContract(this IEnumerable<Domain.Entities.Team> source)
             => source.Select(t => t.ToContract());
 
+        public static IEnumerable<DataContracts.User> ToContract(this IEnumerable<Domain.Entities.User> source)
+            => source.Select(u => u.ToContract());
+
         public static IEnumerable<DataContracts.Application> ToContract(this IEnumerable<Domain.Entities.Application> source)
             => source.Select(t => t.ToContract());
         
-        public static IEnumerable<Domain.Entities.UserTeamRole> ToEntity(this IEnumerable<DataContracts.UserTeamRole> source, Func<Domain.Entities.UserTeamRole, Domain.Entities.UserTeamRole> action)
+        public static IEnumerable<Domain.Entities.TeamPermission> ToEntity(this IEnumerable<DataContracts.TeamPermission> source, Func<Domain.Entities.TeamPermission, Domain.Entities.TeamPermission> action)
             => source.Select(utr => action.Invoke(utr.ToEntity()));
 
         public static DataContracts.User ToContract(this Domain.Entities.User source)

@@ -1,0 +1,12 @@
+.box-options-user {
+    overflow: auto;
+}
+
+.option-user {
+    float: left;
+    display: inline-flex;
+}
+
+.option-user::after {
+    clear: right;
+}

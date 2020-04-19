@@ -1,0 +1,137 @@
+<form clrStepper #applicationForm="ngForm" (ngSubmit)="onSubmit(applicationForm)">
+    <clr-modal [(clrModalOpen)]="showDialog" [clrModalClosable]="true" [clrModalSize]="'xl'">
+        <h3 class="modal-title">Add Application</h3>
+        <div class="modal-body">
+            <clr-stepper-panel ngModelGroup="name">
+                <clr-step-title>Application Name</clr-step-title>
+                <clr-step-description>The identificator of an application</clr-step-description>
+                <clr-step-content *clrIfExpanded>
+                    <clr-input-container>
+                        <label>Name</label>
+                        <input type="text" clrInput [ngModel]="app.name" name="applicationName" required />
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Format Version</label>
+                        <input type="text" clrInput [ngModel]="app.initialVersion" name="initialVersion" required />
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Initial Version</label>
+                        <input type="text" clrInput [ngModel]="app.initialVersion" name="initialVersion" required />
+                    </clr-input-container>
+                    <button clrStepButton="next">Next</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+            <clr-stepper-panel ngModelGroup="branch-versioning">
+                <clr-step-title>Branch Versioning</clr-step-title>
+                <clr-step-description>Branch versions of application</clr-step-description>
+                <clr-step-content *clrIfExpanded>
+                    <clr-input-container>
+                        <label>Branch Name</label>
+                        <input clrInput [(ngModel)]="branchVersion.name" name="branchVersionName" [required]="app.branchVersions.length === 0" />
+                    </clr-input-container>
+                    <clr-toggle-container>
+                        <clr-toggle-wrapper>
+                            <label>Branch Enabled</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="branchVersion.enabled" name="branchVersionEnabled" />
+                        </clr-toggle-wrapper>
+                    </clr-toggle-container>
+                    <clr-input-container>
+                        <label>Branch Version</label>
+                        <input clrInput [(ngModel)]="branchVersion.version" name="branchVesionNumber" [required]="app.branchVersions.length === 0" />
+                    </clr-input-container>
+                    <button type="button" class="btn btn-outline btn-icon add-branch-button" title="Add branch" (click)="addBranchVersion(branchVersion)">
+                        <clr-icon shape="plus"></clr-icon>
+                    </button>
+                    <clr-datagrid>
+                        <clr-dg-column>Branch Name</clr-dg-column>
+                        <clr-dg-column>Branch Enabled</clr-dg-column>
+                        <clr-dg-column>Branch Version</clr-dg-column>
+                        <clr-dg-row *ngFor="let branch of app.branchVersions">
+                            <clr-dg-action-overflow>
+                                <button class="action-item" (click)="deleteBranchVersion(branch)">Delete</button>
+                            </clr-dg-action-overflow>
+                            <clr-dg-cell>{{branch.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{branch.enabled}}</clr-dg-cell>
+                            <clr-dg-cell>{{branch.version}}</clr-dg-cell>
+                        </clr-dg-row>
+                    </clr-datagrid>
+                    <button clrStepButton="next">Next</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+            <clr-stepper-panel ngModelGroup="branch-map">
+                <clr-step-title>Branch Mapping</clr-step-title>
+                <clr-step-description>Map action for branch on application</clr-step-description>
+                <clr-step-content *clrIfExpanded>
+                    <clr-input-container>
+                        <label>Map Name</label>
+                        <input clrInput [(ngModel)]="branchMap.name" name="branchMapName" [required]="app.map.length === 0" />
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Pattern Branch</label>
+                        <input clrInput [(ngModel)]="branchMap.pattern" name="branchMapPattern" [required]="app.map.length === 0" />
+                    </clr-input-container>
+                    <clr-input-container>
+                        <label>Suffix Format</label>
+                        <input clrInput [(ngModel)]="branchMap.suffixFormat" name="branchMapSuffixFormat" [required]="app.map.length === 0" />
+                    </clr-input-container>
+                    <clr-toggle-container clrInline>
+                        <clr-toggle-wrapper>
+                            <label>Allow Bump Major Version</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="branchMap.allowBumpMajorVersion" name="branchMapAllowBumpMajorVersion" />
+                        </clr-toggle-wrapper>
+                        <clr-toggle-wrapper>
+                            <label>Is key branch?</label>
+                            <input clrToggle type="checkbox" [(ngModel)]="branchMap.isKeyBranch" name="branchMapIsKeyBranch"/>
+                        </clr-toggle-wrapper>
+                    </clr-toggle-container>
+                    <clr-radio-container clrInline>
+                        <label>Increment Mode</label>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Major" [required]="app.map.length === 0" [(ngModel)]="branchMap.incrementMode" />
+                            <label>Major</label>
+                        </clr-radio-wrapper>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Minor" [required]="app.map.length === 0" [(ngModel)]="branchMap.incrementMode" />
+                            <label>Minor</label>
+                        </clr-radio-wrapper>
+                        <clr-radio-wrapper>
+                            <input type="radio" clrRadio name="branchMapIncrmentMode" value="Patch" [required]="app.map.length === 0" [(ngModel)]="branchMap.incrementMode" />
+                            <label>Patch</label>
+                        </clr-radio-wrapper>
+                    </clr-radio-container>
+                    <clr-select-container>
+                        <label>Inherited From</label>
+                        <select clrSelect name="branchMapInheritedFrom" [(ngModel)]="branchMap.inheritedFrom" [required]="app.map.length === 0" *ngFor="let branch of app.branchVersions">
+                            <option>{{ branch.name}}</option>                            
+                        </select>
+                    </clr-select-container>
+                    <button type="button" type="button" class="btn btn-outline btn-icon add-branch-button" title="Add branch" (click)="addBranchMap(branchMap)">
+                        <clr-icon shape="plus"></clr-icon>
+                    </button>
+                    <clr-datagrid>
+                        <clr-dg-column>Map Name</clr-dg-column>
+                        <clr-dg-column>Branch Pattern</clr-dg-column>
+                        <clr-dg-column>Suffix Format Version</clr-dg-column>
+                        <clr-dg-column>Bump Version?</clr-dg-column>
+                        <clr-dg-column>Key Branch?</clr-dg-column>
+                        <clr-dg-column>Increment</clr-dg-column>
+                        <clr-dg-column>Inherited</clr-dg-column>
+                        <clr-dg-row *ngFor="let mapping of app.map">
+                            <clr-dg-action-overflow>
+                                <button class="action-item" (click)="deleteBranchMap(branchMap)">Delete</button>
+                            </clr-dg-action-overflow>
+                            <clr-dg-cell>{{mapping.name}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.pattern}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.suffixFormat}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.allowBumpMajorVersion}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.isKeyBranch}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.incrementMode}}</clr-dg-cell>
+                            <clr-dg-cell>{{mapping.inheritedFrom}}</clr-dg-cell>
+                        </clr-dg-row>
+                    </clr-datagrid>
+                    <button clrStepButton="submit" class="btn btn-success-outline">Create</button>
+                </clr-step-content>
+            </clr-stepper-panel>
+        </div>
+    </clr-modal>
+</form>

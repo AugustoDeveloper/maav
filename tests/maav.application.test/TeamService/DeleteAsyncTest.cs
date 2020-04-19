@@ -35,7 +35,7 @@ namespace MAAV.Application.Test.TeamService
                 .ReturnsAsync(true)
                 .Verifiable();            
             
-            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object);
+            var service = new Application.TeamService(moqRepository.Object, moqOrgRepository.Object, null);
             await service.DeleteAsync(organisationName, teamName);
             moqRepository.VerifyAll();
           }

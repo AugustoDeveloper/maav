@@ -8,6 +8,8 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.IdGenerators;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MAAV.Infrastructure.Repository.MongoDB.Extensions
 {
@@ -16,17 +18,15 @@ namespace MAAV.Infrastructure.Repository.MongoDB.Extensions
         public static IServiceCollection AddMongoDB(this IServiceCollection collection, IConfiguration configuration, IHealthChecksBuilder healthCheckBuild)
         {
             var connectionString = configuration.GetConnectionString("MAAVConnectionString");
-            var databaseName = configuration.GetValue<string>("MAAV:DatabaseName");
             
-            collection.AddScoped<IApplicationRepository>((s) => new ApplicationRepository(connectionString, databaseName));
-            collection.AddScoped<IOrganisationRepository>((s) => new OrganisationRepository(connectionString, databaseName));
-            collection.AddScoped<ITeamRepository>((s) => new TeamRepository(connectionString, databaseName));
-            collection.AddScoped<IUserRepository>((s) => new UserRepository(connectionString, databaseName));
+            collection.AddScoped<IApplicationRepository>((s) => new ApplicationRepository(connectionString));
+            collection.AddScoped<IOrganisationRepository>((s) => new OrganisationRepository(connectionString));
+            collection.AddScoped<ITeamRepository>((s) => new TeamRepository(connectionString));
+            collection.AddScoped<IUserRepository>((s) => new UserRepository(connectionString));
 
-            healthCheckBuild.AddTypeActivatedCheck<MongoHealthCheck>("mongodb_health",
+            healthCheckBuild.AddCheck("mongodb_health", new MongoHealthCheck(connectionString),
                                                                      HealthStatus.Unhealthy,
-                                                                     new [] { "mongodb"},
-                                                                     connectionString);
+                                                                     new [] { "mongodb"});
 
             ConfigureConvention();
             RegisterClassMap();
@@ -68,16 +68,21 @@ namespace MAAV.Infrastructure.Repository.MongoDB.Extensions
             BsonClassMap.RegisterClassMap<Team>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(o => o.Id).SetIdGenerator(ObjectIdGenerator.Instance);
+                cm.MapIdMember(o => o.Id);
             });
 
             BsonClassMap.RegisterClassMap<User>(cm =>
             {
                 cm.AutoMap();
+            });
+
+            BsonClassMap.RegisterClassMap<TeamUser>(cm =>
+            {
+                cm.AutoMap();
                 cm.MapIdMember(o => o.Id).SetIdGenerator(ObjectIdGenerator.Instance);
             });
 
-            BsonClassMap.RegisterClassMap<UserTeamRole>(cm =>
+            BsonClassMap.RegisterClassMap<TeamPermission>(cm =>
             {
                 cm.AutoMap();
             });

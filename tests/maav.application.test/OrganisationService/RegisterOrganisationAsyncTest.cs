@@ -59,7 +59,6 @@ namespace MAAV.Application.Test.OrganisationService
                moqRepository.VerifyAll();
 
                Assert.NotNull(newOrganisation);
-               Assert.Null(newOrganisation.ScheMap);
                Assert.Equal(organisationName, newOrganisation.Name);
           }
 
@@ -77,7 +76,7 @@ namespace MAAV.Application.Test.OrganisationService
                     .Verifiable();
                 moqRepository
                     .Setup(o => o.AddAsync(It.IsAny<Organisation>()))
-                    .ReturnsAsync(new Organisation { Name = organisationName, ScheMap = new ScheMapVersion() })
+                    .ReturnsAsync(new Organisation { Name = organisationName})
                     .Verifiable();
 
                var service = new Application.OrganisationService(moqRepository.Object);
@@ -85,7 +84,6 @@ namespace MAAV.Application.Test.OrganisationService
                moqRepository.VerifyAll();
 
                Assert.NotNull(newOrganisation);
-               Assert.NotNull(newOrganisation.ScheMap);
                Assert.Equal(organisationName, newOrganisation.Name);
           }
      }

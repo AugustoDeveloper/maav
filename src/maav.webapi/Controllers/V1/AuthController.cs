@@ -13,20 +13,20 @@ namespace MAAV.WebAPI.Controllers
     [ApiController, Route("api/v1")]
     public class AuthController : ControllerBase
     {
-        [HttpPost("{organisationName}/authenticate"), AllowAnonymous]
+        [HttpPost("{organisationId}/authenticate"), AllowAnonymous]
         public async Task<IActionResult> AuthenticateAsync(
-            [FromRoute] string organisationName,
+            [FromRoute] string organisationId,
             [FromBody] Login login,
             [FromServices]IUserService service)
         {
-            if (string.IsNullOrWhiteSpace(login?.Username) || string.IsNullOrWhiteSpace(login?.Password) || string.IsNullOrWhiteSpace(organisationName))
+            if (string.IsNullOrWhiteSpace(login?.Username) || string.IsNullOrWhiteSpace(login?.Password) || string.IsNullOrWhiteSpace(organisationId))
             {
                 return BadRequest();
             }
 
             try
             {
-                var auth = await service.AuthenticateAsync(organisationName, login.Username, login.Password);
+                var auth = await service.AuthenticateAsync(organisationId, login.Username, login.Password);
                 auth.GenerateToken();
 
                 return Ok(auth);

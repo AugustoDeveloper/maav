@@ -25,8 +25,8 @@ namespace MAAV.WebAPI.Extensions
             IdentityModelEventSource.ShowPII = true;
             var key = Encoding.UTF8.GetBytes(Secret);
             
-            var roles = authResult.Roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
-            roles.Add(new Claim(ClaimTypes.Name, $"{authResult.OrganisationName}.{authResult.User.Username}"));
+            var roles = authResult.User.Roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
+            roles.Add(new Claim(ClaimTypes.Name, $"{authResult.User.Username}"));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

@@ -1,0 +1,26 @@
+<div class="line-separator">
+    <h1>Applications</h1>
+</div>
+<div class="line-separator-transparent">
+    <clr-datagrid>
+        <clr-dg-column>Team</clr-dg-column>
+        <clr-dg-column>Application Name</clr-dg-column>
+        <clr-dg-column>Initial Version</clr-dg-column>
+        <clr-dg-column>Latest Version</clr-dg-column>
+        <clr-dg-column>Branches</clr-dg-column>
+        <clr-dg-column>Last Deploy</clr-dg-column>
+        <clr-dg-placeholder>We couldn't find any applications!</clr-dg-placeholder>
+        
+        <clr-dg-row *ngFor="let app of applications">
+            <clr-dg-cell>{{app.team.name}}</clr-dg-cell>
+            <clr-dg-cell>{{app.name}}</clr-dg-cell>
+            <clr-dg-cell>{{app.initialVersion}}</clr-dg-cell>
+            <clr-dg-cell>{{app.currentVersion}}</clr-dg-cell>
+            <clr-dg-cell>{{app.branches}}</clr-dg-cell>
+            <clr-dg-cell>{{app.lastDeploy | date}}</clr-dg-cell>
+        </clr-dg-row>
+    
+        <clr-dg-footer>{{applications.length}} applications</clr-dg-footer>
+    </clr-datagrid>
+</div>
+<app-application-persistency *ngIf="showPersistencyApplicationModal" (closed)="onClosePersistencyModal($event.value)" [persistencyMode]="'Add'"></app-application-persistency>

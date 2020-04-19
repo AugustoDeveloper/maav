@@ -24,7 +24,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_Invalid_OrganisationName_Or_TeamName_When_Call_UpdateTeamAsync_ShouldReturns_BadRequest(string organisationName, string teamName, string instanceTeamName)
         {
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null);
+            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null, null);
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -34,7 +34,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_TeamName_And_Instance_TeamName_Is_Different_When_Call_UpdateTeamAsync_ShouldReturns_BadRequest(string organisationName, string teamName, string instanceTeamName)
         {            
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null);
+            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null, null);
 
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -50,7 +50,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
             
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, moqService.Object);
+            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null, moqService.Object);
             moqService.Verify();
 
             Assert.IsType<NotFoundResult>(result);
@@ -61,7 +61,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_Invalid_TeamService_When_Call_UpdateTeamAsync_ShouldReturns_InternalServerError(string organisationName, string teamName, string instanceTeamName)
         {
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null);
+            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null, null);
             Assert.IsType<StatusCodeResult>(result);
             var statusCodeResult = (StatusCodeResult)result;
             Assert.NotNull(statusCodeResult);
@@ -79,7 +79,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
             
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, moqService.Object);
+            var result = await controller.UpdateTeamAsync(organisationName, teamName, new DataContracts.Team { Name = instanceTeamName }, null, moqService.Object);
             moqService.Verify();
 
             Assert.IsType<OkObjectResult>(result);

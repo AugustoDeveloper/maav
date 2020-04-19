@@ -10,7 +10,8 @@ namespace MAAV.Infrastructure.Repository.MongoDB
 {
 	public abstract class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
 	{
-		private readonly string connectionString;
+        private readonly MongoUrl mongoUrl;
+        private readonly string connectionString;
 		private readonly string databaseName;
 		private Lazy<MongoClient> lazyClient;
 
@@ -18,11 +19,12 @@ namespace MAAV.Infrastructure.Repository.MongoDB
 		private IMongoDatabase Database => lazyClient.Value.GetDatabase(this.databaseName);
 		private IMongoCollection<TEntity> Collection => Database.GetCollection<TEntity>(this.collectionName);
 
-        protected MongoRepository(string connectionString, string databaseName)
+        protected MongoRepository(string connectionString)
         {
+            this.mongoUrl = new MongoUrl(connectionString);
             this.connectionString = connectionString;
-            this.databaseName = databaseName;
-            lazyClient = new Lazy<MongoClient>(() => new MongoClient(this.connectionString));
+            this.databaseName = this.mongoUrl.DatabaseName;
+            lazyClient = new Lazy<MongoClient>(() => new MongoClient(this.mongoUrl));
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)

@@ -6,12 +6,12 @@ namespace MAAV.Application
 {
     public interface ITeamService
     {
-        Task<Team> GetByTeamNameAsync(string organisationName, string teamName);
-        Task<Team> AddAsync(string organisationName, Team team);
-        Task<Team> UpdateAsync(string organisationName, Team team);
-        Task DeleteAsync(string organisationName, string teamName);
+        Task<Team> GetByTeamNameAsync(string organisationId, string teamName);
+        Task<Team> AddAsync(string organisationId, Team team);
+        Task<Team> UpdateAsync(string organisationId, Team team);
+        Task DeleteAsync(string organisationId, string teamName);
         
         //TODO: Need create unit test
-        Task<Team[]> LoadByOrganisationNameAsync(string organisationName);
+        Task<Team[]> LoadByOrganisationIdAsync(string organisationId);
     }
 }

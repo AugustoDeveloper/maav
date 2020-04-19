@@ -7,6 +7,7 @@ using MAAV.Application.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using MAAV.Application.Validation;
+using System.Text;
 
 namespace MAAV.Application
 {
@@ -23,68 +24,81 @@ namespace MAAV.Application
             this.repository = userRepository;
         }
 
-        public async Task<User> AddAsync(string organisationName, User user)
+        public async Task<User> AddAsync(string orgId, User user)
         {
             if (!(await new UserValidator().ValidateAsync(user)).IsValid)
             {
                 throw new ArgumentException($"The user information is invalid");
             }
 
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            if (await this.repository.ExistsByAsync(u => u.Username == user.Username && u.OrganisationName == organisationName))
+            if (await this.repository.ExistsByAsync(u => u.Username == user.Username && u.OrganisationId == orgId))
             {
                 throw new NameAlreadyUsedException(user.Username);
             }
 
             var userEntity = user.ToEntity();
-            userEntity.OrganisationName = organisationName;
+            userEntity.OrganisationId = orgId;
             var passkeys = user.Password.Encrypt();
 
-            userEntity.PasswordHash = passkeys.PasswordHash;
-            userEntity.PasswordSalt = passkeys.PasswordSalt;
-            userEntity.OrganisationRoles = new []{ "User" };
+            userEntity.PasswordHash = Convert.ToBase64String(passkeys.PasswordHash);
+            userEntity.PasswordSalt = Convert.ToBase64String(passkeys.PasswordSalt);
+            userEntity.OrganisationRoles = user.Roles;
             userEntity = await repository.AddAsync(userEntity);
 
             return userEntity.ToContract();
         }
 
-        public async Task DeleteAsync(string organisationName, string username)
+        public async Task DeleteAsync(string orgId, string username)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            await this.repository.DeleteAsync(t => t.Username == username && t.OrganisationName == organisationName);
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == username);
+            if(userEntity == null)
+            {
+                return;
+            }
+
+            foreach (var teamPermission in userEntity.TeamsPermissions)
+            {
+                var team = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.Id == teamPermission.TeamId);
+                team.Users.RemoveAll(u => userEntity.Id.Equals(u.Id));
+                await this.teamRepository.UpdateAsync(team);
+            }
+
+            await this.repository.DeleteAsync(t => t.Username == username && t.OrganisationId == orgId);
         }
 
-        public async Task<User> GetByUsernameAsync(string organisationName, string username)
+        public async Task<User> GetByUsernameAsync(string orgId, string username)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }            
-            var user = await repository.GetByAsync(t => t.Username == username && t.OrganisationName == organisationName);
+            var user = await repository.GetByAsync(t => t.Username == username && t.OrganisationId == orgId);
             return user?.ToContract();
         }
 
-        public async Task<User> UpdateAsync(string organisationName, User user)
+        public async Task<User> UpdateAsync(string orgId, User user, bool sameAuthUser = false)
         {
             if (!(await new UserValidator().ValidateAsync(user)).IsValid)
             {
                 throw new ArgumentException($"The user information is invalid");
             }
 
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == user.Username);
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == user.Username);
             if (userEntity == null)
             {
                 return null;
@@ -92,88 +106,66 @@ namespace MAAV.Application
 
             userEntity.FirstName = user.FirstName;
             userEntity.LastName = user.LastName;
+            if(!sameAuthUser)
+            {
+                userEntity.OrganisationRoles = user.Roles;
+            }
+
+            this.repository.UpdateAsync(userEntity);
 
             return userEntity.ToContract();
         }
 
-        public async Task AddUserToTeamAsync(string organisationName, string teamName, User user)
+
+        public async Task RemoveUserToTeamAsync(string orgId, string teamId, string username)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var teamLocated = await this.teamRepository.GetByAsync(t => t.OrganisationName == organisationName && t.Name == teamName);
+            var teamLocated = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.Id == teamId);
             if (teamLocated == null)
             {
-                throw new ArgumentException($"The team {teamName} on organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamId} on organisation {orgId} not exists");
             }
 
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == user.Username);
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == username);
             if (userEntity == null)
             {
-                throw new ArgumentException($"The user {user.Username} on organisation {organisationName} not exists");
+                throw new ArgumentException($"The user {username} on organisation {orgId} not exists");
             }
 
-            userEntity.TeamRoles.RemoveAll(tr => tr.TeamId == teamLocated.Id);
+            userEntity.TeamsPermissions.RemoveAll(tr => tr.TeamId == teamId);
+            teamLocated.Users.RemoveAll(u => userEntity.Username.Equals(u.Username));
 
-            userEntity.TeamRoles.AddRange(user.TeamRoles.ToEntity(utr => 
-            {
-                utr.TeamId = teamLocated.Id;
-                utr.TeamName = teamName;
-                return utr;
-            }));
-
+            await this.teamRepository.UpdateAsync(teamLocated);
             await this.repository.UpdateAsync(userEntity);
         }
 
-        public async Task RemoveUserToTeamAsync(string organisationName, string teamName, string username)
+        public async Task<List<User>> LoadAllUsers(string orgId)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var teamLocated = await this.teamRepository.GetByAsync(t => t.OrganisationName == organisationName && t.Name == teamName);
-            if (teamLocated == null)
-            {
-                throw new ArgumentException($"The team {teamName} on organisation {organisationName} not exists");
-            }
-
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == username);
-            if (userEntity == null)
-            {
-                throw new ArgumentException($"The user {username} on organisation {organisationName} not exists");
-            }
-
-            userEntity.TeamRoles.RemoveAll(tr => tr.TeamName == teamName);
-
-            await this.repository.UpdateAsync(userEntity);
-        }
-
-        public async Task<List<User>> LoadAllUsers(string organisationName)
-        {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
-            {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
-            }
-
-            var users = await repository.LoadByAsync(u => u.OrganisationName == organisationName);
+            var users = await repository.LoadByAsync(u => u.OrganisationId == orgId);
 
             return users.Select(u => u.ToContract()).ToList();
         }
 
-        public async Task<Authentication> AuthenticateAsync(string organisationName, string username, string password)
+        public async Task<Authentication> AuthenticateAsync(string orgId, string username, string password)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new UnauthorizedAccessException($"The organisation {organisationName} not exists");
+                throw new UnauthorizedAccessException($"The organisation {orgId} not exists");
             }
 
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == username);
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == username);
             if (userEntity == null)
             {
-                throw new UnauthorizedAccessException($"The user {username} on organisation {organisationName} not exists");
+                throw new UnauthorizedAccessException($"The user {username} on organisation {orgId} not exists");
             }
 
             if (!password.IsValid(userEntity.PasswordHash, userEntity.PasswordSalt))
@@ -184,45 +176,54 @@ namespace MAAV.Application
             var authResult = new Authentication
             {
                 User = userEntity.ToContract(),
-                OrganisationName = userEntity.OrganisationName,
-                Roles = userEntity.OrganisationRoles
+                OrganisationId = userEntity.OrganisationId,
             };
             
             return authResult;
         }
 
-        public async Task SetRolesAsync(string organisationName, string username, string[] roles)
+        public async Task SetRolesAsync(string orgId, string teamId, string username, TeamPermission permission)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == username);
+            var teamEntity = await this.teamRepository.GetByAsync(t =>t.OrganisationId == orgId && t.Id == teamId);
+            if (teamEntity == null)
+            {
+                throw new ArgumentException($"The team {teamId} on organisation {orgId} not exists");
+            }
+
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == username);
             if (userEntity == null)
             {
-                throw new ArgumentException($"The user {username} on organisation {organisationName} not exists");
+                throw new ArgumentException($"The user {username} on organisation {orgId} not exists");
             }
 
-            userEntity.OrganisationRoles = roles;
-            
+            userEntity.TeamsPermissions.RemoveAll(p => p.TeamId == teamId);
+            userEntity.TeamsPermissions.Add(permission.ToEntity());
+            teamEntity.Users.RemoveAll(u => userEntity.Username.Equals(u.Username));
+            teamEntity.Users.Add(new Domain.Entities.TeamUser(userEntity));
+ 
+            await this.teamRepository.UpdateAsync(teamEntity);
             await this.repository.UpdateAsync(userEntity);
         }
 
-        public async Task<string[]> LoadRolesAsync(string organisationName, string username)
+        public async Task<bool> IsOwner(string orgId, string teamId, string username)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
-            {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
-            }
-
-            var userEntity = await this.repository.GetByAsync(u => u.OrganisationName == organisationName && u.Username == username);
+            var userEntity = await this.repository.GetByAsync(u => u.Username == username && u.OrganisationId == orgId);
             if (userEntity == null)
             {
-                throw new ArgumentException($"The user {username} on organisation {organisationName} not exists");
+                return false;
+            }
+            var permission = userEntity.TeamsPermissions.FirstOrDefault(p => p.TeamId == teamId);
+            if (permission == null)
+            {
+                return false;
             }
 
-            return userEntity.OrganisationRoles;
+            return permission.IsOwner;
         }
     }
 }

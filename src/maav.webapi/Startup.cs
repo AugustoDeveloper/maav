@@ -35,6 +35,7 @@ namespace MAAV.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers();
             var healthCheckBuilder = services.AddHealthChecks();
             services
@@ -52,7 +53,7 @@ namespace MAAV.WebAPI
                         .RequireAuthenticatedUser()
                         .Build();
                 })
-                .AddBearerTokenValidation(Configuration.GetValue<string>("Auth:SecretKey"), TimeSpan.FromMinutes(30));
+                .AddBearerTokenValidation(Configuration.GetValue<string>("Auth:SecretKey"), TimeSpan.FromMinutes(1));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +69,13 @@ namespace MAAV.WebAPI
             app.UseRouting();
             app.UseAuthorization();
             app.UseAuthentication();
+
+            app.UseCors(op =>
+            {
+                op.AllowAnyOrigin();
+                op.AllowAnyMethod();
+                op.AllowAnyHeader();
+            });
 
             app.UseEndpoints(endpoints =>
             {

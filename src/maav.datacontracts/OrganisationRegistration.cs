@@ -4,6 +4,6 @@ namespace MAAV.DataContracts
 {
     public class OrganisationRegistration : Organisation
     {
-        public User[] AdminUsers { get; set; }
+        public User AdminUser { get; set; }
     }
 }

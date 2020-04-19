@@ -20,7 +20,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_Invalid_OrganisationName_Or_TeamName_When_Call_DeleteTeamAsync_ShouldReturns_BadRequest(string organisationName, string teamName)
         {
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.DeleteTeamAsync(organisationName, teamName, null);
+            var result = await controller.DeleteTeamAsync(organisationName, teamName, null, null);
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -35,7 +35,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
 
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.DeleteTeamAsync(organisationName, teamName, moqService.Object);
+            var result = await controller.DeleteTeamAsync(organisationName, teamName, null, moqService.Object);
             moqService.Verify();
             Assert.IsType<StatusCodeResult>(result);            
             var internalServerError = (StatusCodeResult)result;
@@ -54,7 +54,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
 
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.DeleteTeamAsync(organisationName, teamName, moqService.Object);
+            var result = await controller.DeleteTeamAsync(organisationName, teamName, null, moqService.Object);
             
             moqService.Verify();
             Assert.IsType<NoContentResult>(result);

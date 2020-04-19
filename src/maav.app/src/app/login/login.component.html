@@ -1,0 +1,35 @@
+<div class="login-wrapper" >
+    <form class="login" #loginPage (ngSubmit)="onSubmit(loginPage)">
+        <section class="title" [@fadeInOut]>
+            <h3 class="welcome">Welcome to</h3>
+            MAAV
+            <h5 class="hint">Use your Company User ID to sign in or register your company</h5>
+        </section>
+        <clr-alert [clrAlertType]="alert.type" *ngFor="let alert of alertService.alerts" (clrAlertClosedChange)="alertService.close(alert)">
+            <clr-alert-item>
+                <span class="alert-text">
+                    {{alert.message}}
+                </span>
+            </clr-alert-item>
+        </clr-alert>
+        <div class="login-group" [@fadeInOut]>
+            <clr-input-container>
+                <label class="clr-sr-only">Organisation ID</label>
+                <input type="text" name="orgId" placeholder="Organisation ID" [disabled]="showProgress" clrInput [(ngModel)]="auth.organisationId" minlength="3"/>
+            </clr-input-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Username</label>
+                <input type="text" name="username" placeholder="Username" [disabled]="showProgress" clrInput [(ngModel)]="auth.username"  minlength="3" />
+            </clr-input-container>
+            <clr-password-container>
+                <label class="clr-sr-only">Password</label>
+                <input type="password" name="password" placeholder="Password" [disabled]="showProgress" clrPassword  [(ngModel)]="auth.password"  minlength="6"/>
+            </clr-password-container>
+            <button type="submit" class="btn btn-info-outline">
+                <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+                <span *ngIf="!showProgress">Authenticate</span>
+            </button>
+            <a (click)="redirectToRegistration()" class="signup">Register a new organisation</a>
+        </div>
+    </form>
+</div>

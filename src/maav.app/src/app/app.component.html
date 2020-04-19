@@ -1,0 +1,3 @@
+<app-menu *ngIf="isLoggedIn()"></app-menu>
+<app-login *ngIf="isNotLoggedInAndLogin()"></app-login>
+<app-registration *ngIf="isNotLoggedInAndRegistration()"></app-registration>

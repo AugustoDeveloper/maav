@@ -17,7 +17,7 @@ namespace MAAV.Application.Test.UserService
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Not_Registered_OrganisationName_Or_UserName_When_Call_GetByUserNameAsync_ShouldReturns_Null_Instance(string organisationName, string userName)
+        public async Task Given_Not_Registered_OrganisationId_Or_UserName_When_Call_GetByUserNameAsync_ShouldReturns_Null_Instance(string organisationId, string userName)
         {
             var moqRepository = new Mock<IUserRepository>();
             moqRepository
@@ -32,18 +32,18 @@ namespace MAAV.Application.Test.UserService
                 .Verifiable();  
             
             var service = new Application.UserService(moqRepository.Object, moqOrgRepository.Object);
-            Assert.Null(await service.GetByUsernameAsync(organisationName, userName));
+            Assert.Null(await service.GetByUsernameAsync(organisationId, userName));
             moqRepository.Verify();
         }
 
         [Theory]
         [InlineData("apple", "develop")]
-        public async Task Given_Registered_OrganisationName_Or_UserName_When_Call_GetByUserNameAsync_ShouldReturns_User_Instance(string organisationName, string userName)
+        public async Task Given_Registered_OrganisationId_Or_UserName_When_Call_GetByUserNameAsync_ShouldReturns_User_Instance(string organisationId, string userName)
         {
             var moqRepository = new Mock<IUserRepository>();
             moqRepository
                 .Setup(t => t.GetByAsync(It.IsAny<Expression<Func<Domain.Entities.User, bool>>>()))
-                .ReturnsAsync(() => new Domain.Entities.User { Username = userName, OrganisationName = organisationName})
+                .ReturnsAsync(() => new Domain.Entities.User { Username = userName, OrganisationId = organisationId})
                 .Verifiable();
 
             var moqOrgRepository = new Mock<IOrganisationRepository>();
@@ -53,7 +53,7 @@ namespace MAAV.Application.Test.UserService
                 .Verifiable();  
             
             var service = new Application.UserService(moqRepository.Object, moqOrgRepository.Object);
-            var userResult = await service.GetByUsernameAsync(organisationName, userName);
+            var userResult = await service.GetByUsernameAsync(organisationId, userName);
             moqRepository.Verify();
             Assert.NotNull(userResult);
             Assert.Equal(userName, userResult.Username);

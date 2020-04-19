@@ -13,12 +13,6 @@ namespace MAAV.Application.Validation
                 .MinimumLength(3)
                 .MaximumLength(150);
 
-            RuleFor(u => u.Password)
-                .NotNull()
-                .NotEmpty()
-                .MinimumLength(8)
-                .MaximumLength(150);
-
             RuleFor(u => u.FirstName)
                 .NotNull()
                 .NotEmpty()

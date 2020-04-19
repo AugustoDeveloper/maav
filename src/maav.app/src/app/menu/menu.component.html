@@ -1,0 +1,53 @@
+<div class="main-container">
+    <header class="header-6">
+        <div class="branding">
+            <a routerLink="dashboard" class="nav-link">
+                <clr-icon shape="tags" class="is-solid"></clr-icon>
+                <span class="title">MAAV</span>
+            </a>
+        </div>
+        <div class="header-nav">
+            <a [routerLink]="['team/list']" class="active nav-link"><span class="nav-text">Stone - {{user.firstName}}</span></a>
+        </div>
+        <div class="header-actions">
+            <a (click)="performLogout()" class="nav-link nav-icon">
+                <clr-icon shape="logout" class="is-inverse"></clr-icon>
+            </a>
+        </div>
+    </header>
+    <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+        <clr-vertical-nav [clrVerticalNavCollapsible]="true" class="nav-trigger--bottom">
+            <clr-vertical-nav-group routerLinkActive="active">
+                <a clrVerticalNavLink [routerLink]="['team/list']" routerLinkActive="active">
+                    <clr-icon clrVerticalNavIcon shape="employee-group" class="is-solid" class="is-inverse"></clr-icon>
+                    Teams
+                </a>
+                <clr-vertical-nav-group-children *ngFor="let team of teams">
+                    <a clrVerticalNavLink routerLink="team/{{team.id}}" routerLinkActive="active">
+                        <clr-icon clrVerticalNavIcon shape="users" class="is-solid" class="is-inverse"></clr-icon>
+                        {{team.name}}
+                    </a>
+                </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+            <clr-vertical-nav-group routerLinkActive="active">
+                <a clrVerticalNavLink [routerLink]="['application/list']" routerLinkActive="active">
+                    <clr-icon clrVerticalNavIcon shape="applications" class="is-solid" class="is-inverse"></clr-icon>
+                    Applications
+                </a>
+                <clr-vertical-nav-group-children>
+                    <a clrVerticalNavLink [routerLink]="['application/1']" routerLinkActive="active">
+                        <clr-icon clrVerticalNavIcon shape="application" class="is-solid" class="is-inverse"></clr-icon>
+                        SRC
+                    </a>
+                </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+            <a clrVerticalNavLink [routerLink]="['user/list']" routerLinkActive="active">
+                <clr-icon clrVerticalNavIcon shape="user" class="is-solid" class="is-inverse"></clr-icon>
+                Users
+            </a>
+        </clr-vertical-nav>
+    </div>
+</div>

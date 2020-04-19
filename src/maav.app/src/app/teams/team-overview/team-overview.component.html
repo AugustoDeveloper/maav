@@ -1,0 +1,95 @@
+<div class="line-separator title">
+    <clr-spinner clrMedium *ngIf="showProgress" class="title-bar-left" aria-label="In progress"></clr-spinner>
+    <clr-input-container class="title-bar-left">
+        <input clrInput [disabled]="showProgress" [(ngModel)]="team.name" name="teamName" type="text" />
+        
+    </clr-input-container>
+    <button type="button" [disabled]="showProgress" class="btn btn-danger-outline btn-icon button-delete" (click)="deleteTeam(team)">
+        <clr-icon shape="trash"></clr-icon>
+        Delete
+    </button>
+</div>
+<clr-tabs>
+    <clr-tab>
+        <button [disabled]="showProgress" clrTabLink>Applications</button>
+        <clr-tab-content *clrIfActive="true">
+            <div class="line-separator-transparent">
+                <div class="box-tab-users">
+                    <button [disabled]="showProgress" type="button" class="btn btn-info-outline btn-icon" (click)="performAddApp()">
+                        <clr-icon shape="application"></clr-icon>
+                        Add Application
+                    </button>
+                    <div class="title-bar-right">
+                        Filter:<input [disabled]="showProgress" class="search-input" placeholder="Search..." name="appName" type="text" />
+                    </div>
+                </div>
+                <div class="clr-row ">
+                    <div class="clr-col-12 clr-col-sm-4" *ngFor="let app of team.applications">
+                        <div class="card">
+                            <div class="card-header">
+                                {{app.name}}
+                            </div>
+                            <div class="card-block">
+                                <span class="card-media-text">Name: {{app.name}}</span><br />
+                                <span class="card-media-text"> Initial Version: {{app.initialVersion}}</span><br />
+                                <span class="card-media-text">Format Version: {{app.formatVersion}}</span><br />
+                            </div>
+                            <div class="card-footer">
+                                <a routerLink="../../application/{{app.name}}"> Go to </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+        <button [disabled]="showProgress" clrTabLink>Users</button>
+        <clr-tab-content  *clrIfActive="true">
+            <div class="line-separator-transparent">
+                <div class="box-tab-users">
+                    <button [disabled]="showProgress" type="button" class="btn btn-info-outline btn-icon" (click)="performAddUser()">
+                        <clr-icon shape="user"></clr-icon>
+                        Add User
+                    </button>
+                    <div class="title-bar-right">
+                        Filter:<input [disabled]="showProgress" class="search-input" placeholder="Search..." name="appName" type="text" />
+                    </div>
+                </div>
+                <div class="clr-row">
+                    <div class="clr-col-12 clr-col-sm-3" *ngFor="let user of sortUsers">
+                        <div class="card">
+                            <div class="card-header">
+                                {{user.firstName}} {{user.lastName}}
+                            </div>
+                            <div class="card-block">
+                                <span class="card-media-text">Username: {{user.username}}</span><br />
+                                <span class="card-media-text"> Roles: {{loadRoles(user)}}</span><br />
+                                <span class="card-media-text"> Permissions: {{loadPermissions(user)}}</span><br />
+                            </div>
+                            <div class="card-footer">
+                                <button [disabled]="showProgress" type="button" class="btn btn-danger-outline btn-icon button-delete" (click)="deleteUser(user)">
+                                    <clr-icon shape="trash"></clr-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>
+<app-team-user-persistency *ngIf="showUserTeamPersistencyModal" [(modelTeam)]="team" (closed)="onCloseUserTeamPersistencyModal($event)"></app-team-user-persistency>
+<clr-modal *ngIf="showDeleteModal" [(clrModalOpen)]="showDeleteModal" [clrModalClosable]="false">
+    <h3 class="modal-title">Confirmation</h3>
+    <div class="modal-body">
+        <p>{{deleteTitle}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="cancelDelete()">Cancel</button>
+        <button type="button" class="btn btn-outline-danger" (click)="confirmDelete()">
+            <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
+            <span *ngIf="!showProgress">Delete</span>
+        </button>
+    </div>>
+</clr-modal>

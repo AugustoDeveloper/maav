@@ -6,25 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using MAAV.Application;
 using MAAV.DataContracts;
 using MAAV.Application.Exceptions;
+using Microsoft.AspNetCore.Cors;
 
 namespace MAAV.WebAPI.Controllers
 {
     [ApiController, Route("api/v1"), Authorize]
     public class OrganisationController : ControllerBase
     {
-        [HttpGet("{organisationName}", Name = nameof(GetOrganisationAsync)), Authorize(Roles = "User,Administrator,Leader")]
+        [HttpGet("{organisationId}", Name = nameof(GetOrganisationAsync)), Authorize(Roles = "user,admin,team-leader")]
         public async Task<IActionResult> GetOrganisationAsync(
-            [FromRoute] string organisationName, 
+            [FromRoute] string organisationId, 
             [FromServices] IOrganisationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName))
+            if (string.IsNullOrWhiteSpace(organisationId))
             {
-                return BadRequest(new { reason = $"Invalid organisation name {organisationName}" });
+                return BadRequest(new { reason = $"Invalid organisation id {organisationId}" });
             }
 
             try
             {
-                var organisation = await service.GetByOrganisationNameAsync(organisationName);
+                var organisation = await service.GetByOrganisationNameAsync(organisationId);
                 if (organisation == null)
                 {
                     return NotFound();
@@ -38,52 +39,54 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpPost("{organisationName}"), AllowAnonymous]
+        [HttpPost("{organisationId}"), AllowAnonymous]
         public async Task<IActionResult> RegisterOrganisationAsync(
-            [FromRoute] string organisationName,
+            [FromRoute] string organisationId,
             [FromBody] OrganisationRegistration organisation,
             [FromServices]IOrganisationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || organisation == null)
+            if (string.IsNullOrWhiteSpace(organisationId) || organisation == null)
             {
-                return BadRequest(new { reason = $"Invalid request!", request = organisation, organisationName });
+                return BadRequest(new { reason = $"Invalid request!", request = organisation, organisationId });
             }
 
-            if (!organisationName.Equals(organisation.Name))
+            if (!organisationId.Equals(organisation.Id))
             {
-                return BadRequest(new { reason = $"Invalid organisation name!", request = organisation, organisationName });
+                return BadRequest(new { reason = $"Invalid organisation name!", request = organisation, organisationId });
             }
 
             try
             {
+                organisation.CreatedAt = DateTime.Now;
                 var organisationResult = await service.RegisterAsync(organisation);
 
-                return CreatedAtRoute(nameof(GetOrganisationAsync), new { organisationName }, organisationResult);
+                return CreatedAtRoute(nameof(GetOrganisationAsync), new { organisationId }, organisationResult);
             }
             catch(NameAlreadyUsedException ex)
             {
                 return BadRequest(new { reason = ex.Message});
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(statusCode: (int)HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpPut("{organisationName}"), Authorize(Roles = "Administrator")]
+        [HttpPut("{organisationId}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateOrganisationAsync(
-            [FromRoute] string organisationName, 
+            [FromRoute] string organisationId, 
             [FromBody]Organisation orgRequest,
             [FromServices]IOrganisationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || orgRequest == null)
+            if (string.IsNullOrWhiteSpace(organisationId) || orgRequest == null)
             {
-                return BadRequest(new { reason = $"Invalid request!", request = orgRequest, organisationName });
+                return BadRequest(new { reason = $"Invalid request!", request = orgRequest, organisationId });
             }
 
-            if (!organisationName.Equals(orgRequest.Name))
+            if (!organisationId.Equals(orgRequest.Name))
             {
-                return BadRequest(new { reason = $"Invalid organisation name!", request = orgRequest, organisationName });
+                return BadRequest(new { reason = $"Invalid organisation name!", request = orgRequest, organisationId });
             }
 
             try
@@ -102,19 +105,19 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpDelete("{organisationName}"), Authorize(Roles = "Administrator")]
+        [HttpDelete("{organisationId}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteOrganisationAsync(
-            [FromRoute]string organisationName,
+            [FromRoute]string organisationId,
             [FromServices] IOrganisationService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName))
+            if (string.IsNullOrWhiteSpace(organisationId))
             {
-                return BadRequest(new { reason = $"Invalid organisation name {organisationName}" });
+                return BadRequest(new { reason = $"Invalid organisation id {organisationId}" });
             }
 
             try
             {
-                await service.DeleteByOrganisationNameAsync(organisationName);
+                await service.DeleteByOrganisationNameAsync(organisationId);
 
                 return NoContent();
             }

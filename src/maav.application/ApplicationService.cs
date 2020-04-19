@@ -22,61 +22,61 @@ namespace MAAV.Application
             this.organisationRepository = organisationRepository;
         }
 
-        public async Task DeleteByNameAsync(string organisationName, string teamName, string applicationName)
+        public async Task DeleteByNameAsync(string organisationId, string teamName, string applicationName)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            await this.repository.DeleteAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationName == organisationName);
+            await this.repository.DeleteAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationId == organisationId);
         }
 
-        public async Task<DataContracts.Application> GetByNameAsync(string organisationName, string teamName, string applicationName)
+        public async Task<DataContracts.Application> GetByNameAsync(string organisationId, string teamName, string applicationName)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            var application = await repository.GetByAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationName == organisationName);
+            var application = await repository.GetByAsync(app => app.Name == applicationName && app.TeamName == teamName && app.OrganisationId == organisationId);
 
             return application?.ToContract();
         }
 
-        public async Task<DataContracts.Application> AddAsync(string organisationName, string teamName, DataContracts.Application application)
+        public async Task<DataContracts.Application> AddAsync(string organisationId, string teamName, DataContracts.Application application)
         {
-            var orgEntity = await organisationRepository.GetByAsync(o => o.Name == organisationName);
+            var orgEntity = await organisationRepository.GetByAsync(o => o.Name == organisationId);
             if (orgEntity == null)
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
             
-            var teamEntity = await this.teamRepository.GetByAsync(t => t.Name == teamName && t.OrganisationName == organisationName);
+            var teamEntity = await this.teamRepository.GetByAsync(t => t.Name == teamName && t.OrganisationId == organisationId);
             if (teamEntity == null)
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            if (await this.repository.ExistsByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == application.Name))
+            if (await this.repository.ExistsByAsync(app => app.TeamName == teamName && app.OrganisationId == organisationId && app.Name == application.Name))
             {
-                throw new NameAlreadyUsedException($"The application {application.Name} team {teamName} from organisation {organisationName} not exists");
+                throw new NameAlreadyUsedException($"The application {application.Name} team {teamName} from organisation {organisationId} not exists");
             }
 
             var appEntity = application.ToEntity();
             appEntity.TeamName = teamName;
-            appEntity.OrganisationName = organisationName;
-            appEntity.ScheMap = appEntity.ScheMap ?? teamEntity.ScheMap ?? orgEntity.ScheMap;
+            appEntity.OrganisationId = organisationId;
+            appEntity.ScheMap = appEntity.ScheMap;
 
             if  (appEntity.ScheMap?.Branches?.Length < 1)
             {
@@ -125,26 +125,26 @@ namespace MAAV.Application
             return (await repository.AddAsync(appEntity)).ToContract();
         }
 
-        public async Task<DataContracts.Application> UpdateAsync(string organisationName, string teamName, DataContracts.Application application)
+        public async Task<DataContracts.Application> UpdateAsync(string organisationId, string teamName, DataContracts.Application application)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == application.Name);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationId == organisationId && app.Name == application.Name);
             if (appLocated == null)
             {
                 return null;
             }
 
             var appEntity = application.ToEntity();
-            appEntity.OrganisationName = organisationName;
+            appEntity.OrganisationId = organisationId;
             appEntity.TeamName = teamName;
             appEntity.BranchVersions = appLocated.BranchVersions;
             appEntity.Id = appLocated.Id;
@@ -213,39 +213,39 @@ namespace MAAV.Application
             return (await repository.UpdateAsync(appEntity)).ToContract();
         }
 
-        public async Task<List<DataContracts.Application>> LoadAllFromTeamAsync(string organisationName, string teamName)
+        public async Task<List<DataContracts.Application>> LoadAllFromTeamAsync(string organisationId, string teamName)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var applications = await repository.LoadByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName);
+            var applications = await repository.LoadByAsync(app => app.TeamName == teamName && app.OrganisationId == organisationId);
 
             return applications?.ToContract().ToList();
         }
 
-        public async Task<string> GetVersionFromSourceBranchAsync(string organisationName, string teamName, string appName, string source, object data)
+        public async Task<string> GetVersionFromSourceBranchAsync(string organisationId, string teamName, string appName, string source, object data)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == appName);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationId == organisationId && app.Name == appName);
             if (appLocated == null)
             {
-                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationName} not exists");
+                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationId} not exists");
             }
 
             var branchMap = appLocated.ScheMap.Branches.Where(x => new Regex(x.BranchPattern).IsMatch(source)).FirstOrDefault();
@@ -287,22 +287,22 @@ namespace MAAV.Application
 
         }
 
-        public async Task<string> GetVersionFromSourceAndTagetBranchAsync(string organisationName, string teamName, string appName,string source, string target, object data)
+        public async Task<string> GetVersionFromSourceAndTagetBranchAsync(string organisationId, string teamName, string appName,string source, string target, object data)
         {
-            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationName))
+            if (!await organisationRepository.ExistsByAsync(o => o.Name == organisationId))
             {
-                throw new ArgumentException($"The organisation {organisationName} not exists");
+                throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationName == organisationName))
+            if (!await this.teamRepository.ExistsByAsync(t => t.Name == teamName && t.OrganisationId == organisationId))
             {
-                throw new ArgumentException($"The team {teamName} from organisation {organisationName} not exists");
+                throw new ArgumentException($"The team {teamName} from organisation {organisationId} not exists");
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationName == organisationName && app.Name == appName);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamName == teamName && app.OrganisationId == organisationId && app.Name == appName);
             if (appLocated == null)
             {
-                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationName} not exists");
+                throw new ArgumentException($"The {appName} application from team {teamName} at organisation {organisationId} not exists");
             }
 
             var sourcebranchMap = appLocated.ScheMap.Branches.Where(x => new Regex(x.BranchPattern).IsMatch(source)).FirstOrDefault();

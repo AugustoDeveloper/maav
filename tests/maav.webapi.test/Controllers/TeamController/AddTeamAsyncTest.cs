@@ -21,7 +21,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_Invalid_OrganisationName_Or_TeamName_When_Call_AddTeamAsync_ShouldReturns_BadRequest(string organisationName, string teamName)
         {
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, null);
+            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, null, null);
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
@@ -37,7 +37,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
             
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, moqService.Object);
+            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, moqService.Object, null);
             moqService.Verify();
 
             Assert.IsType<BadRequestObjectResult>(result);
@@ -48,7 +48,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
         public async Task Given_Invalid_TeamService_When_Call_AddTeamAsync_ShouldReturns_InternalServerError(string organisationName, string teamName)
         {
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, null);
+            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, null, null);
             Assert.IsType<StatusCodeResult>(result);
             var statusCodeResult = (StatusCodeResult)result;
             Assert.NotNull(statusCodeResult);
@@ -66,7 +66,7 @@ namespace MAAV.WebAPI.Test.Controllers.TeamController
                 .Verifiable();
             
             var controller = new WebAPI.Controllers.TeamController();
-            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, moqService.Object);
+            var result = await controller.AddTeamAsync(organisationName, new DataContracts.Team { Name = teamName }, moqService.Object, null);
             moqService.Verify();
 
             Assert.IsType<CreatedAtRouteResult>(result);

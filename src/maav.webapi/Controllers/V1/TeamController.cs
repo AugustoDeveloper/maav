@@ -12,20 +12,20 @@ namespace MAAV.WebAPI.Controllers
     [ApiController, Route("api/v1"), Authorize]
     public class TeamController : ControllerBase
     {
-        [HttpGet("{organisationName}/teams/{teamName}", Name = nameof(GetTeamAsync)), Authorize(Roles = "User,Administrator,Leader")]
+        [HttpGet("{organisationId}/teams/{teamId}", Name = nameof(GetTeamAsync)), Authorize(Roles = "user,admin,team-leader,developer")]
         public async Task<IActionResult> GetTeamAsync(
-            [FromRoute] string organisationName, 
-            [FromRoute]string teamName, 
+            [FromRoute] string organisationId,
+            [FromRoute]string teamId,
             [FromServices] ITeamService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(teamName))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(teamId))
             {
-                return BadRequest(new { reason = "Something is wrong with your parameters"});
+                return BadRequest(new { reason = "Something is wrong with your parameters" });
             }
 
             try
             {
-                var team = await service.GetByTeamNameAsync(organisationName, teamName);
+                var team = await service.GetByTeamNameAsync(organisationId, teamId);
                 if (team == null)
                 {
                     return NotFound();
@@ -33,9 +33,9 @@ namespace MAAV.WebAPI.Controllers
 
                 return Ok(team);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
-                return BadRequest(new { reason = ex.Message});
+                return BadRequest(new { reason = ex.Message });
             }
             catch
             {
@@ -44,19 +44,19 @@ namespace MAAV.WebAPI.Controllers
         }
 
         //TODO: Create unit test for this route
-        [HttpGet("{organisationName}/teams"), Authorize(Roles = "Administrator")]
+        [HttpGet("{organisationId}/teams"), Authorize(Roles = "admin")]
         public async Task<IActionResult> LoadTeamsAsync(
-            [FromRoute] string organisationName, 
+            [FromRoute] string organisationId, 
             [FromServices] ITeamService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName))
+            if (string.IsNullOrWhiteSpace(organisationId))
             {
                 return BadRequest(new { reason = "Something is wrong with your parameters"});
             }
 
             try
             {
-                var teams = await service.LoadByOrganisationNameAsync(organisationName);
+                var teams = await service.LoadByOrganisationIdAsync(organisationId);
 
                 return Ok(teams);
             }
@@ -70,22 +70,25 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpPost("{organisationName}/teams"), Authorize(Roles = "Administrator,Leader")]
+        [HttpPost("{organisationId}/teams"), Authorize(Roles = "admin,team-leader")]
         public async Task<IActionResult> AddTeamAsync(
-            [FromRoute] string organisationName, 
+            [FromRoute] string organisationId, 
             [FromBody] Team team, 
-            [FromServices] ITeamService service)
+            [FromServices] ITeamService service,
+            [FromServices] IUserService userService)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(team?.Name))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(team?.Name))
             {
                 return BadRequest(new { reason = "Something is wrong with your parameters"});
             }
 
             try
             {
-                team = await service.AddAsync(organisationName, team);
+                team.CreatedAt = DateTime.Now;
+                team = await service.AddAsync(organisationId, team);
+                await userService.SetRolesAsync(organisationId, team.Id, this.User.Identity.Name, new TeamPermission { TeamId = team.Id, IsOwner = true });
 
-                return CreatedAtRoute(nameof(GetTeamAsync), new { teamName = team.Name, organisationName }, team);
+                return CreatedAtRoute(nameof(GetTeamAsync), new { teamId = team.Name, organisationId }, team);
             }
             catch(ArgumentException ex)
             {
@@ -93,30 +96,37 @@ namespace MAAV.WebAPI.Controllers
             }
             catch(NameAlreadyUsedException)
             {
-                return BadRequest(new { reason = "The team name is already used!"});
+                return BadRequest(new { reason = "The team id is already used!"});
             }
-            catch
+            catch(Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
 
-        [HttpPut("{organisationName}/teams/{teamName}"), Authorize(Roles = "Administrator,Leader")]
+        [HttpPut("{organisationId}/teams/{teamId}"), Authorize(Roles = "user,admin,team-leader,developer")]
         public async Task<IActionResult> UpdateTeamAsync(
-            [FromRoute] string organisationName, 
-            [FromRoute] string teamName, 
+            [FromRoute] string organisationId, 
+            [FromRoute] string teamId, 
             [FromBody] Team team, 
+            [FromServices] IUserService userService,
             [FromServices] ITeamService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) || string.IsNullOrWhiteSpace(team?.Name) || string.IsNullOrWhiteSpace(teamName) || !string.Equals(teamName, team?.Name))
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(team?.Id) || string.IsNullOrWhiteSpace(teamId) || !string.Equals(teamId, team?.Id))
             {
                 return BadRequest(new { reason = "Something is wrong with your parameters"});
             }
 
             try
             {
-                
-                team = await service.UpdateAsync(organisationName, team);
+                var hasPermission = await userService.IsOwner(organisationId, teamId, User.Identity.Name);
+                if (!hasPermission)
+                {
+                    return Forbid();
+                }
+
+                team = await service.UpdateAsync(organisationId, team);
 
                 if (team == null)
                 {
@@ -135,20 +145,21 @@ namespace MAAV.WebAPI.Controllers
             }
         }
 
-        [HttpDelete("{organisationName}/teams/{teamName}"), Authorize(Roles = "Administrator,Leader")]
+        [HttpDelete("{organisationId}/teams/{teamId}"), Authorize(Roles = "admin,team-leader")]
         public async Task<IActionResult> DeleteTeamAsync(
-            [FromRoute] string organisationName, 
-            [FromRoute] string teamName, 
+            [FromRoute] string organisationId, 
+            [FromRoute] string teamId, 
+            [FromServices] IUserService userService,
             [FromServices] ITeamService service)
         {
-            if (string.IsNullOrWhiteSpace(organisationName) ||  string.IsNullOrWhiteSpace(teamName))
+            if (string.IsNullOrWhiteSpace(organisationId) ||  string.IsNullOrWhiteSpace(teamId))
             {
                 return BadRequest(new { reason = "Something is wrong with your parameters"});
             }
 
             try
             {
-                await service.DeleteAsync(organisationName, teamName);
+                await service.DeleteAsync(organisationId, teamId);
 
                 return NoContent();
             }

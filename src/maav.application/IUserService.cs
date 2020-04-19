@@ -6,15 +6,14 @@ namespace MAAV.Application
 {
     public interface IUserService
     {
-        Task<User> GetByUsernameAsync(string organisationName, string username);
-        Task<User> AddAsync(string organisationName, User user);
-        Task<User> UpdateAsync(string organisationName, User user);
-        Task DeleteAsync(string organisationName, string username);
-        Task AddUserToTeamAsync(string organisationName, string teamName, User user);
-        Task RemoveUserToTeamAsync(string organisationName, string teamName, string username);
-        Task<List<User>> LoadAllUsers(string organisationName);
-        Task<Authentication> AuthenticateAsync(string organisationName, string username, string password);
-        Task SetRolesAsync(string organisationName, string username, string[] roles);
-        Task<string[]> LoadRolesAsync(string organisationName, string username);
+        Task<User> GetByUsernameAsync(string organisationId, string username);
+        Task<User> AddAsync(string organisationId, User user);
+        Task<User> UpdateAsync(string organisationId, User user, bool sameAuthUser = false);
+        Task DeleteAsync(string organisationId, string username);
+        Task RemoveUserToTeamAsync(string organisationId, string teamName, string username);
+        Task<List<User>> LoadAllUsers(string organisationId);
+        Task<Authentication> AuthenticateAsync(string organisationId, string username, string password);
+        Task SetRolesAsync(string organisationId, string teamId, string username, TeamPermission permission);
+        Task<bool> IsOwner(string orgId, string teamId, string username);
     }
 }
