@@ -1,15 +1,31 @@
 name: 'v${{ parameters.prefixCurrentVersion }}.$(buildCount)'
 trigger:
-  branches:
-    include:
-    - master
   paths:
+    exclude:
+    - 'sr/maav.webapi/*'
+    - 'src/maav.application/*'
+    - 'src/maav.datacontracts/*'
+    - 'src/maav.domain/*'
+    - 'src/maav.maav.infrastructure.repository.litedb/*'
+    - 'src/maav.maav.infrastructure.repository.mongodb/*'
+    - 'tools/*'
     include:
-    - 'src/maav.app/'
+    - 'src/maav.app/*'
 pr:
   branches:
     include:
-    - master
+      - master
+  paths:
+    exclude:
+    - 'src/maav.webapi/*'
+    - 'src/maav.application/*'
+    - 'src/maav.datacontracts/*'
+    - 'src/maav.domain/*'
+    - 'src/maav.maav.infrastructure.repository.litedb/*'
+    - 'src/maav.maav.infrastructure.repository.mongodb/*'
+    - 'tools/*'
+    include:
+    - 'src/maav.app/*'
 pool:
   vmImage: 'ubuntu-latest'
 parameters:

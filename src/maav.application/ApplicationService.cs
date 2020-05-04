@@ -316,12 +316,12 @@ namespace MAAV.Application
 
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                keyBranchVersion.CurrentVersion.PreRelease = $"-{data.PreReleaseLabel}";
+                keyBranchVersion.CurrentVersion.PreRelease = $"{data.PreReleaseLabel}";
 
             }
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                keyBranchVersion.CurrentVersion.Build = $"+{data.BuildLabel}";
+                keyBranchVersion.CurrentVersion.Build = $"{data.BuildLabel}";
             }
 
             keyBranchVersion.UpdatedAt = DateTime.UtcNow;
@@ -393,13 +393,35 @@ namespace MAAV.Application
 
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                keyBranchVersion.CurrentVersion.PreRelease = data.PreReleaseLabel?.Trim().Length > 0 ? $"-{data.PreReleaseLabel}" : string.Empty;
+                keyBranchVersion.CurrentVersion.PreRelease = data.PreReleaseLabel?.Trim().Length > 0 ? $"{data.PreReleaseLabel}" : string.Empty;
 
             }
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                keyBranchVersion.CurrentVersion.Build = data.BuildLabel?.Trim().Length > 0 ?  $"+{data.BuildLabel}" : string.Empty;
+                keyBranchVersion.CurrentVersion.Build = data.BuildLabel?.Trim().Length > 0 ?  $"{data.BuildLabel}" : string.Empty;
             }
+
+            var history = await this.versionHistoryRepository.GetByAsync(h => h.KeyBranchName == keyBranch.Name);
+            if (history == null)
+            {
+                return null;
+            }
+
+            history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+            {
+                CreatedAt = DateTime.UtcNow,
+                FormatVersion = keyBranch.FormatVersion,
+                Request = data.ToEntity(),
+                Version = keyBranchVersion.CurrentVersion,
+            });
+
+            history.KeyBranchName = keyBranchVersion.KeyBranchName;
+            history.OrganisationId = organisationId;
+            history.TeamId = teamId;
+            history.ApplicationId = appId;
+
+            await this.versionHistoryRepository.UpdateAsync(history);
+            await this.repository.UpdateAsync(appLocated);
 
             return keyBranchVersion.CurrentVersion.ToContract();
         }

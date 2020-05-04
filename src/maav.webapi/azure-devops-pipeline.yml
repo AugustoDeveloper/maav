@@ -1,16 +1,34 @@
-name: '${{ parameters.prefixCurrentVersion }}.$(buildCount)'
+name: '$(Rev:rr)'
 trigger:
   branches:
     include:
     - master
   paths:
+    include:
+    - 'sr/maav.webapi/*'
+    - 'src/maav.application/*'
+    - 'src/maav.datacontracts/*'
+    - 'src/maav.domain/*'
+    - 'src/maav.maav.infrastructure.repository.litedb/*'
+    - 'src/maav.maav.infrastructure.repository.mongodb/*'
+    - 'tools/*'
     exclude:
-    - 'src/maav.app/'
-
+    - 'src/maav.app/*'
 pr:
   branches:
     include:
       - master
+  paths:
+    include:
+    - 'sr/maav.webapi/*'
+    - 'src/maav.application/*'
+    - 'src/maav.datacontracts/*'
+    - 'src/maav.domain/*'
+    - 'src/maav.maav.infrastructure.repository.litedb/*'
+    - 'src/maav.maav.infrastructure.repository.mongodb/*'
+    - 'tools/*'
+    exclude:
+    - 'src/maav.app/*'
 pool:
   vmImage: 'ubuntu-latest'
 parameters:
@@ -40,7 +58,7 @@ stages:
     - name: commitBranchName
       value: $[format('{0}', variables['Build.SourceBranchName'])]
     - name: revision
-      value: $[counter(variables['Build.BuildId'], 0)]
+      value: $[format('{0}', variables['Build.BuildNumber'])]
     - name: rollbackVersion
       value: $[format('{0}{1}', variables['appVersion'], variables['buildCount'])]
     steps:
@@ -92,7 +110,7 @@ stages:
                     From = $response.fromBranch
                     To= $response.toBranch
                     Commit = $currentCommit
-                    Message = $response.commitMessag
+                    Message = $response.commitMessage
                     PreReleaseLabel = $preRelease
                     BuildLabel = $currentRevision
                 } | ConvertTo-Json
@@ -111,8 +129,8 @@ stages:
         }
 
         $headers = @{Authorization = "Bearer $accessToken"}
-
-        $result = Invoke-RestMethod -Method Post -Body $Body -Uri "$endpointVersion" -Headers $headers -ContentType "application/json" -ErrorAction Stop
+        $body
+        $result = Invoke-RestMethod -Method Post -Body $body -Uri "$endpointVersion" -Headers $headers -ContentType "application/json" -ErrorAction Stop
         $major = $result.major;
         $minor = $result.minor;
         $patch = $result.patch;

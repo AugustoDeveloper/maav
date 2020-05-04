@@ -55,8 +55,8 @@ namespace MAAV.Application
 
                                     eventResult = new Domain.Entities.GithubEventResult
                                     {
-                                        FromBranch = "",
-                                        ToBranch = pushEvent.Ref.Replace("refs/heads/", ""),
+                                        FromBranch = pushEvent.Ref.Replace("refs/heads/", ""),
+                                        ToBranch = "",
                                         PushCommit = pushEvent.HeadCommit.Id,
                                         CommitMessage = pushEvent.HeadCommit.Message,
                                         OrganisationId = appLocated.OrganisationId,
@@ -65,7 +65,7 @@ namespace MAAV.Application
                                     };
 
 
-                                    if (!appLocated.KeyBranches.Any(b => Regex.IsMatch(eventResult.ToBranch, b.BranchPattern)))
+                                    if (!appLocated.KeyBranches.Any(b => Regex.IsMatch(eventResult.FromBranch, b.BranchPattern)))
                                     {
                                         continue;
                                     }
