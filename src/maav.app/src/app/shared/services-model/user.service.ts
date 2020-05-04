@@ -10,11 +10,12 @@ import { TeamPermission } from '../models/team/team-permission.model';
   providedIn: 'root'
 })
 export class UserService {
-  private resource = environment.baseUri;
+  private get resource() : string {
+   return environment.baseUri.concat(this.session.organisationId).concat('/');
+  }
   
   constructor(private rest: CommonRestService,
               private session:SessionService) { 
-    this.resource = this.resource.concat(this.session.organisationId).concat('/')
   }
 
   public getByUsername(username: string): Observable<User> {
@@ -35,6 +36,11 @@ export class UserService {
   public update(user: User): Observable<User> {
     let url = this.resource.concat('users').concat('/').concat(`${user.username}`);
     return this.rest.put(url, user);
+  }
+
+  public resetPassword(user: User): Observable<User> {
+    let url = this.resource.concat('users').concat('/').concat(`${user.username}`);
+    return this.rest.patch(url, user);
   }
 
   public dettachFromTeam(teamId: string , username: string) {

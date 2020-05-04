@@ -1,7 +1,7 @@
 <div class="line-separator title">
     <clr-spinner clrMedium *ngIf="showProgress" class="title-bar-left" aria-label="In progress"></clr-spinner>
     <clr-input-container class="title-bar-left">
-        <input clrInput [disabled]="showProgress" [(ngModel)]="team.name" name="teamName" type="text" />
+        <input clrInput readonly class="wd-150" [(ngModel)]="team.name" name="teamName" type="text" />
         
     </clr-input-container>
     <button type="button" [disabled]="showProgress" class="btn btn-danger-outline btn-icon button-delete" (click)="deleteTeam(team)">

@@ -49,7 +49,7 @@ export class ApplicationOverviewComponent implements OnInit {
       this.appId = params['appId'];
       this.getApplication(this.teamId, this.appId);
       this.webhookEndpoint = `${environment.baseUri}${this.session.organisationId}/teams/${this.teamId}/apps/${this.appId}/webhook`;
-      this.updateHistorySub = interval(15000).subscribe(val => {
+      this.updateHistorySub = interval(25000).subscribe(val => {
         if (this.sortedHistory != null) {
           this.updateHistory();
         }
@@ -99,6 +99,7 @@ export class ApplicationOverviewComponent implements OnInit {
   }
 
   getFormattedVersion(version: KeyBranchVersion): string {
+    
     let result = SemanticVersion.formatFrom(version.version, version.formatVersion)
     return result;
   }

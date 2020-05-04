@@ -7,6 +7,9 @@ namespace MAAV.Domain.Entities
     public class GithubEventResult : IEntity
     {
         public string Id { get; set; }
+        public string OrganisationId { get; set; }
+        public string TeamCode { get; set; }
+        public string AppId { get; set; }
         public long PullRequestId { get; set; }
         public string FromBranch { get; set; }
         public string ToBranch { get; set; }

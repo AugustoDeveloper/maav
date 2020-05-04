@@ -9,11 +9,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TeamService {
-  private resource = environment.baseUri;
+  private get resource() : string {
+    return environment.baseUri.concat(this.session.organisationId).concat('/').concat('teams').concat('/');
+   }
   
   constructor(private rest: CommonRestService,
               private session:SessionService) { 
-    this.resource = this.resource.concat(this.session.organisationId).concat('/').concat('teams').concat('/');
   }
   
   public getById(id: string): Observable<Team> {

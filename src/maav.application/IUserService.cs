@@ -15,5 +15,6 @@ namespace MAAV.Application
         Task<Authentication> AuthenticateAsync(string organisationId, string username, string password);
         Task SetRolesAsync(string organisationId, string teamId, string username, TeamPermission permission);
         Task<bool> IsOwner(string orgId, string teamId, string username);
+        Task ResetPassword(string organisationId, string username, string password);
     }
 }

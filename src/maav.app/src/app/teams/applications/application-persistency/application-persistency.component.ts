@@ -54,6 +54,9 @@ export class ApplicationPersistencyComponent implements OnInit {
     } else {
       this.buttonTitle = 'Apply';
       this.teamId = this.currentApplication.teamId;
+      this.hasBuildLabel = this.currentApplication.initialVersion.build && this.currentApplication.initialVersion.build.replace(' ', '').length > 0;
+      this.hasPreReleaseLabel = this.currentApplication.initialVersion.preRelease && this.currentApplication.initialVersion.preRelease.replace(' ', '').length > 0;
+      console.log(this.currentApplication);
     }
   }
 
@@ -141,9 +144,11 @@ export class ApplicationPersistencyComponent implements OnInit {
   }
 
   public addKeyBranch(branch: KeyBranch) {
-    console.log(this.appName);
+    console.log(branch);
     this.currentApplication.keyBranches.push(branch);
     this.keyBranch = new KeyBranch();
+    this.usePreReleaseLabel = false;
+    this.useBuildLabel = false;
   }  
 
   public deleteBranchVersion(branch: KeyBranch) {
@@ -164,7 +169,7 @@ export class ApplicationPersistencyComponent implements OnInit {
   onUseLabel(event: any) {
     this.keyBranch.formatVersion = "{major}.{minor}.{patch}"
     if (this.usePreReleaseLabel) {
-      this.keyBranch.formatVersion = this.keyBranch.formatVersion.concat('{preRelease}');
+      this.keyBranch.formatVersion = this.keyBranch.formatVersion.concat('{prerelease}');
     }
 
     if (this.useBuildLabel){

@@ -46,7 +46,7 @@ namespace MAAV.Application.Test.TeamService
             var moqRepository = new Mock<ITeamRepository>();
             moqRepository
                 .Setup(t => t.GetByAsync(It.IsAny<Expression<Func<Team, bool>>>()))
-                .ReturnsAsync(new Team { Name = teamName, OrganisationId = organisationId, Id = Guid.NewGuid().ToString()})
+                .ReturnsAsync(new Team { Name = teamName, OrganisationId = organisationId, TeamCode = Guid.NewGuid().ToString()})
                 .Verifiable();
 
             moqRepository

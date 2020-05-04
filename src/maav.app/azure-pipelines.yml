@@ -1,0 +1,55 @@
+name: 'v${{ parameters.prefixCurrentVersion }}.$(buildCount)'
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - 'src/maav.app/'
+pr:
+  branches:
+    include:
+    - master
+pool:
+  vmImage: 'ubuntu-latest'
+parameters:
+- name: prefixCurrentVersion
+  type: string
+  default: '0.0.1'
+variables:
+- group: maav-app-development
+- name: appVersion
+  value: ${{ parameters.prefixCurrentVersion }}
+- name: buildCount
+  value: $[counter(variables['appVersion'], 0)]
+stages:
+- stage: build_deploy_stage
+  displayName: 'Deploy Application'
+  jobs:
+  - job: build_deploy_app
+    steps:
+    - task: Docker@2
+      displayName: 'Build new image to Heroku Container Registry'
+      inputs:
+        containerRegistry: 'Heroku Registry'
+        repository: 'maav-app/web'
+        command: 'build'
+        Dockerfile: 'src/maav.app/Dockerfile'
+        buildContext: 'src/maav.app/'
+        addPipelineData: false
+        tags: 'latest'
+    - task: Docker@2
+      displayName: 'Push new image to Heroku Container Registry'
+      inputs:
+        containerRegistry: 'Heroku Registry'
+        repository: 'maav-app/web'
+        command: 'push'
+        Dockerfile: 'src/maav.app/Dockerfile'
+        buildContext: 'src/maav.app/'
+        tags: 'latest'
+        addPipelineData: false
+    - task: Bash@3
+      displayName: 'Apply new image on Heroku Container Registry'
+      inputs:
+        filePath: 'tools/container-release-heroku.sh'
+        arguments: maav-app $(Heroku:Api:Token)

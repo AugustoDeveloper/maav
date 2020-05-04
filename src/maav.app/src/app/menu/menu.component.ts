@@ -9,6 +9,8 @@ import { UserService } from '../shared/services-model/user.service';
 import { Roles } from '../teams/shared/roles.model';
 import { User } from '../shared/models/user/user.model';
 import { forkJoin } from 'rxjs';
+import { OrganisationService } from '../shared/services-model/organisation.service';
+import { error } from 'protractor';
 
 
 @Component({
@@ -19,22 +21,32 @@ import { forkJoin } from 'rxjs';
 export class MenuComponent implements OnInit {
   public applications: Array<Application> = [];
   public user: User;
-  
+  public orgName: string;
+  public showProgress: boolean;
+
   constructor(private router: Router,
     private session: SessionService,
     private teamService: TeamService,
-    private applicationService: ApplicationService,
+    private organisatioService: OrganisationService,
     private userService: UserService,
     private activateRoute: ActivatedRoute) {
   }
     
   ngOnInit(): void {
     this.user = this.session.currentUser;
-    this.loadUser();
+    this.loadOrganisation(this.session.organisationId);
   }
-
+  
   public get teams(): Array<Team> {
     return this.session.teams;
+  }
+
+  private loadOrganisation(organisationId: string) {
+    this.showProgress = true;
+    this.organisatioService.getOrganisationById(organisationId).subscribe(response =>{
+      this.orgName = response.name;
+      this.loadUser();
+    })
   }
 
   private loadUser() {
@@ -42,14 +54,23 @@ export class MenuComponent implements OnInit {
       this.session.currentUser = response;
       this.user = this.session.currentUser;
       this.loadTeams();
+    }, error => {
+      this.showProgress = false;
     }) 
   }
 
   private loadTeams() {
     let teamIds = this.session.currentUser.teamsPermissions.map(r => r.teamId);
-    forkJoin(teamIds.map(teamId => this.teamService.getById(teamId))).subscribe(teams => {
-        teams.forEach(team => this.session.addTeam(team));
-    });
+    if (teamIds.length > 0 ) {
+      forkJoin(teamIds.map(teamId => this.teamService.getById(teamId))).subscribe(teams => {
+          teams.forEach(team => this.session.addTeam(team));
+          this.showProgress = false;
+      }, error => {
+        this.showProgress = false;
+      });
+    } else {
+      this.showProgress = false;
+    }
   }
 
   performLogout() {

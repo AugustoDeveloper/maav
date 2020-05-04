@@ -74,6 +74,7 @@ export class SessionService {
     this.storageService.removeItem(this.authTokenKey);
     this.storageService.removeItem(this.authTokenExpiresKey);
     this.storageService.removeItem(this.teamsKey);
+    this.storageService.removeItem(this.organisationIdKey);
     this.internalTeams = [];
   }
 

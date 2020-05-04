@@ -37,10 +37,10 @@ namespace MAAV.Application
             {
                 try
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(200);
                     if (!token.IsCancellationRequested && this.events.TryDequeue(out IGithubEvent @event))
                     {
-                        var appLocated = this.appRepository.GetByAsync(app => @event.ApplicationId == app.Id && app.TeamId == @event.TeamId && app.OrganisationId == @event.OrganisationId && app.WebHookEnabled).GetAwaiter().GetResult();
+                        var appLocated = this.appRepository.GetByAsync(app => @event.ApplicationId == app.Id && app.TeamCode == @event.TeamId && app.OrganisationId == @event.OrganisationId && app.WebHookEnabled).GetAwaiter().GetResult();
                         if (appLocated != null)
                         {
                             Domain.Entities.GithubEventResult eventResult = null;
@@ -58,7 +58,10 @@ namespace MAAV.Application
                                         FromBranch = "",
                                         ToBranch = pushEvent.Ref.Replace("refs/heads/", ""),
                                         PushCommit = pushEvent.HeadCommit.Id,
-                                        CommitMessage = pushEvent.HeadCommit.Message
+                                        CommitMessage = pushEvent.HeadCommit.Message,
+                                        OrganisationId = appLocated.OrganisationId,
+                                        TeamCode = appLocated.TeamCode,
+                                        AppId = appLocated.Id,
                                     };
 
 
@@ -70,6 +73,9 @@ namespace MAAV.Application
                                     this.repository.AddAsync(eventResult).GetAwaiter().GetResult();
                                 }
 
+                                eventResult.OrganisationId = appLocated.OrganisationId;
+                                eventResult.TeamCode = appLocated.TeamCode;
+                                eventResult.AppId = appLocated.Id;
                                 eventResult.Status = "ready";
                             }
                             else
@@ -85,7 +91,10 @@ namespace MAAV.Application
                                         ToBranch = pullRequestEvent.PullRequest.Base.Ref,
                                         PushCommit = pullRequestEvent.PullRequest.MergeCommitSha,
                                         CommitMessage = pullRequestEvent.PullRequest.Title + "|" + pullRequestEvent.PullRequest.Body,
-                                        PullRequestId = pullRequestEvent.PullRequest.Id
+                                        PullRequestId = pullRequestEvent.PullRequest.Id,
+                                        OrganisationId = appLocated.OrganisationId,
+                                        TeamCode = appLocated.TeamCode,
+                                        AppId = appLocated.Id,
                                     };
 
 
@@ -106,6 +115,9 @@ namespace MAAV.Application
                                     eventResult = this.repository.AddAsync(eventResult).GetAwaiter().GetResult();
                                 }
 
+                                eventResult.OrganisationId = appLocated.OrganisationId;
+                                eventResult.TeamCode = appLocated.TeamCode;
+                                eventResult.AppId = appLocated.Id;
                                 eventResult.PullRequestId = pullRequestEvent.PullRequest.Id;
                                 eventResult.FromBranch = pullRequestEvent.PullRequest.Head.Ref;
                                 eventResult.ToBranch = pullRequestEvent.PullRequest.Base.Ref;

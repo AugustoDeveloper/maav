@@ -1,7 +1,7 @@
 <div class="line-separator title">
   <clr-spinner clrMedium *ngIf="showProgress" class="title-bar-left" aria-label="In progress"></clr-spinner>
   <clr-input-container class="title-bar-left">
-      <input clrInput [(ngModel)]="currentApp.name" name="applicationName" type="text" />
+      <input clrInput [(ngModel)]="currentApp.name" name="applicationName" readonly type="text" />
   </clr-input-container>
   <button type="button" class="btn btn-danger-outline btn-icon button-delete" (click)="deleteApplication(currentApp)" [disabled]="showProgress">
       <clr-icon shape="trash"></clr-icon>
@@ -22,7 +22,7 @@
             <div class="card-app-info-row">
               <clr-input-container class="card-app-info-row">
                 <label>Team:</label>
-                <input clrInput title="text" name="teamName" [(ngModel)]="currentTeam.name" readonly/>
+                <input clrInput title="text" name="teamName" class="wd-130" [(ngModel)]="currentTeam.name" readonly/>
               </clr-input-container>
             </div>
             <div class="card-app-info-row">
@@ -111,11 +111,10 @@
     <ul class="clr-timeline clr-timeline-vertical" *ngIf="sortedHistory">
 
       <li class="clr-timeline-step" *ngFor="let version of sortedHistory">
-        <div class="clr-timeline-step-header">{{getFormattedVersion(version)}}</div>
         <clr-spinner clrMedium aria-label="In progress" *ngIf="isLastVersion(version)">Fetching data</clr-spinner>
         <clr-icon shape="success-standard" aria-label="Completed" *ngIf="!isLastVersion(version)"></clr-icon>
         <div class="clr-timeline-step-body">
-          <span class="clr-timeline-step-title">{{ version.request?.commit}}</span>
+          <div class="clr-timeline-step-title">{{getFormattedVersion(version)}}</div>
           <span class="clr-timeline-step-description">
             {{version.request?.message}}
           </span>

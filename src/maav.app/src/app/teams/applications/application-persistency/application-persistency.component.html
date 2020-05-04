@@ -15,16 +15,16 @@
                 <clr-step-content [(clrIfExpanded)]="expandable">
                     <clr-input-container>
                         <label>Name</label>
-                        <input type="text" clrInput class="wd-50" [(ngModel)]="currentApplication.name" name="appNameTextField" [disabled]="showProgress" required />
+                        <input type="text" clrInput class="wd-50" [(ngModel)]="currentApplication.name" name="appNameTextField" [disabled]="persistencyMode === 'edit' || showProgress" required />
                     </clr-input-container>
                     <clr-toggle-container clrInline>
                         <clr-toggle-wrapper>
                             <label>Has PreRelease Label?</label>
-                            <input clrToggle type="checkbox" [(ngModel)]="hasPreReleaseLabel" name="hasPreReleaseLabel" [disabled]="showProgress" />
+                            <input clrToggle type="checkbox" [(ngModel)]="hasPreReleaseLabel" name="hasPreReleaseLabel" [disabled]="persistencyMode === 'edit' || showProgress" />
                         </clr-toggle-wrapper>
                         <clr-toggle-wrapper>
                             <label>Has Build Label?</label>
-                            <input clrToggle type="checkbox" [(ngModel)]="hasBuildLabel" name="hasBuildLabel" [disabled]="showProgress" />
+                            <input clrToggle type="checkbox" [(ngModel)]="hasBuildLabel" name="hasBuildLabel" [disabled]="persistencyMode === 'edit' || showProgress" />
                         </clr-toggle-wrapper>
                         <clr-toggle-wrapper>
                             <label>Use Github WebHook</label>
@@ -37,11 +37,11 @@
                     </clr-input-container>
                     <clr-input-container>
                         <label>Initial Version</label>
-                        <input type="number" clrInput class="wd-30" [(ngModel)]="currentApplication.initialVersion.major" placeholder="Major..." [pattern]="validationPatterns.onlyNumbers" name="majorInitialVersion" [disabled]="showProgress" required />
-                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.minor" placeholder="Minor..." [pattern]="validationPatterns.onlyNumbers" name="minorInitialVersion" [disabled]="showProgress" required />
-                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.patch" placeholder="Patch..." [pattern]="validationPatterns.onlyNumbers" name="patchInitialVersion" [disabled]="showProgress" required />
-                        <input *ngIf="hasPreReleaseLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.preRelease" placeholder="-PreRelease..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="preReleaseInitialVersion" [disabled]="showProgress" required />
-                        <input *ngIf="hasBuildLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.build" placeholder="+Build..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="buildInitialVersion" [disabled]="showProgress" required />
+                        <input type="number" clrInput class="wd-30" [(ngModel)]="currentApplication.initialVersion.major" placeholder="Major..." [pattern]="validationPatterns.onlyNumbers" name="majorInitialVersion" [disabled]="persistencyMode === 'edit' || showProgress" required />
+                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.minor" placeholder="Minor..." [pattern]="validationPatterns.onlyNumbers" name="minorInitialVersion" [disabled]="persistencyMode === 'edit' || showProgress" required />
+                        <input type="number" clrInput class="ml-5 wd-30" [(ngModel)]="currentApplication.initialVersion.patch" placeholder="Patch..." [pattern]="validationPatterns.onlyNumbers" name="patchInitialVersion" [disabled]="persistencyMode === 'edit' || showProgress" required />
+                        <input *ngIf="hasPreReleaseLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.preRelease" placeholder="-PreRelease..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="preReleaseInitialVersion" [disabled]="persistencyMode === 'edit' || showProgress" required />
+                        <input *ngIf="hasBuildLabel" type="text" clrInput class="ml-5 wd-40" [(ngModel)]="currentApplication.initialVersion.build" placeholder="+Build..." [pattern]="validationPatterns.onlyLetterNumbersDots" name="buildInitialVersion" [disabled]="persistencyMode === 'edit' || showProgress" required />
                     </clr-input-container>
                     <button clrStepButton="next" [disabled]="showProgress" >next</button>
                 </clr-step-content>
@@ -61,7 +61,7 @@
                     <clr-toggle-container>
                         <clr-toggle-wrapper>
                             <label>Branch Enabled</label>
-                            <input clrToggle type="checkbox" [(ngModel)]="keyBranch.enabled" name="branchVersionEnabled" [disabled]="showProgress"/>
+                            <input clrToggle type="checkbox" [(ngModel)]="keyBranch.isEnabled" name="branchVersionEnabled" [disabled]="showProgress"/>
                         </clr-toggle-wrapper>
                     </clr-toggle-container>
                     <clr-toggle-container clrInline>
@@ -91,7 +91,7 @@
                                 <button class="action-item" (click)="deleteBranchVersion(branch)" [disabled]="showProgress">Delete</button>
                             </clr-dg-action-overflow>
                             <clr-dg-cell>{{branch.name}}</clr-dg-cell>
-                            <clr-dg-cell> <input type="checkbox" clrCheckbox disabled [checked]="branch.enabled" /></clr-dg-cell>
+                            <clr-dg-cell> <input type="checkbox" clrCheckbox disabled [checked]="branch.isEnabled" /></clr-dg-cell>
                             <clr-dg-cell>{{branch.branchPattern}}</clr-dg-cell>
                             <clr-dg-cell>{{branch.formatVersion}}</clr-dg-cell>
                         </clr-dg-row>

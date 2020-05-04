@@ -18,13 +18,13 @@ namespace MAAV.Application
 
         public async Task<GithubEventResult> GetLastEventAsync(string commitId, string teamId, string appId, string organisationId)
         {
-            var appLocated = await this.appRepository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && appId == app.Id);
+            var appLocated = await this.appRepository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId && appId == app.Id);
             if (appLocated == null)
             {
                 return null;
             }
 
-            var @event = await this.repository.GetByAsync(x => x.PushCommit == commitId);
+            var @event = await this.repository.GetByAsync(x => x.PushCommit == commitId && x.TeamCode == teamId && x.OrganisationId == organisationId && x.AppId == appId && x.Status.Equals("ready"));
             return @event.ToContract();
         }
     }

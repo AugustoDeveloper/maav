@@ -6,6 +6,7 @@ namespace MAAV.Domain.Entities
     public class Team : IEntity
     {
         public string Id { get; set; }
+        public string TeamCode { get; set; }
         public string OrganisationId { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }

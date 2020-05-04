@@ -277,5 +277,33 @@ namespace MAAV.WebAPI.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
+
+        [HttpPatch("{organisationId}/users/{username}"), Authorize(Roles = "admin,team-leader")]
+        public async Task<IActionResult> ResetPasswordAsync(
+            [FromRoute] string organisationId,
+            [FromRoute] string username,
+            [FromBody] User user,
+            [FromServices] IUserService service)
+        {
+            if (string.IsNullOrWhiteSpace(organisationId) || string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest(new { reason = "Something is wrong with your parameters" });
+            }
+
+            try
+            {
+                await service.ResetPassword(organisationId, username, user.Password);
+
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { reason = ex.Message });
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

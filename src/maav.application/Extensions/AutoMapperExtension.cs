@@ -31,7 +31,7 @@ namespace MAAV.Application.Extensions
 
                 cfg
                     .CreateMap<DataContracts.Team, Domain.Entities.Team>()
-                    .ForMember(t => t.Id, opt => opt.MapFrom(ts => ts.Id))
+                    .ForMember(t => t.TeamCode, opt => opt.MapFrom(ts => ts.Id))
                     .ForMember(t => t.CreatedAt, opt => opt.MapFrom(ts => ts.CreatedAt))
                     .ForMember(t => t.Applications, opt => opt.MapFrom(ts => ts.Applications))
                     .ForMember(t => t.Users, opt => opt.MapFrom(ts => ts.Users))
@@ -66,7 +66,7 @@ namespace MAAV.Application.Extensions
 
                 cfg
                     .CreateMap<Domain.Entities.Team, DataContracts.Team>()
-                    .ForMember(t => t.Id, opt => opt.MapFrom(ts => ts.Id))
+                    .ForMember(t => t.Id, opt => opt.MapFrom(ts => ts.TeamCode))
                     .ForMember(t => t.CreatedAt, opt => opt.MapFrom(ts => ts.CreatedAt))
                     .ForMember(t => t.Users, opt => opt.MapFrom(ts => ts.Users))
                     .ForMember(t => t.Applications, opt => opt.MapFrom(ts => ts.Applications))
@@ -81,13 +81,18 @@ namespace MAAV.Application.Extensions
                     .ForMember(u => u.Roles, opt => opt.MapFrom(du => du.OrganisationRoles))
                     .ForMember(u => u.TeamsPermissions, opt => opt.MapFrom(du => du.TeamsPermissions));
 
-                cfg.CreateMap<Domain.Entities.TeamPermission, DataContracts.TeamPermission>();
-                cfg.CreateMap<DataContracts.TeamPermission, Domain.Entities.TeamPermission>();
+                cfg
+                .CreateMap<Domain.Entities.TeamPermission, DataContracts.TeamPermission>()
+                .ForMember(u => u.TeamId, opt => opt.MapFrom(du => du.TeamCode));
+
+                cfg
+                .CreateMap<DataContracts.TeamPermission, Domain.Entities.TeamPermission>()
+                .ForMember(u => u.TeamCode, opt => opt.MapFrom(du => du.TeamId));
 
                 cfg
                     .CreateMap<Domain.Entities.Application, DataContracts.Application>()
                     .ForMember(a => a.Id, opt => opt.MapFrom(ae => ae.Id))
-                    .ForMember(a => a.TeamId, opt => opt.MapFrom(ae => ae.TeamId))
+                    .ForMember(a => a.TeamId, opt => opt.MapFrom(ae => ae.TeamCode))
                     .ForMember(a => a.Name, opt => opt.MapFrom(ae => ae.Name))
                     .ForMember(a => a.CreatedAt, opt => opt.MapFrom(ae => ae.CreatedAt))
                     .ForMember(a => a.KeyBranches, opt => opt.MapFrom(ae => ae.KeyBranches))
@@ -99,11 +104,11 @@ namespace MAAV.Application.Extensions
                 cfg
                     .CreateMap<DataContracts.Application, Domain.Entities.Application>()
                     .ForMember(a => a.Id, opt => opt.MapFrom(ae => ae.Id))
-                    .ForMember(a => a.TeamId, opt => opt.MapFrom(ae => ae.TeamId))
+                    .ForMember(a => a.TeamCode, opt => opt.MapFrom(ae => ae.TeamId))
                     .ForMember(a => a.Name, opt => opt.MapFrom(ae => ae.Name))
                     .ForMember(a => a.CreatedAt, opt => opt.MapFrom(ae => ae.CreatedAt))
                     .ForMember(a => a.OrganisationId, opt => opt.Ignore())
-                    .ForMember(a => a.TeamId, opt => opt.Ignore())
+                    .ForMember(a => a.TeamCode, opt => opt.Ignore())
                     .ForMember(a => a.WebHookEnabled, opt => opt.MapFrom(ae => ae.WebHookEnabled))
                     .ForMember(a => a.KeyBranches, opt => opt.MapFrom(au => au.KeyBranches))
                     .ForMember(a => a.GithubSecretKey, opt => opt.MapFrom(au => au.GithubSecretKey))

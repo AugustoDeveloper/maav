@@ -68,6 +68,7 @@ export class UserPersistencyComponent implements OnInit {
   }
 
   onSubmit(form: any) {
+    this.alertService.clear();
     this.showProgress = true;
     if (this.session.currentUser.username === this.user.username) {
       this.internalRoles = Roles.from(this.session.currentUser.roles);
@@ -75,7 +76,11 @@ export class UserPersistencyComponent implements OnInit {
 
     this.user.roles = this.internalRoles.to();
     if (this.persistencyMode !== 'add') {
-      this.updateUser();
+      if (this.resetPassword) {
+        this.executeResetPassword();
+      } else {
+        this.updateUser();
+      }
     } else {
       this.addUser();
     }
@@ -97,6 +102,24 @@ export class UserPersistencyComponent implements OnInit {
     }, error => {
       this.showProgress = false;
     });
+  }
+
+  private executeResetPassword() {
+    if (this.user.password !== this.confirmPassword) {
+      this.alertService.warn('The password is not match');
+      this.showProgress = false;
+      return;
+    }
+
+    this.userService.resetPassword(this.user).subscribe(response => {
+      this.showProgress = false;
+      this.resetPassword = false;
+      this.close(true);
+    }, error => {
+      this.alertService.error('Oops...');
+      this.showProgress = false;
+      console.error(error);
+    })
   }
 
   cancel() {

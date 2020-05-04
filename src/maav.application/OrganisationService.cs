@@ -30,7 +30,7 @@ namespace MAAV.Application
 
         public async Task<DataContracts.Organisation> GetByOrganisationNameAsync(string organisationId)
         {
-            var organisation = await repository.GetByAsync(o => o.Name == organisationId);
+            var organisation = await repository.GetByAsync(o => o.Id == organisationId);
             return organisation?.ToContract();
         }
 
@@ -51,7 +51,7 @@ namespace MAAV.Application
             var administrationTeam = new Domain.Entities.Team
             {
                 Name = "org-admin",
-                Id = "org-admin",
+                TeamCode = "org-admin",
                 OrganisationId = organisationContract.Id,
                 CreatedAt = DateTime.Now
             };
@@ -61,7 +61,7 @@ namespace MAAV.Application
             administrationTeam = await teamRepository.AddAsync(administrationTeam);
             user.TeamsPermissions.Add(new Domain.Entities.TeamPermission
             {
-                TeamId = administrationTeam.Id,
+                TeamCode = administrationTeam.TeamCode,
                 IsOwner = true
             });
             user = await userRepository.UpdateAsync(user);

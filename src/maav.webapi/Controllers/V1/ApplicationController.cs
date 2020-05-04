@@ -8,6 +8,7 @@ using MAAV.Application.Exceptions;
 using System.Text.Json;
 using MAAV.WebAPI.Serializers;
 using MAAV.DataContracts.GitHub;
+using MAAV.DataContracts;
 
 namespace MAAV.WebAPI.Controllers
 {
@@ -211,20 +212,23 @@ namespace MAAV.WebAPI.Controllers
         {
             var headerAuth = Request.Headers["X-Hub-Signature"];
             var headerEvent = Request.Headers["X-GitHub-Event"];
+            Console.WriteLine($"X-Hub-Signature: ${headerAuth}");
+            Console.WriteLine($"X-GitHub-Event: ${headerEvent}");
 
-            if(!string.IsNullOrWhiteSpace(headerEvent) && !string.IsNullOrWhiteSpace(headerAuth) && await service.IsValidSha1Async(organisationId, teamId, appId, headerAuth, payload.ToString()))
+            if (!string.IsNullOrWhiteSpace(headerEvent) && !string.IsNullOrWhiteSpace(headerAuth) && await service.IsValidSha1Async(organisationId, teamId, appId, headerAuth, payload.ToString()))
             {
                 if (headerEvent.Equals("push") || headerEvent.Equals("pull_request"))
                 {
 
                     IGithubEvent @event = null;
+                    var jsonBody = payload.ToString();
                     if (headerEvent.Equals("push"))
                     {
-                        @event = JsonSerializer.Deserialize<PushEvent>(payload.ToString(), optionSerialization);
+                        @event = JsonSerializer.Deserialize<PushEvent>(jsonBody, optionSerialization);
                     }
                     else
                     {
-                        @event = JsonSerializer.Deserialize<PullRequestEvent>(payload.ToString(), optionSerialization);
+                        @event = JsonSerializer.Deserialize<PullRequestEvent>(jsonBody, optionSerialization);
                     }
 
                     @event.ApplicationId = appId;

@@ -7,7 +7,7 @@
             </a>
         </div>
         <div class="header-nav">
-            <a [routerLink]="['team/list']" class="active nav-link"><span class="nav-text">Stone - {{user.firstName}}</span></a>
+            <a [routerLink]="['team/list']" class="active nav-link"><span class="nav-text"><clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>{{orgName}} - {{user.firstName}}</span></a>
         </div>
         <div class="header-actions">
             <a (click)="performLogout()" class="nav-link nav-icon">
