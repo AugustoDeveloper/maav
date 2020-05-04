@@ -316,12 +316,12 @@ namespace MAAV.Application
 
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                keyBranchVersion.CurrentVersion.PreRelease = $"-{data.PreReleaseLabel}";
+                keyBranchVersion.CurrentVersion.PreRelease = $"{data.PreReleaseLabel}";
 
             }
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                keyBranchVersion.CurrentVersion.Build = $"+{data.BuildLabel}";
+                keyBranchVersion.CurrentVersion.Build = $"{data.BuildLabel}";
             }
 
             keyBranchVersion.UpdatedAt = DateTime.UtcNow;

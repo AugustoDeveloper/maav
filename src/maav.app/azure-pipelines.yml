@@ -6,10 +6,6 @@ trigger:
   paths:
     include:
     - 'src/maav.app/'
-pr:
-  branches:
-    include:
-    - master
 pool:
   vmImage: 'ubuntu-latest'
 parameters:

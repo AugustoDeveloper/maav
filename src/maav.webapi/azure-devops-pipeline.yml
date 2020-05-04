@@ -1,4 +1,4 @@
-name: '${{ parameters.prefixCurrentVersion }}.$(buildCount)'
+name: '$(Rev:rr)'
 trigger:
   branches:
     include:
@@ -40,7 +40,7 @@ stages:
     - name: commitBranchName
       value: $[format('{0}', variables['Build.SourceBranchName'])]
     - name: revision
-      value: $[counter(variables['Build.BuildId'], 0)]
+      value: $[format('{0}', variables['Build.BuildNumber'])]
     - name: rollbackVersion
       value: $[format('{0}{1}', variables['appVersion'], variables['buildCount'])]
     steps:
@@ -92,7 +92,7 @@ stages:
                     From = $response.fromBranch
                     To= $response.toBranch
                     Commit = $currentCommit
-                    Message = $response.commitMessag
+                    Message = $response.commitMessage
                     PreReleaseLabel = $preRelease
                     BuildLabel = $currentRevision
                 } | ConvertTo-Json
@@ -111,8 +111,9 @@ stages:
         }
 
         $headers = @{Authorization = "Bearer $accessToken"}
+        $body
 
-        $result = Invoke-RestMethod -Method Post -Body $Body -Uri "$endpointVersion" -Headers $headers -ContentType "application/json" -ErrorAction Stop
+        $result = Invoke-RestMethod -Method Post -Body $body -Uri "$endpointVersion" -Headers $headers -ContentType "application/json" -ErrorAction Stop
         $major = $result.major;
         $minor = $result.minor;
         $patch = $result.patch;
