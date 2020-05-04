@@ -93,7 +93,7 @@ namespace MAAV.Infrastructure.Repository.MongoDB.Extensions
             BsonClassMap.RegisterClassMap<Team>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(o => o.Id);
+                cm.MapIdMember(o => o.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
             });
 
             BsonClassMap.RegisterClassMap<User>(cm =>

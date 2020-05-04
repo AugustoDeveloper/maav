@@ -44,6 +44,7 @@ parameters:
 
 jobs:
 - job: build_dotnetcore_project
+  dependsOn: generate_version_job
   workspace:
     clean: all
   displayName: 'Build ${{ parameters.mainProjectName }}'

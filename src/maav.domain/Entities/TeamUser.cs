@@ -13,10 +13,12 @@ namespace MAAV.Domain.Entities
             this.Username = user.Username;
             this.CreatedAt = user.CreatedAt;
             this.Id = user.Id;
+            this.OrganisationId = this.OrganisationId;
         }
 
-        public object Id { get; set; }
+        public string Id { get; set; }
         public string Username { get; set; }
+        public string OrganisationId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

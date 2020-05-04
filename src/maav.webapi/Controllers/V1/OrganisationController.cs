@@ -13,7 +13,7 @@ namespace MAAV.WebAPI.Controllers
     [ApiController, Route("api/v1"), Authorize]
     public class OrganisationController : ControllerBase
     {
-        [HttpGet("{organisationId}", Name = nameof(GetOrganisationAsync)), Authorize(Roles = "user,admin,team-leader")]
+        [HttpGet("{organisationId}", Name = nameof(GetOrganisationAsync)), Authorize(Roles = "user,admin,team-leader,developer")]
         public async Task<IActionResult> GetOrganisationAsync(
             [FromRoute] string organisationId, 
             [FromServices] IOrganisationService service)

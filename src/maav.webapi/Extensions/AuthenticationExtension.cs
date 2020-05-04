@@ -19,7 +19,9 @@ namespace MAAV.WebAPI.Extensions
     {
         public static string Secret { get; private set; }
         public static TimeSpan Expiration { get; private set; }
-        public static void GenerateToken(this Authentication authResult)
+
+        public static void GenerateToken(this Authentication authResult) => GenerateToken(authResult, Expiration);
+        public static void GenerateToken(this Authentication authResult, TimeSpan expiration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             IdentityModelEventSource.ShowPII = true;
@@ -31,7 +33,7 @@ namespace MAAV.WebAPI.Extensions
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(roles),
-                Expires = DateTime.UtcNow.Add(Expiration),
+                Expires = DateTime.UtcNow.Add(expiration),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

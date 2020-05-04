@@ -25,13 +25,99 @@ variables:
 stages:
 - stage: build_stage
   displayName: 'Build Application'
-  jobs:
+  jobs: 
+  - job: generate_version_job
+    variables:
+    - group: maav-webapi-development
+    - name: commitBuild
+      value: $[format('{0}', variables['Build.SourceVersion'])]
+    - name: commitBranchName
+      value: $[format('{0}', variables['Build.SourceBranchName'])]
+    - name: revision
+      value: '201'
+    steps:
+    - powershell: |
+        $currentCommit = "$(commitBuild)"
+        $endpointCommit = "$(Api:BaseUri)/$(OrgId)/teams/$(TeamCode)/apps/$(AppId)/webhook/$currentCommit"
+        $endpointAuth = "$(Api:BaseUri)/$(OrgId)/authenticate"
+        $endpointVersion = "$(Api:BaseUri)/$(OrgId)/teams/$(TeamCode)/apps/$(AppId)/version"
+        $currentBranchName = "$(commitBranchName)"
+        $preRelease = "alpha"
+        $currentRevision = "$(revision)"
+        $accessToken = ""
+        $username = "$(User:Integration)"
+        $password = "$(Password:Integration)"
+
+        Write-Host "Commit: $currentCommit"
+        Write-Host "Endpoint: $endpointCommit"
+        Write-Host "Endpoint: $endpointAuth"
+        Write-Host "Endpoint: $endpointVersion"
+        Write-Host "Branch: $currentBranchName"
+        Write-Host "Branch: $currentBranchName"
+        Write-Host "Revision: $currentRevision"
+
+        $auth = @{
+            Username = $username
+            Password = $password
+        } | ConvertTo-Json
+
+        $result = Invoke-RestMethod -Method Post -Body $auth -Uri "$endpointAuth" -ContentType "application/json" -ErrorAction Stop
+
+        $accessToken = $result.accessToken
+
+        $body = @{
+            From = $currentBranchName
+            To= ''
+            Commit = $currentCommit
+            Message = 'Automated Build Run Message'
+            PreReleaseLabel = $preRelease
+            BuildLabel = $currentRevision
+        } | ConvertTo-Json
+
+        For ($i=1; $i -lt 5; $i++)
+        {
+            try
+            {
+                $response = Invoke-RestMethod -Method Get -Uri "$endpointCommit" -ErrorAction Stop
+                $statusCode = $response.StatusCode
+                $body = @{
+                    From = $response.fromBranch
+                    To= $response.toBranch
+                    Commit = $currentCommit
+                    Message = $response.commitMessag
+                    PreReleaseLabel = $preRelease
+                    BuildLabel = $currentRevision
+                } | ConvertTo-Json
+
+                Write-Host "Status: $statusCode"
+                $response
+                break
+            }
+            catch
+            {
+                $statusCode = $_.Exception.Response.StatusCode.value__
+                Write-Host "[$i]Status: $statusCode"
+            }
+
+            Start-Sleep 1000
+        }
+
+        $headers = @{Authorization = "Bearer $accessToken"}
+
+        $result = Invoke-RestMethod -Method Post -Body $Body -Uri "$endpointVersion" -Headers $headers -ContentType "application/json" -ErrorAction Stop
+        $result
+        $version = '$result.major.$result.minor.$result.patch.$result.build'
+        Write-Host "##vso[build.updatebuildnumber]$version"
+      displayName: Say hello
+      name: firstStep
+      workingDirectory: $(build.sourcesDirectory)
+      failOnStderr: true
   - template: ../../tools/.pipelines/template-build-netcore.yml
     parameters:
         artifactName: $(artifactBuildName)
         mainProjectName: 'MAAV.WebAPI'
         mainProject: 'src/maav.webapi/MAAV.WebAPI.csproj'
-        currentVersion: '$(appVersion)$(buildCount)'
+        currentVersion: '$(Build.BuildNumber)'
         outputDirectory: 'app'
         dockerfile: 'Heroku.Dockerfile'
         dockerfilePath: 'src/maav.webapi/'

@@ -56,8 +56,8 @@
             <label>Leader</label> 
         </clr-checkbox-wrapper>
     </clr-checkbox-container>
-    <button class="btn btn-outline-danger" type="button" [disabled]="persistencyMode == 'view' || showProgress" (click)="cancel()">Cancel</button>
-    <button class="btn btn-outline-success" type="submit"  [disabled]="persistencyMode == 'view'">
+    <button class="btn btn-outline-danger" type="button" [disabled]="(persistencyMode == 'view' && !resetPassword) || showProgress" (click)="cancel()">Cancel</button>
+    <button class="btn btn-outline-success" type="submit"  [disabled]="persistencyMode == 'view' && !resetPassword">
         <clr-spinner clrMedium *ngIf="showProgress" aria-label="In progress"></clr-spinner>
         <span *ngIf="!showProgress">{{buttonTitle}}</span>
     </button>

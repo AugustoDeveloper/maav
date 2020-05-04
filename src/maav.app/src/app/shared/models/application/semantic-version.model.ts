@@ -17,11 +17,13 @@ export class SemanticVersion {
         let major = version.major.toString();
         let minor = version.minor.toString();
         let patch = version.patch.toString();
+        let preRelease = version.preRelease && version.preRelease.trim().length > 0 ? '-'+version.preRelease.trim(): '';
+        let build = version.build && version.build.trim().length > 0 ? '+'+version.build.trim(): '';
         return "v"+formatVersion
             .replace('{major}', major)
             .replace('{minor}', minor)
             .replace('{patch}', patch)
-            .replace('{prerelease}', version.preRelease)
-            .replace('{build}', version.build);
+            .replace('{prerelease}', `${preRelease}`)
+            .replace('{build}', `${build}`);
       }
 }
