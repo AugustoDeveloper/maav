@@ -15,6 +15,6 @@ namespace MAAV.Infrastructure.Repository.MongoDB
 
 
         protected override Expression<Func<Team, bool>> RetrieveUpdateExpression(Team entity)
-            => c => c.Id == entity.Id;
+            => c => c.TeamCode == entity.TeamCode;
     }
 }

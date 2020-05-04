@@ -23,7 +23,7 @@ namespace MAAV.Infrastructure.Repository.LiteDB.Extensions
                 .Id(a => a.Id)
                 .Field(a => a.Name, "name")
                 .Field(a => a.OrganisationId, "organisation_name")
-                .Field(a => a.TeamId, "team_name")
+                .Field(a => a.TeamCode, "team_code")
                 .Field(a => a.KeyBranches, "key_branches")
                 .Field(a => a.InitialVersion, "initial_version");
 
@@ -46,7 +46,7 @@ namespace MAAV.Infrastructure.Repository.LiteDB.Extensions
                 .Field(s => s.Teams, "teams");
 
             mapper.Entity<Team>()
-                .Field(t => t.Id, "id").Id(t => t.Id, autoId: true)
+                .Field(t => t.TeamCode, "id").Id(t => t.TeamCode, autoId: true)
                 .Field(t => t.OrganisationId, "organisation_id")
                 .Field(t => t.Name, "name")
                 .Field(t => t.Users, "users")
@@ -64,7 +64,7 @@ namespace MAAV.Infrastructure.Repository.LiteDB.Extensions
                 .Field(u => u.TeamsPermissions, "team_roles");
 
             mapper.Entity<TeamPermission>()
-                .Field(utr => utr.TeamId, "team_id")
+                .Field(utr => utr.TeamCode, "team_id")
                 .Field(utr => utr.IsOwner, "is_owner")
                 .Field(utr => utr.IsReader, "is_reader")
                 .Field(utr => utr.IsWriter, "is_writer");

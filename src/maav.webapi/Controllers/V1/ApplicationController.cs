@@ -8,6 +8,7 @@ using MAAV.Application.Exceptions;
 using System.Text.Json;
 using MAAV.WebAPI.Serializers;
 using MAAV.DataContracts.GitHub;
+using MAAV.DataContracts;
 
 namespace MAAV.WebAPI.Controllers
 {

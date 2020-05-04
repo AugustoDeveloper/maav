@@ -12,13 +12,13 @@ namespace MAAV.Domain.Entities
             this.Id = app.Id;
             this.Name = app.Name;
             this.CreatedAt = app.CreatedAt;
-            this.TeamId = app.TeamId;
+            this.TeamCode = app.TeamCode;
             this.OrganisationId = app.OrganisationId;
         }
         public string Id { get; set; }
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string TeamId { get; set; }
+        public string TeamCode { get; set; }
         public string OrganisationId { get; set; }
     }
 }

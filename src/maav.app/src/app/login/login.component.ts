@@ -59,6 +59,7 @@ export class LoginComponent implements OnInit {
     this.alertService.clear();
     this.authService.authenticate(this.auth.organisationId, this.auth.username, this.auth.password)
     .subscribe(response => {
+      this.session.destroy();
       this.session.authToken = response.accessToken;
       this.session.authTokenExpires = response.expiration;
       this.session.currentUser = response.user;

@@ -68,7 +68,7 @@ namespace MAAV.Application
 
             foreach (var teamPermission in userEntity.TeamsPermissions)
             {
-                var team = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.Id == teamPermission.TeamId);
+                var team = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.TeamCode == teamPermission.TeamCode);
                 team.Users.RemoveAll(u => userEntity.Id.Equals(u.Id));
                 await this.teamRepository.UpdateAsync(team);
             }
@@ -124,7 +124,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var teamLocated = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.Id == teamId);
+            var teamLocated = await this.teamRepository.GetByAsync(t => t.OrganisationId == orgId && t.TeamCode == teamId);
             if (teamLocated == null)
             {
                 throw new ArgumentException($"The team {teamId} on organisation {orgId} not exists");
@@ -136,7 +136,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The user {username} on organisation {orgId} not exists");
             }
 
-            userEntity.TeamsPermissions.RemoveAll(tr => tr.TeamId == teamId);
+            userEntity.TeamsPermissions.RemoveAll(tr => tr.TeamCode == teamId);
             teamLocated.Users.RemoveAll(u => userEntity.Username.Equals(u.Username));
 
             await this.teamRepository.UpdateAsync(teamLocated);
@@ -189,7 +189,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {orgId} not exists");
             }
 
-            var teamEntity = await this.teamRepository.GetByAsync(t =>t.OrganisationId == orgId && t.Id == teamId);
+            var teamEntity = await this.teamRepository.GetByAsync(t =>t.OrganisationId == orgId && t.TeamCode == teamId);
             if (teamEntity == null)
             {
                 throw new ArgumentException($"The team {teamId} on organisation {orgId} not exists");
@@ -201,7 +201,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The user {username} on organisation {orgId} not exists");
             }
 
-            userEntity.TeamsPermissions.RemoveAll(p => p.TeamId == teamId);
+            userEntity.TeamsPermissions.RemoveAll(p => p.TeamCode == teamId);
             userEntity.TeamsPermissions.Add(permission.ToEntity());
             teamEntity.Users.RemoveAll(u => userEntity.Username.Equals(u.Username));
             teamEntity.Users.Add(new Domain.Entities.TeamUser(userEntity));
@@ -217,13 +217,33 @@ namespace MAAV.Application
             {
                 return false;
             }
-            var permission = userEntity.TeamsPermissions.FirstOrDefault(p => p.TeamId == teamId);
+            var permission = userEntity.TeamsPermissions.FirstOrDefault(p => p.TeamCode == teamId);
             if (permission == null)
             {
                 return false;
             }
 
             return permission.IsOwner;
+        }
+
+        public async Task ResetPassword(string orgId, string username, string password)
+        {
+            if (!await organisationRepository.ExistsByAsync(o => o.Id == orgId))
+            {
+                throw new ArgumentException($"The organisation {orgId} not exists");
+            }
+
+            var userEntity = await this.repository.GetByAsync(u => u.OrganisationId == orgId && u.Username == username);
+            if (userEntity == null)
+            {
+                throw new ArgumentException($"The user {username} on organisation {orgId} not exists");
+            }
+
+            var passkeys = password.Encrypt();
+
+            userEntity.PasswordHash = Convert.ToBase64String(passkeys.PasswordHash);
+            userEntity.PasswordSalt = Convert.ToBase64String(passkeys.PasswordSalt);
+            await repository.UpdateAsync(userEntity);
         }
     }
 }

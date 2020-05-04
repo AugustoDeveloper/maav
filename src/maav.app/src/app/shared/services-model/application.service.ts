@@ -9,15 +9,18 @@ import { CommonRestService } from '../services/common-rest.service';
   providedIn: 'root'
 })
 export class ApplicationService {
-  private resource = environment.baseUri;
+  private get resource() : string {
+    return environment.baseUri.concat(this.session.organisationId).concat('/');
+   }
   
   constructor(private session: SessionService,
               private rest: CommonRestService) { 
-    this.resource = this.resource.concat(this.session.organisationId).concat('/')
   }
 
   public add(teamId: string, application: Application): Observable<Application> {
+
     let url = this.resource.concat('teams').concat('/').concat(teamId).concat('/').concat('apps');
+    console.log(url);
     return this.rest.post(url, application);
   }
 

@@ -9,11 +9,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class VersionService {
-  private resource = environment.baseUri;
+  private get resource() : string {
+    return environment.baseUri.concat(this.session.organisationId).concat('/');
+   }
   
   constructor(private session: SessionService,
               private rest: CommonRestService) { 
-    this.resource = this.resource.concat(this.session.organisationId).concat('/');
   }
 
   

@@ -41,6 +41,12 @@ export class CommonRestService {
     .pipe(catchError(this.handleError));
   }
 
+  patch<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
+    const httpHeaders = this.commonHeaders;
+    return this.http.patch<T>(url, body, { headers: httpHeaders })
+    .pipe(catchError(this.handleError));
+  }
+
   delete<T>(url: string): Observable<T> {
     return this.http.delete<T>(url, { headers: this.commonHeaders })
     .pipe(catchError(this.handleError));

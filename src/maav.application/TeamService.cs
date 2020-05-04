@@ -28,7 +28,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            var team = await repository.GetByAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
+            var team = await repository.GetByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId);
             return team?.ToContract();
         }
 
@@ -39,7 +39,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (await this.repository.ExistsByAsync(t => t.OrganisationId == organisationId && t.Id == team.Id))
+            if (await this.repository.ExistsByAsync(t => t.OrganisationId == organisationId && t.TeamCode == team.Id))
             {
                 throw new NameAlreadyUsedException(team.Id);
             }
@@ -58,14 +58,14 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            var teamLocated = await this.repository.GetByAsync(t => t.OrganisationId == organisationId && t.Id == team.Id);
+            var teamLocated = await this.repository.GetByAsync(t => t.OrganisationId == organisationId && t.TeamCode == team.Id);
             if (teamLocated == null)
             {
                 return null;
             }
             
             var teamEntity = team.ToEntity();
-            teamEntity.Id = teamLocated.Id;
+            teamEntity.TeamCode = teamLocated.TeamCode;
             teamEntity.OrganisationId = organisationId;
 
             teamEntity = await this.repository.UpdateAsync(teamEntity);
@@ -79,7 +79,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            var teamLocated = await this.repository.GetByAsync(t => t.OrganisationId == organisationId && t.Id == teamId);
+            var teamLocated = await this.repository.GetByAsync(t => t.OrganisationId == organisationId && t.TeamCode == teamId);
             if (teamLocated == null)
             {
                 return;
@@ -88,11 +88,11 @@ namespace MAAV.Application
             foreach (var user in teamLocated.Users)
             {
                 var userEntity = await userRepository.GetByAsync(u => u.Id == user.Id);
-                userEntity.TeamsPermissions.RemoveAll(p => p.TeamId == teamId);
+                userEntity.TeamsPermissions.RemoveAll(p => p.TeamCode == teamId);
                 await this.userRepository.UpdateAsync(userEntity);
             }
 
-            await this.repository.DeleteAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
+            await this.repository.DeleteAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId);
         }
 
         public async Task<Team[]> LoadByOrganisationIdAsync(string organisationId)

@@ -34,7 +34,7 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            var teamEntity = await this.teamRepository.GetByAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
+            var teamEntity = await this.teamRepository.GetByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId);
             if (teamEntity == null)
             {
                 throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
@@ -43,7 +43,7 @@ namespace MAAV.Application
             teamEntity.Applications.RemoveAll(a => a.Id == appId);
             await this.versionHistoryRepository.DeleteAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appId);
             await this.teamRepository.UpdateAsync(teamEntity);
-            await this.repository.DeleteAsync(app => appId.Equals(app.Id) && app.TeamId == teamId && app.OrganisationId == organisationId);
+            await this.repository.DeleteAsync(app => appId.Equals(app.Id) && app.TeamCode == teamId && app.OrganisationId == organisationId);
         }
 
         public async Task<DataContracts.Application> GetByIdAsync(string organisationId, string teamId, string appId)
@@ -53,12 +53,12 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
-            var application = await repository.GetByAsync(app => appId.Equals(app.Id) && app.TeamId == teamId && app.OrganisationId == organisationId);
+            var application = await repository.GetByAsync(app => appId.Equals(app.Id) && app.TeamCode == teamId && app.OrganisationId == organisationId);
 
             return application?.ToContract();
         }
@@ -71,14 +71,14 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
             
-            var teamEntity = await this.teamRepository.GetByAsync(t => t.Id == teamId && t.OrganisationId == organisationId);
+            var teamEntity = await this.teamRepository.GetByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId);
             if (teamEntity == null)
             {
                 throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
             var appEntity = application.ToEntity();
-            appEntity.TeamId = teamId;
+            appEntity.TeamCode = teamId;
             appEntity.OrganisationId = organisationId;
 
             var invalidBranchSetting = 
@@ -153,12 +153,12 @@ namespace MAAV.Application
                 throw new ArgumentException($"The organisation {organisationId} not exists");
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 throw new ArgumentException($"The team {teamId} from organisation {organisationId} not exists");
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && application.Id == app.Id);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId && application.Id == app.Id);
             if (appLocated == null)
             {
                 return null;
@@ -166,7 +166,7 @@ namespace MAAV.Application
 
             var appEntity = application.ToEntity();
             appEntity.OrganisationId = organisationId;
-            appEntity.TeamId = teamId;
+            appEntity.TeamCode = teamId;
             appEntity.KeyBranchVersionings = appLocated.KeyBranchVersionings;
             appEntity.GithubSecretKey =  string.IsNullOrWhiteSpace(appEntity.GithubSecretKey) ? appLocated.GithubSecretKey : appEntity.GithubSecretKey;
 
@@ -198,7 +198,6 @@ namespace MAAV.Application
                 CreatedAt = DateTime.UtcNow,
                 CurrentVersion = appEntity.InitialVersion
             }).ToArray());
-
 
             appEntity.KeyBranches.ForEach(kb =>
             {
@@ -243,12 +242,12 @@ namespace MAAV.Application
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var applications = await repository.LoadByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId);
+            var applications = await repository.LoadByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId);
 
             return applications?.ToContract().ToList();
         }
@@ -260,12 +259,12 @@ namespace MAAV.Application
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId && app.Id == appId);
             if (appLocated == null)
             {
                 return null;
@@ -359,12 +358,12 @@ namespace MAAV.Application
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId && app.Id == appId);
             if (appLocated == null)
             {
                 return null;
@@ -394,12 +393,12 @@ namespace MAAV.Application
 
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                keyBranchVersion.CurrentVersion.PreRelease = $"-{data.PreReleaseLabel}";
+                keyBranchVersion.CurrentVersion.PreRelease = data.PreReleaseLabel?.Trim().Length > 0 ? $"-{data.PreReleaseLabel}" : string.Empty;
 
             }
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                keyBranchVersion.CurrentVersion.Build = $"+{data.BuildLabel}";
+                keyBranchVersion.CurrentVersion.Build = data.BuildLabel?.Trim().Length > 0 ?  $"+{data.BuildLabel}" : string.Empty;
             }
 
             return keyBranchVersion.CurrentVersion.ToContract();
@@ -412,12 +411,12 @@ namespace MAAV.Application
                 return null;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == organisationId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == organisationId))
             {
                 return null;
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == organisationId && app.Id == appId);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == organisationId && app.Id == appId);
             if (appLocated == null)
             {
                 return null;
@@ -435,12 +434,12 @@ namespace MAAV.Application
                 return false;
             }
 
-            if (!await this.teamRepository.ExistsByAsync(t => t.Id == teamId && t.OrganisationId == orgId))
+            if (!await this.teamRepository.ExistsByAsync(t => t.TeamCode == teamId && t.OrganisationId == orgId))
             {
                 return false;
             }
 
-            var appLocated = await this.repository.GetByAsync(app => app.TeamId == teamId && app.OrganisationId == orgId && app.Id == appId);
+            var appLocated = await this.repository.GetByAsync(app => app.TeamCode == teamId && app.OrganisationId == orgId && app.Id == appId);
             if (appLocated == null)
             {
                 return false;

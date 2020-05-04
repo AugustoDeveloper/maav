@@ -38,6 +38,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{2866EE0A
 		tools\build.sh = tools\build.sh
 		tools\container-release-heroku.sh = tools\container-release-heroku.sh
 		tools\run.sh = tools\run.sh
+		tools\.pipelines\template-build-netcore.yml = tools\.pipelines\template-build-netcore.yml
+		tools\.pipelines\template-deployment-netcore.yml = tools\.pipelines\template-deployment-netcore.yml
+		tools\.pipelines\template-preparation-netcore.yml = tools\.pipelines\template-preparation-netcore.yml
 	EndProjectSection
 EndProject
 Global

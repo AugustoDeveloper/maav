@@ -7,7 +7,6 @@ namespace MAAV.Domain.Entities
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string OrganisationId { get; set; }
 
         public List<TeamPermission> TeamsPermissions { get; set; }  = new List<TeamPermission>();
         public string[] OrganisationRoles { get; set; }
