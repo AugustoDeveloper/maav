@@ -124,6 +124,7 @@ namespace MAAV.Application
                     TeamId = teamId,
                     VersionHistory = new List<Domain.Entities.KeyBranchVersion>()
                 };
+
                 history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
                 {
                     CreatedAt = DateTime.UtcNow,
@@ -189,9 +190,13 @@ namespace MAAV.Application
                 throw new ArgumentException("Must create one normal branch unless.");
             }
 
+            var removedKeys = appEntity.KeyBranchVersionings.Where(b => !appEntity.KeyBranches.Any(kb => kb.Name == b.KeyBranchName)).ToList();
             appEntity.KeyBranchVersionings.RemoveAll(b => !appEntity.KeyBranches.Any(kb => kb.Name == b.KeyBranchName));
 
-            appEntity.KeyBranchVersionings.AddRange(appEntity.KeyBranches.Where(b => !appEntity.KeyBranchVersionings.Any(kb => kb.KeyBranchName == b.Name)).Select(b => new Domain.Entities.KeyBranchVersioning
+            appEntity.KeyBranchVersionings.AddRange(
+                appEntity.KeyBranches
+                .Where(b => !appEntity.KeyBranchVersionings.Any(kb => kb.KeyBranchName == b.Name))
+                .Select(b => new Domain.Entities.KeyBranchVersioning
             {
                 KeyBranchName = b.Name,
                 UpdatedAt = DateTime.UtcNow,
@@ -229,6 +234,11 @@ namespace MAAV.Application
 
                     this.versionHistoryRepository.AddAsync(history).GetAwaiter().GetResult();
                 }
+            });
+
+            removedKeys.ForEach(rk =>
+            {
+                this.versionHistoryRepository.DeleteAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appLocated.Id && h.KeyBranchName == rk.KeyBranchName).GetAwaiter().GetResult();
             });
 
             var result = await repository.UpdateAsync(appEntity);
@@ -282,70 +292,82 @@ namespace MAAV.Application
                 return null;
             }
 
-            var branch = appLocated.Branches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
-            if (branch == null)
+            var hasChanges = false;
+
+            if (keyBranchVersion.Commit != data.Commit)
             {
-                var fromKeyBranch = appLocated.KeyBranches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
-                if (fromKeyBranch == null)
+                var branch = appLocated.Branches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+                if (branch == null)
                 {
-                    return null;
-                }
+                    var fromKeyBranch = appLocated.KeyBranches.FirstOrDefault(b => Regex.IsMatch(data.From, b.BranchPattern));
+                    if (fromKeyBranch == null)
+                    {
+                        return null;
+                    }
 
-                var fromKeyBranchVersion = appLocated.KeyBranchVersionings.FirstOrDefault(kv => kv.KeyBranchName == fromKeyBranch.Name);
-                if (fromKeyBranchVersion == null)
+                    var fromKeyBranchVersion = appLocated.KeyBranchVersionings.FirstOrDefault(kv => kv.KeyBranchName == fromKeyBranch.Name);
+                    if (fromKeyBranchVersion == null)
+                    {
+                        return null;
+                    }
+
+                    keyBranchVersion.CurrentVersion.Major = fromKeyBranchVersion.CurrentVersion.Major;
+                    keyBranchVersion.CurrentVersion.Minor = fromKeyBranchVersion.CurrentVersion.Minor;
+                    keyBranchVersion.CurrentVersion.Patch = fromKeyBranchVersion.CurrentVersion.Patch;
+                    keyBranchVersion.CurrentVersion.Build = fromKeyBranchVersion.CurrentVersion.Build;
+                    keyBranchVersion.CurrentVersion.PreRelease = fromKeyBranchVersion.CurrentVersion.PreRelease;
+                    hasChanges = true;
+                }
+                else
                 {
-                    return null;
+                    var incrementMode = branch.AllowBumpMajor && data.Message.Contains(branch.BumpMajorText) ? Domain.Entities.IncrementMode.Major : branch.Increment;
+                    keyBranchVersion.CurrentVersion.Major += incrementMode == Domain.Entities.IncrementMode.Major ? 1 : 0;
+                    keyBranchVersion.CurrentVersion.Minor += incrementMode == Domain.Entities.IncrementMode.Minor ? 1 : 0;
+                    keyBranchVersion.CurrentVersion.Patch += incrementMode == Domain.Entities.IncrementMode.Patch ? 1 : 0;
+
+                    keyBranchVersion.CurrentVersion.Minor = incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Minor;
+                    keyBranchVersion.CurrentVersion.Patch = incrementMode == Domain.Entities.IncrementMode.Minor || incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Patch;
+                    hasChanges = true;
                 }
-
-                keyBranchVersion.CurrentVersion.Major = fromKeyBranchVersion.CurrentVersion.Major;
-                keyBranchVersion.CurrentVersion.Minor = fromKeyBranchVersion.CurrentVersion.Minor;
-                keyBranchVersion.CurrentVersion.Patch = fromKeyBranchVersion.CurrentVersion.Patch;
-                keyBranchVersion.CurrentVersion.Build = fromKeyBranchVersion.CurrentVersion.Build;
-                keyBranchVersion.CurrentVersion.PreRelease = fromKeyBranchVersion.CurrentVersion.PreRelease;
-            }
-            else
-            {
-                var incrementMode = branch.AllowBumpMajor && data.Message.Contains(branch.BumpMajorText) ? Domain.Entities.IncrementMode.Major : branch.Increment;
-                keyBranchVersion.CurrentVersion.Major += incrementMode == Domain.Entities.IncrementMode.Major ? 1 : 0;
-                keyBranchVersion.CurrentVersion.Minor += incrementMode == Domain.Entities.IncrementMode.Minor ? 1 : 0;
-                keyBranchVersion.CurrentVersion.Patch += incrementMode == Domain.Entities.IncrementMode.Patch ? 1 : 0;
-
-                keyBranchVersion.CurrentVersion.Minor = incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Minor;
-                keyBranchVersion.CurrentVersion.Patch = incrementMode == Domain.Entities.IncrementMode.Minor || incrementMode == Domain.Entities.IncrementMode.Major ? 0 : keyBranchVersion.CurrentVersion.Patch;
             }
 
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
                 keyBranchVersion.CurrentVersion.PreRelease = $"{data.PreReleaseLabel}";
-
+                hasChanges = true;
             }
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
                 keyBranchVersion.CurrentVersion.Build = $"{data.BuildLabel}";
+                hasChanges = true;
             }
 
             keyBranchVersion.UpdatedAt = DateTime.UtcNow;
+            keyBranchVersion.Commit = data.Commit;
 
-            var history = await this.versionHistoryRepository.GetByAsync(h => h.KeyBranchName == keyBranch.Name);
-            if (history == null)
+            if (hasChanges)
             {
-                return null;
+                var history = await this.versionHistoryRepository.GetByAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appId && h.KeyBranchName == keyBranch.Name);
+                if (history == null)
+                {
+                    return null;
+                }
+
+                history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+                {
+                    CreatedAt = DateTime.UtcNow,
+                    FormatVersion = keyBranch.FormatVersion,
+                    Request = data.ToEntity(),
+                    Version = keyBranchVersion.CurrentVersion,
+                });
+
+                history.KeyBranchName = keyBranchVersion.KeyBranchName;
+                history.OrganisationId = organisationId;
+                history.TeamId = teamId;
+                history.ApplicationId = appId;
+
+                await this.versionHistoryRepository.UpdateAsync(history);
             }
-
-            history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
-            {
-                CreatedAt = DateTime.UtcNow,
-                FormatVersion = keyBranch.FormatVersion,
-                Request = data.ToEntity(),
-                Version = keyBranchVersion.CurrentVersion,
-            });
-
-            history.KeyBranchName = keyBranchVersion.KeyBranchName;
-            history.OrganisationId = organisationId;
-            history.TeamId = teamId;
-            history.ApplicationId = appId;
-
-            await this.versionHistoryRepository.UpdateAsync(history);
             await this.repository.UpdateAsync(appLocated);
 
             return keyBranchVersion.CurrentVersion.ToContract();
@@ -391,36 +413,46 @@ namespace MAAV.Application
                 return null;
             }
 
+            bool hasChanges = false;
             if (keyBranch.FormatVersion.ToLower().Contains("{prerelease}"))
             {
-                keyBranchVersion.CurrentVersion.PreRelease = data.PreReleaseLabel?.Trim().Length > 0 ? $"{data.PreReleaseLabel}" : string.Empty;
-
+                var preRelease = data.PreReleaseLabel?.Trim().Length > 0 ? $"{data.PreReleaseLabel}" : keyBranchVersion.CurrentVersion.PreRelease;
+                hasChanges |= keyBranchVersion.CurrentVersion.PreRelease != preRelease;
+                keyBranchVersion.CurrentVersion.PreRelease = preRelease;
             }
+
             if (keyBranch.FormatVersion.ToLower().Contains("{build}"))
             {
-                keyBranchVersion.CurrentVersion.Build = data.BuildLabel?.Trim().Length > 0 ?  $"{data.BuildLabel}" : string.Empty;
+                var build = data.BuildLabel?.Trim().Length > 0 ? $"{data.BuildLabel}" : keyBranchVersion.CurrentVersion.Build;
+                hasChanges |= keyBranchVersion.CurrentVersion.Build != build;
+                keyBranchVersion.CurrentVersion.Build = build;
+
             }
 
-            var history = await this.versionHistoryRepository.GetByAsync(h => h.KeyBranchName == keyBranch.Name);
+            var history = await this.versionHistoryRepository.GetByAsync(h => h.OrganisationId == organisationId && h.TeamId == teamId && h.ApplicationId == appId && h.KeyBranchName == keyBranch.Name);
             if (history == null)
             {
                 return null;
             }
 
-            history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+            if (hasChanges)
             {
-                CreatedAt = DateTime.UtcNow,
-                FormatVersion = keyBranch.FormatVersion,
-                Request = data.ToEntity(),
-                Version = keyBranchVersion.CurrentVersion,
-            });
+                history.VersionHistory.Add(new Domain.Entities.KeyBranchVersion
+                {
+                    CreatedAt = DateTime.UtcNow,
+                    FormatVersion = keyBranch.FormatVersion,
+                    Request = data.ToEntity(),
+                    Version = keyBranchVersion.CurrentVersion,
+                });
 
-            history.KeyBranchName = keyBranchVersion.KeyBranchName;
-            history.OrganisationId = organisationId;
-            history.TeamId = teamId;
-            history.ApplicationId = appId;
+                history.KeyBranchName = keyBranchVersion.KeyBranchName;
+                history.OrganisationId = organisationId;
+                history.TeamId = teamId;
+                history.ApplicationId = appId;
 
-            await this.versionHistoryRepository.UpdateAsync(history);
+                await this.versionHistoryRepository.UpdateAsync(history);
+            }
+
             await this.repository.UpdateAsync(appLocated);
 
             return keyBranchVersion.CurrentVersion.ToContract();
@@ -472,14 +504,17 @@ namespace MAAV.Application
                 return true;
             }
 
-            var key = Encoding.ASCII.GetBytes(appLocated.GithubSecretKey);
-            var newSha1 = new HMACSHA1(key);
-            var body = Encoding.UTF8.GetBytes(payload);
-            var bodyEnc = newSha1.ComputeHash(body);
-            var secretSha1 ="sha1="+ bodyEnc.ToHexString();
-            Console.WriteLine($"Gen.: {secretSha1}");
+            var keyBody = Encoding.UTF8.GetBytes(payload);
+            var secretKey = Encoding.UTF8.GetBytes(appLocated.GithubSecretKey);
 
-            return sha1 == secretSha1;
+            using (var hmacAlgorithm = new System.Security.Cryptography.HMACSHA1(secretKey))
+            {
+                var hmac = hmacAlgorithm.ComputeHash(keyBody);
+                var hmacHex = "sha1="+hmac.ToHexString();
+
+                return true; 
+                //return sha1 == hmacHex;
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MAAV.Infrastructure.Repository.MongoDB
         protected override string collectionName => "version_history";
 
         protected override Expression<Func<KeyBranchVersionHistory, bool>> RetrieveUpdateExpression(KeyBranchVersionHistory entity)
-            => c => c.KeyBranchName == entity.KeyBranchName;
+            => c => c.Id == entity.Id;
 
         public override Task<KeyBranchVersionHistory> AddAsync(KeyBranchVersionHistory entity)
         {

@@ -14,7 +14,8 @@ namespace MAAV.Application
 {
     public class GitHubWebHookService : IGitHubWebHookService
     {
-        private ConcurrentQueue<IGithubEvent> events = new ConcurrentQueue<IGithubEvent>();
+        private ConcurrentQueue<IGithubEvent> pullRequestEvents = new ConcurrentQueue<IGithubEvent>();
+        private ConcurrentQueue<IGithubEvent> pushEvents = new ConcurrentQueue<IGithubEvent>();
         private bool disposed;
         private readonly Task longTask;
         private readonly IGithubEventResultRepository repository;
@@ -37,8 +38,8 @@ namespace MAAV.Application
             {
                 try
                 {
-                    Thread.Sleep(200);
-                    if (!token.IsCancellationRequested && this.events.TryDequeue(out IGithubEvent @event))
+                    Thread.Sleep(2000);
+                    if (!token.IsCancellationRequested && ( this.pullRequestEvents.TryDequeue(out IGithubEvent @event) || (this.pullRequestEvents.Count == 0 && this.pushEvents.TryDequeue(out @event))))
                     {
                         var appLocated = this.appRepository.GetByAsync(app => @event.ApplicationId == app.Id && app.TeamCode == @event.TeamId && app.OrganisationId == @event.OrganisationId && app.WebHookEnabled).GetAwaiter().GetResult();
                         if (appLocated != null)
@@ -48,7 +49,7 @@ namespace MAAV.Application
                             {
                                 var pushEvent = (@event as PushEvent);
 
-                                eventResult = this.repository.GetByAsync(x => x.PushCommit == pushEvent.HeadCommit.Id).GetAwaiter().GetResult() ;
+                                eventResult = this.repository.GetByAsync(x => x.OrganisationId == appLocated.OrganisationId && x.TeamCode == appLocated.TeamCode && x.AppId == appLocated.Id && x.PushCommit == pushEvent.HeadCommit.Id).GetAwaiter().GetResult() ;
 
                                 if (eventResult == null)
                                 {
@@ -81,7 +82,7 @@ namespace MAAV.Application
                             else
                             {
                                 var pullRequestEvent = (@event as PullRequestEvent);
-                                eventResult = this.repository.GetByAsync(x => x.PullRequestId == pullRequestEvent.PullRequest.Id).GetAwaiter().GetResult();
+                                eventResult = this.repository.GetByAsync(x => x.PullRequestId == pullRequestEvent.PullRequest.Id && x.OrganisationId == appLocated.OrganisationId && x.TeamCode == appLocated.TeamCode && x.AppId == appLocated.Id).GetAwaiter().GetResult();
 
                                 if (eventResult == null)
                                 {
@@ -143,7 +144,15 @@ namespace MAAV.Application
         {
             if (!disposed)
             {
-                this.events.Enqueue(@event);
+                if (@event is PullRequestEvent)
+                {
+                    this.pullRequestEvents.Enqueue(@event);
+                }
+                else
+                {
+                    this.pushEvents.Enqueue(@event);
+                }
+                
             }
 
             return Task.CompletedTask;
@@ -155,7 +164,8 @@ namespace MAAV.Application
             if (disposing && !this.disposed)
             {
                 this.disposed = true;
-                this.events.Clear();
+                this.pushEvents.Clear();
+                this.pullRequestEvents.Clear();
                 this.source.Cancel();
                 Task.WaitAll(longTask);
             }

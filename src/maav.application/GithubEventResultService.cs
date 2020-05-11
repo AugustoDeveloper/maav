@@ -24,7 +24,7 @@ namespace MAAV.Application
                 return null;
             }
 
-            var @event = await this.repository.GetByAsync(x => x.PushCommit == commitId && x.TeamCode == teamId && x.OrganisationId == organisationId && x.AppId == appId && x.Status.Equals("ready"));
+            var @event = await this.repository.GetByAsync(x => x.PushCommit == commitId && x.TeamCode == teamId && x.OrganisationId == organisationId && x.AppId == appId && x.Status == "ready");
             return @event.ToContract();
         }
     }

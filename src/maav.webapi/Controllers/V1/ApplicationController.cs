@@ -9,6 +9,7 @@ using System.Text.Json;
 using MAAV.WebAPI.Serializers;
 using MAAV.DataContracts.GitHub;
 using MAAV.DataContracts;
+using System.IO;
 
 namespace MAAV.WebAPI.Controllers
 {
@@ -206,7 +207,6 @@ namespace MAAV.WebAPI.Controllers
             [FromRoute] string organisationId,
             [FromRoute] string teamId,
             [FromRoute] string appId,
-            [FromBody]object payload, 
             [FromServices]IApplicationService service, 
             [FromServices]IGitHubWebHookService githubService)
         {
@@ -215,26 +215,34 @@ namespace MAAV.WebAPI.Controllers
             Console.WriteLine($"X-Hub-Signature: ${headerAuth}");
             Console.WriteLine($"X-GitHub-Event: ${headerEvent}");
 
-            if (!string.IsNullOrWhiteSpace(headerEvent) && !string.IsNullOrWhiteSpace(headerAuth) && await service.IsValidSha1Async(organisationId, teamId, appId, headerAuth, payload.ToString()))
+
+            using (var reader = new StreamReader(Request.Body))
             {
-                if (headerEvent.Equals("push") || headerEvent.Equals("pull_request"))
+                var payload = await reader.ReadToEndAsync();
+
+                if (!string.IsNullOrWhiteSpace(headerEvent) &&
+                    !string.IsNullOrWhiteSpace(headerAuth) &&
+                    await service.IsValidSha1Async(organisationId, teamId, appId, headerAuth, payload))
                 {
-
-                    IGithubEvent @event = null;
-                    var jsonBody = payload.ToString();
-                    if (headerEvent.Equals("push"))
+                    if (headerEvent.Equals("push") || headerEvent.Equals("pull_request"))
                     {
-                        @event = JsonSerializer.Deserialize<PushEvent>(jsonBody, optionSerialization);
-                    }
-                    else
-                    {
-                        @event = JsonSerializer.Deserialize<PullRequestEvent>(jsonBody, optionSerialization);
-                    }
 
-                    @event.ApplicationId = appId;
-                    @event.OrganisationId = organisationId;
-                    @event.TeamId = teamId;
-                    await githubService.EnqueueAsync(@event);
+                        IGithubEvent @event = null;
+                        var jsonBody = payload.ToString();
+                        if (headerEvent.Equals("push"))
+                        {
+                            @event = JsonSerializer.Deserialize<PushEvent>(jsonBody, optionSerialization);
+                        }
+                        else
+                        {
+                            @event = JsonSerializer.Deserialize<PullRequestEvent>(jsonBody, optionSerialization);
+                        }
+
+                        @event.ApplicationId = appId;
+                        @event.OrganisationId = organisationId;
+                        @event.TeamId = teamId;
+                        await githubService.EnqueueAsync(@event);
+                    }
                 }
             }
             return Ok();
